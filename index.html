@@ -5,130 +5,225 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>صيدلية الشارقة</title>
 <style>
-:root{--bg:#eaf1fb;--green:#e8effa;--green-dark:#315d9d;--blue:#345bb0;--white:#fff;--ink:#20212a}
+:root{--bg:#f3f5f9;--navy:#1a2b7c;--navy-light:#eef2fb;--white:#fff;--ink:#1e2230}
 *{box-sizing:border-box}
-body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink);min-height:100dvh;transition:background .3s ease}
-.app{min-height:100dvh;padding:10px 18px 130px;display:flex;flex-direction:column;align-items:center}
-.brand-header{position:sticky;top:0;z-index:12;width:100%;background:var(--bg);padding:8px 0;margin:0 0 10px;display:flex;align-items:center;justify-content:center;gap:12px;transition:background .3s ease}
-.brand-logo{width:54px;height:54px;object-fit:contain;border-radius:14px;background:#fff;padding:4px;box-shadow:0 2px 6px #00000014}
-h1{color:#2f4f83;font-size:clamp(32px,7.5vw,58px);font-weight:800;text-align:center;margin:0;line-height:1.15;text-shadow:0 1px 1px #ffffff20;user-select:none}
-.searchbar{position:sticky;top:74px;z-index:11;width:100%;max-width:720px;background:white;border:4px solid #d7e2e0;border-radius:27px;height:100px;display:flex;align-items:center;padding:12px 14px;gap:14px;box-shadow:0 2px 5px #00000012}
-.searchbar input{border:0;outline:0;min-width:0;flex:1;font-size:22px;background:transparent;text-align:right;padding:0 10px;color:#333}
-.searchbar input::placeholder{color:#999}
-.searchbtn,.filterbtn{height:66px;width:66px;border:0;border-radius:18px;display:grid;place-items:center;cursor:pointer}
-.searchbtn{background:var(--blue);color:white}
-.filterbtn{background:#f0effb;color:#303b70}
-svg{width:34px;height:34px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-#content{width:100%;max-width:720px;flex:1;margin-top:22px}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink);min-height:100dvh;overflow-x:hidden}
+.app{min-height:100dvh;padding:0 0 135px;display:flex;flex-direction:column;align-items:center}
+
+/* الهيدر العلوي المطابق للتصميم */
+.topbar{position:sticky;top:0;z-index:15;width:100%;background:var(--navy);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 2px 10px #00000018}
+.topbar-center{display:flex;align-items:center;justify-content:center;gap:10px;flex:1;min-width:0}
+.brand-logo{width:38px;height:38px;object-fit:contain;border-radius:10px;background:#fff;padding:3px;flex-shrink:0}
+.topbar h1{margin:0;font-size:clamp(19px,5vw,25px);font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-icon-btn{width:42px;height:42px;border:0;border-radius:12px;background:#ffffff1c;color:#fff;display:grid;place-items:center;cursor:pointer;flex-shrink:0}
+.top-icon-btn svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+/* شريط البحث المنسدل */
+.search-drawer{width:100%;max-width:720px;padding:10px 16px 0}
+.searchbar{width:100%;background:#fff;border:2px solid #dfe5f0;border-radius:18px;height:56px;display:flex;align-items:center;padding:6px 12px;gap:10px;box-shadow:0 3px 10px #00000008}
+.searchbar input{border:0;outline:0;min-width:0;flex:1;font-size:16px;background:transparent;text-align:right;color:#222}
+.searchbar button{border:0;background:var(--navy);color:#fff;border-radius:12px;height:40px;padding:0 14px;font:inherit;font-weight:bold;cursor:pointer}
+
+#content{width:100%;max-width:720px;flex:1;padding:14px 16px 0}
+
+/* شبكة الأقسام الرئيسية (2 أعمدة) */
+.main-cat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.main-cat-card{background:#fff;border-radius:20px;overflow:hidden;border:2px solid transparent;box-shadow:0 4px 14px #18274b0d;cursor:pointer;display:flex;flex-direction:column;transition:border-color .2s,transform .15s}
+.main-cat-card.expanded{border-color:var(--navy);box-shadow:0 6px 18px #1a2b7c22}
+.main-cat-media{width:100%;aspect-ratio:1.15/1;background:linear-gradient(135deg,#ebe3f5,#dfd5ee);position:relative;display:grid;place-items:center;overflow:hidden}
+.main-cat-media img{width:100%;height:100%;object-fit:cover;display:block}
+.main-cat-emoji{font-size:54px}
+.main-cat-footer{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;background:#fff;font-weight:700;font-size:16px;color:#1e2230}
+.main-cat-footer svg{width:18px;height:18px;stroke:#555;fill:none;stroke-width:2.2;transition:transform .2s}
+.main-cat-card.expanded .main-cat-footer svg{transform:rotate(180deg);stroke:var(--navy)}
+
+/* شبكة الأقسام الفرعية المنسدلة (3 أعمدة) */
+.subcat-panel{grid-column:1 / -1;background:#eaf0fa;border-radius:22px;padding:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.subcat-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 3px 10px #1a2b7c10;cursor:pointer;display:flex;flex-direction:column;text-align:center}
+.subcat-media{width:100%;aspect-ratio:1/1;background:linear-gradient(180deg,#1864ab,#228be6);display:grid;place-items:center;overflow:hidden}
+.subcat-media img{width:100%;height:100%;object-fit:cover;display:block}
+.subcat-emoji{font-size:36px}
+.subcat-title{padding:9px 6px;font-size:13px;font-weight:700;color:#1e2230;line-height:1.35;min-height:48px;display:grid;place-items:center}
+
+/* شريط الأقسام الفرعية الدائري في صفحة المنتجات */
+.sub-pills-bar{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 14px;margin-bottom:8px;scrollbar-width:none}
+.sub-pills-bar::-webkit-scrollbar{display:none}
+.sub-pill{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:76px;max-width:84px;cursor:pointer;text-align:center;border:0;background:transparent;font:inherit;padding:0}
+.sub-pill-circle{width:64px;height:64px;border-radius:50%;background:linear-gradient(180deg,#1864ab,#339af0);padding:3px;display:grid;place-items:center;overflow:hidden;border:3px solid transparent;box-shadow:0 3px 8px #00000014}
+.sub-pill.active .sub-pill-circle{border-color:var(--navy);transform:scale(1.05)}
+.sub-pill-circle img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.sub-pill span{font-size:12px;color:#444;line-height:1.25;font-weight:600}
+.sub-pill.active span{color:var(--navy);font-weight:800}
+
+/* بطاقات المنتجات المطابقة للصورة الثالثة */
 .products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.product{background:#fff;border-radius:18px;padding:0 0 12px;overflow:hidden;box-shadow:0 3px 10px #16452a18;border:1px solid #e8edf4}
-.product img{width:100%;height:165px;object-fit:cover;display:block;background:#f8fafc}
-.product h3{margin:9px 0 5px;padding:0 12px;font-size:17px}
-.product p{margin:4px 0;padding:0 12px;color:#555}
-.product button{margin:8px 12px 0;width:calc(100% - 24px);background:var(--green-dark);color:white;border:0;border-radius:10px;padding:9px 12px;font-size:15px;cursor:pointer}
-.bottomnav{position:fixed;z-index:5;bottom:18px;left:2.5%;width:95%;max-width:760px;background:white;border-radius:45px;min-height:174px;display:flex;align-items:center;justify-content:space-around;padding:12px 8px;box-shadow:0 6px 20px #174a2c18}
-.navitem{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;min-width:0;flex:1;color:#858585;border:0;background:transparent;font-family:inherit;cursor:pointer;font-size:17px}
-.navitem svg{width:55px;height:55px;color:#111;stroke-width:1.5}
-.navitem.active{color:var(--green-dark);font-weight:bold}
-.navitem.active svg{color:var(--green-dark);fill:var(--green-dark);stroke-width:1.8}
-.cartdot{position:absolute;top:-1px;right:34%;width:24px;height:24px;background:#e84949;border-radius:50%;box-shadow:0 1px 3px #0002}
-.section-title{color:#315d9d;font-weight:800;font-size:23px;margin:0 0 12px}
-.empty{min-height:40vh}
-.panel{background:#fff;border-radius:20px;padding:18px;margin:16px auto;max-width:720px;width:100%}
-.panel h2{margin:0 0 15px;color:var(--green-dark)}
-.panel input,.panel select,.panel textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px;font:inherit}
-.panel button{border:0;border-radius:10px;padding:11px 15px;margin:5px;background:var(--green-dark);color:#fff;font:inherit;cursor:pointer}
-.panel button.danger{background:#c0392b}
+.product{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 3px 12px #18274b0d;border:1px solid #ebeff5;display:flex;flex-direction:column}
+.product-img-wrap{position:relative;width:100%;height:175px;background:#f8fafc}
+.product-img-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.product-no-img{width:100%;height:100%;display:grid;place-items:center;font-size:48px;background:#eef2fb}
+.add-circle-btn{position:absolute;bottom:10px;left:10px;width:42px;height:42px;border-radius:50%;border:0;background:var(--navy);color:#fff;font-size:26px;line-height:1;display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 10px #1a2b7c44}
+.add-circle-btn:active{transform:scale(.92)}
+.product-body{padding:10px 12px 12px;display:flex;flex-direction:column;flex:1;justify-content:space-between}
+.product-name{margin:0 0 8px;font-size:14px;font-weight:700;color:#1e2230;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.product-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:4px}
+.product-price{font-size:16px;font-weight:800;color:#1e2230}
+.product-price small{font-size:12px;font-weight:600;color:#666;margin-right:3px}
+.fav-btn{border:0;background:transparent;color:#777;cursor:pointer;padding:4px;display:grid;place-items:center}
+.fav-btn.liked{color:#e03131}
+.fav-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2}
+.fav-btn.liked svg{fill:#e03131}
+
+/* شريط التنقل السفلي */
+.bottomnav{position:fixed;z-index:14;bottom:14px;left:2.5%;width:95%;max-width:740px;background:#fff;border:2px solid #dfe5f2;border-radius:36px;height:78px;display:flex;align-items:center;justify-content:space-around;padding:6px 8px;box-shadow:0 8px 24px #18274b1a}
+.navitem{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0;flex:1;color:#7c8496;border:0;background:transparent;font-family:inherit;cursor:pointer;font-size:12px;font-weight:600}
+.navitem svg{width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.navitem.active{color:var(--navy);font-weight:800}
+.cartdot{position:absolute;top:0;right:32%;width:12px;height:12px;background:#e84949;border-radius:50%;border:2px solid #fff}
+
+/* عناصر عامة للسلة والحساب والعنوان */
+.section-title{color:var(--navy);font-weight:800;font-size:20px;margin:0 0 12px}
+.panel{background:#fff;border-radius:20px;padding:18px;margin:12px auto;width:100%;box-shadow:0 3px 10px #00000008}
+.panel h2{margin:0 0 12px;color:var(--navy)}
+.panel button{border:0;border-radius:12px;padding:11px 16px;margin:4px;background:var(--navy);color:#fff;font:inherit;font-weight:bold;cursor:pointer}
 .contact-link{display:inline-block;text-decoration:none}
-.contact-link button{background:#18865a!important;color:#fff!important}
-.panel .fieldlabel{display:block;margin-top:8px;font-weight:bold}
-.accountform,.checkoutform{background:#fff;border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 3px 10px #16452a12}
-.accountform input,.checkoutform input{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px;font:inherit}
-.accountform button,.checkoutform button{background:var(--green-dark);color:white;border:0;border-radius:10px;padding:12px 16px;margin:5px;font:inherit;cursor:pointer;font-weight:bold}
+.contact-link button{background:#18865a!important}
+.accountform,.checkoutform{background:#fff;border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 3px 10px #0000000a}
+.accountform input,.checkoutform input{width:100%;padding:12px;margin:6px 0;border:1px solid #d8dee9;border-radius:12px;font:inherit}
+.accountform button,.checkoutform button{background:var(--navy);color:#fff;border:0;border-radius:12px;padding:12px 16px;margin:5px;font:inherit;font-weight:bold;cursor:pointer}
 .cart-actions{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
-.cart-actions button{flex:1;min-width:140px;border:0;border-radius:14px;padding:13px 14px;font:inherit;font-weight:bold;cursor:pointer}
+.cart-actions button{flex:1;min-width:130px;border:0;border-radius:14px;padding:13px 12px;font:inherit;font-weight:bold;cursor:pointer}
 .btn-buy{background:#18865a!important;color:#fff!important}
-.btn-secondary{background:#edf1fb!important;color:#315d9d!important;border:1px solid #d0dcf2!important}
+.btn-secondary{background:#eef2fb!important;color:var(--navy)!important;border:1px solid #d0dcf2!important}
 .ordercard{background:#fff;border-radius:16px;padding:14px;margin:12px 0}
 .stages{display:flex;flex-wrap:wrap;gap:5px;margin:12px 0}
-.stage{padding:7px 9px;border-radius:9px;background:#e8e8e8;color:#666;font-size:13px}
-.stage.done{background:#18865a;color:white}
-.banner-carousel{width:100%;max-width:440px;margin:16px auto 24px;position:relative;overflow:hidden;border-radius:24px;background:#fff;box-shadow:0 8px 22px #355b8b20;aspect-ratio:1/1;flex:0 0 auto}
+.stage{padding:6px 9px;border-radius:8px;background:#e8e8e8;color:#666;font-size:12px}
+.stage.done{background:#18865a;color:#fff}
+.banner-carousel{width:100%;max-width:460px;margin:0 auto 16px;position:relative;overflow:hidden;border-radius:22px;background:#fff;box-shadow:0 6px 18px #18274b14;aspect-ratio:16/9}
 .banner-carousel .banner-slide{position:absolute;inset:0;opacity:0;animation:bannerFade 16s infinite}
 .banner-carousel .banner-slide img{width:100%;height:100%;object-fit:cover;display:block}
-.banner-carousel .banner-caption{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,#172c50a8);color:white;padding:18px 14px 12px;font-weight:bold}
+.banner-carousel .banner-caption{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,#101d54b8);color:#fff;padding:14px 12px 10px;font-weight:bold;font-size:14px}
 @keyframes bannerFade{0%,22%{opacity:1}25%,97%{opacity:0}100%{opacity:1}}
-.category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0;touch-action:pan-y;overscroll-behavior:contain}
-.category-tile{touch-action:pan-y;background:#fff;border:1px solid #e4eaf3;border-radius:20px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:0 5px 14px #315d9d12;cursor:pointer;color:#2f4f83;font:inherit;font-weight:700;min-height:142px}
-.category-tile img{width:76px;height:76px;object-fit:contain;border-radius:16px;background:#f4f7fc;padding:5px}
-.category-emoji{width:76px;height:76px;display:grid;place-items:center;border-radius:18px;background:linear-gradient(135deg,#eef4ff,#f4eefe);font-size:42px}
-html,body{overflow-x:hidden;touch-action:pan-y}
-@media(max-width:480px){.app{padding:0 18px 125px}h1{font-size:clamp(28px,7.5vw,42px)}.brand-logo{width:44px;height:44px}.searchbar{height:88px;top:62px}.searchbtn,.filterbtn{height:58px;width:58px}.bottomnav{min-height:150px;bottom:18px}.navitem{font-size:14px}.navitem svg{width:42px;height:42px}}
-@media(max-width:360px){.category-grid{gap:8px}.category-tile{padding:8px}.category-tile img,.category-emoji{width:64px;height:64px}}
 </style>
 </head>
 <body>
 <div class="app">
-  <header class="brand-header">
-    <img id="brandLogo" class="brand-logo" src="" alt="الشعار" style="display:none">
-    <h1 id="brand">صيدلية الشارقة</h1>
+  <header class="topbar">
+    <button class="top-icon-btn" id="backTopBtn" style="visibility:hidden" aria-label="رجوع" onclick="handleTopBack()">
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+    <div class="topbar-center">
+      <img id="brandLogo" class="brand-logo" src="" alt="الشعار" style="display:none">
+      <h1 id="topbarTitle">صيدلية الشارقة</h1>
+    </div>
+    <button class="top-icon-btn" aria-label="بحث" onclick="toggleSearchBox()">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4.5 4.5"/></svg>
+    </button>
   </header>
-  <div class="searchbar">
-    <button class="filterbtn" id="filterBtn" aria-label="الأقسام" onclick="showSections()"><svg viewBox="0 0 24 24"><path d="M4 6h7M15 6h5M4 12h3M11 12h9M4 18h9M17 18h3"/><path d="M13 3v6M9 9v6M15 15v6"/></svg></button>
-    <input id="search" placeholder="ابحث عن اسم المنتج أو القسم..." aria-label="بحث عن المنتجات" oninput="onSearchInput()">
-    <button class="searchbtn" aria-label="بحث" onclick="onSearchInput()"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></button>
+
+  <div class="search-drawer" id="searchDrawer" style="display:none">
+    <div class="searchbar">
+      <input id="search" placeholder="ابحث عن اسم الدواء أو المنتج..." oninput="onSearchInput()">
+      <button onclick="clearSearch()">إغلاق</button>
+    </div>
   </div>
-  <section id="homeBanners" class="banner-carousel" style="display:none"></section>
+
   <main id="content"><div class="panel">جاري تحميل بيانات المتجر...</div></main>
 </div>
+
 <nav class="bottomnav" aria-label="التنقل">
   <button class="navitem" onclick="setTab('address',this)">
-    <svg viewBox="0 0 48 48"><path d="M24 44s16-15 16-26A16 16 0 0 0 8 18c0 11 16 26 16 26Z"/><circle cx="24" cy="18" r="5"/></svg><span>العنوان</span>
+    <svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>العنوان</span>
   </button>
   <button class="navitem" onclick="setTab('sections',this)">
-    <svg viewBox="0 0 48 48"><rect x="4" y="4" width="15" height="15" rx="3"/><rect x="29" y="4" width="15" height="15" rx="3"/><rect x="4" y="29" width="15" height="15" rx="3"/><circle cx="36.5" cy="36.5" r="7.5"/></svg><span>أقسام</span>
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>أقسام</span>
   </button>
   <button class="navitem active" onclick="setTab('home',this)">
-    <svg viewBox="0 0 48 48"><path d="M4 22 24 5l20 17M10 19v25h28V19M19 44V29h10v15" /></svg><span>الرئيسية</span>
+    <svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z"/></svg><span>الرئيسية</span>
   </button>
   <button class="navitem" onclick="setTab('cart',this)">
     <span class="cartdot" id="cartdot"></span>
-    <svg viewBox="0 0 48 48"><path d="M4 7h5l5 25h25l5-19H12M18 18h21M15 27h23M18 39a3 3 0 1 0 0 6 3 3 0 0 0 0-6M36 39a3 3 0 1 0 0 6 3 3 0 0 0 0-6"/></svg><span>السلة</span>
+    <svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.4 11.2a1 1 0 0 0 1 .8h9.8a1 1 0 0 0 1-.8L21 7H6"/></svg><span>السلة</span>
   </button>
   <button class="navitem" onclick="setTab('account',this)">
-    <svg viewBox="0 0 48 48"><circle cx="24" cy="13" r="9"/><path d="M15 12c4 3 9 2 13-2M8 43v-5c0-8 7-13 16-13s16 5 16 13v5M16 28l8 10 8-10M20 38l-2 5M28 38l2 5"/></svg><span>حسابي</span>
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span>حسابي</span>
   </button>
 </nav>
 
 <script>
-const defaultCategories=['أدوية','العناية بطفل','العناية بالأم','أدوات تجميل'];
-const categoryEmoji={'أدوية':'💊','العناية بطفل':'🧸','العناية بالأم':'🤱','أدوات تجميل':'💄'};
+const defaultCategories=['الأدوية','عناية الطفل','الجمال','العروض','العناية بالمرأة','العطور'];
+const categoryEmoji={'الأدوية':'💊','عناية الطفل':'🧸','الجمال':'💄','العروض':'🏷️','العناية بالمرأة':'🤱','العطور':'🧴'};
 let categoryArt={};
+let subcategories={};
 let products=[];
-let settings={brand:'صيدلية الشارقة',logo:'',bgColor:'#eaf1fb',address:'',phone:'',whatsappEnabled:false};
+let settings={brand:'صيدلية الشارقة',logo:'',bgColor:'#f3f5f9',address:'',phone:'',whatsappEnabled:false};
 let categories=[...defaultCategories];
 let banners=[];
 let orders=[];
 let cart=JSON.parse(localStorage.getItem('sharjah_cart')||'[]');
+let favorites=JSON.parse(localStorage.getItem('sharjah_favs')||'[]');
 let loggedCustomer=localStorage.getItem('sharjah_logged_customer')||'';
 let customerProfile=JSON.parse(localStorage.getItem('sharjah_customer_profile')||'null');
-let currentTab='home',selectedCategory='',showCheckoutBox=false;
-const brand=document.getElementById('brand');
+
+let currentTab='home';
+let expandedMainCat='';      // القسم الرئيسي المفتوح لعرض أقسامه الفرعية
+let activeMainCat='';        // القسم الرئيسي الحالي في صفحة المنتجات
+let activeSubCat='';         // القسم الفرعي الحالي في صفحة المنتجات
+let showCheckoutBox=false;
 
 function persistLocal(key,val){localStorage.setItem(key,JSON.stringify(val));}
 
 function applyAppearance(){
-  brand.textContent=settings.brand||'صيدلية الشارقة';
-  document.title=settings.brand||'صيدلية الشارقة';
-  const bg=settings.bgColor||'#eaf1fb';
+  const bg=settings.bgColor||'#f3f5f9';
   document.documentElement.style.setProperty('--bg',bg);
+  document.title=settings.brand||'صيدلية الشارقة';
+  updateTopbar();
+}
+
+function updateTopbar(){
+  const titleEl=document.getElementById('topbarTitle');
   const logoEl=document.getElementById('brandLogo');
-  if(settings.logo){
-    logoEl.src=settings.logo;
-    logoEl.style.display='block';
-  }else{
+  const backBtn=document.getElementById('backTopBtn');
+
+  if(currentTab==='products'){
+    titleEl.textContent=activeSubCat||activeMainCat;
     logoEl.style.display='none';
+    backBtn.style.visibility='visible';
+  }else if(currentTab==='sections'){
+    titleEl.textContent='الأقسام';
+    logoEl.style.display='none';
+    backBtn.style.visibility='hidden';
+  }else{
+    titleEl.textContent=settings.brand||'صيدلية الشارقة';
+    backBtn.style.visibility='hidden';
+    if(settings.logo){logoEl.src=settings.logo;logoEl.style.display='block';}
+    else{logoEl.style.display='none';}
   }
+}
+
+function handleTopBack(){
+  if(currentTab==='products'){
+    currentTab='sections';
+    updateTopbar();
+    renderContent();
+  }
+}
+
+function toggleSearchBox(){
+  const drawer=document.getElementById('searchDrawer');
+  const isHidden=drawer.style.display==='none';
+  drawer.style.display=isHidden?'block':'none';
+  if(isHidden)document.getElementById('search').focus();
+}
+
+function clearSearch(){
+  document.getElementById('search').value='';
+  document.getElementById('searchDrawer').style.display='none';
+  renderContent();
+}
+
+function onSearchInput(){
+  renderContent();
 }
 
 function compressImageFile(file,maxSide=900,quality=.75){
@@ -173,22 +268,17 @@ async function loadStoreFromCloud(notify=false){
     products=data.products||[];
     categories=data.categories||defaultCategories;
     categoryArt=data.categoryArt||{};
+    subcategories=data.subcategories||{};
     banners=data.banners||[];
     settings={...settings,...(data.settings||{})};
     orders=data.orders||[];
     applyAppearance();
-    renderProducts();
+    renderContent();
     if(notify)alert('تم تحديث البيانات بنجاح');
   }catch(e){
     console.error(e);
-    renderProducts();
+    renderContent();
   }
-}
-
-function categoryVisual(name){
-  const image=categoryArt[name];
-  if(image)return '<img src="'+escapeAttr(image)+'" alt="'+escapeAttr(name)+'">';
-  return '<span class="category-emoji">'+(categoryEmoji[name]||'🧴')+'</span>';
 }
 
 function normalizeSearch(value){
@@ -198,39 +288,32 @@ function normalizeSearch(value){
     .replace(/\s+/g,' ').trim();
 }
 
-function renderHomeBanners(){
-  const el=document.getElementById('homeBanners');if(!el)return;
-  el.innerHTML='';
-  const list=banners.slice(0,4);
-  const totalSec=Math.max(4,list.length*4);
-  list.forEach((b,i)=>{
-    const slide=document.createElement('div');
-    slide.className='banner-slide';
-    slide.style.animationDuration=totalSec+'s';
-    slide.style.animationDelay=(i*4)+'s';
-    const img=document.createElement('img');
-    img.src=b.image;img.alt=b.title||'إعلان';
-    slide.append(img);
-    if(b.title){
-      const cap=document.createElement('div');
-      cap.className='banner-caption';cap.textContent=b.title;
-      slide.append(cap);
-    }
-    el.append(slide);
-  });
-}
-
-const stageNames=['مراجعة','تم الطلب','تم التنفيذ','تم التسليم'];
-function renderStages(stage){
-  let index=stageNames.indexOf(stage);
-  return '<div class="stages">'+stageNames.map((s,i)=>'<span class="stage '+(i<=index?'done':'')+'">'+s+'</span>').join('')+'</div>';
-}
-
 function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function escapeAttr(s){return escapeHtml(s);}
 
+function toggleFav(id){
+  if(favorites.includes(id))favorites=favorites.filter(x=>x!==id);
+  else favorites.push(id);
+  persistLocal('sharjah_favs',favorites);
+  renderContent();
+}
+
 function productCard(p){
-  return '<article class="product">'+(p.image?'<img src="'+escapeAttr(p.image)+'" alt="">':'')+'<h3>'+escapeHtml(p.name)+'</h3><p>'+escapeHtml(p.category)+'</p><p><b>'+p.price+'</b></p><button onclick="addCart('+p.id+')">+ شراء / أضف للسلة</button></article>';
+  const isFav=favorites.includes(p.id);
+  const label=p.desc?(p.name+' - '+p.desc):p.name;
+  return '<article class="product">'+
+    '<div class="product-img-wrap">'+
+      (p.image?'<img src="'+escapeAttr(p.image)+'" alt="">':'<div class="product-no-img">💊</div>')+
+      '<button type="button" class="add-circle-btn" aria-label="إضافة للسلة" onclick="addCart('+p.id+')">+</button>'+
+    '</div>'+
+    '<div class="product-body">'+
+      '<h3 class="product-name">'+escapeHtml(label)+'</h3>'+
+      '<div class="product-bottom">'+
+        '<span class="product-price">'+Number(p.price||0).toLocaleString()+' <small>ر.ي</small></span>'+
+        '<button type="button" class="fav-btn '+(isFav?'liked':'')+'" onclick="toggleFav('+p.id+')"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-9.3-8.6C.8 9 2.7 5 6.5 5c2.2 0 4.1 1.2 5.5 3 1.4-1.8 3.3-3 5.5-3 3.8 0 5.7 4 3.8 7.4C19 16.6 12 21 12 21Z"/></svg></button>'+
+      '</div>'+
+    '</div>'+
+  '</article>';
 }
 
 function addCart(id){
@@ -247,12 +330,12 @@ function removeFromCart(index){
   persistLocal('sharjah_cart',cart);
   document.getElementById('cartdot').style.display=cart.length?'block':'none';
   if(!cart.length)showCheckoutBox=false;
-  renderProducts();
+  renderContent();
 }
 
 function startCheckout(){
   showCheckoutBox=true;
-  renderProducts();
+  renderContent();
   setTimeout(()=>{
     const box=document.getElementById('cartCheckoutSection');
     if(box)box.scrollIntoView({behavior:'smooth'});
@@ -261,61 +344,152 @@ function startCheckout(){
 
 function continueShopping(){
   showCheckoutBox=false;
-  setTab('home',document.querySelectorAll('.navitem')[2]);
+  setTab('sections',document.querySelectorAll('.navitem')[1]);
 }
 
 function authFormsHtml(stayInCart=false){
   return '<div class="accountform"><h3>تسجيل الدخول</h3><input id="loginUsername" placeholder="اسم المستخدم"><input id="loginPassword" type="password" placeholder="كلمة المرور"><button onclick="customerLogin('+stayInCart+')">دخول</button><p id="customerError" style="color:#c0392b"></p></div><div class="accountform"><h3>إنشاء حساب جديد</h3><input id="newCustomerName" placeholder="اسم العميل"><input id="newCustomerPhone" type="tel" placeholder="جواله"><input id="newCustomerUsername" placeholder="اسم المستخدم"><input id="newCustomerPassword" type="password" placeholder="كلمة المرور"><button onclick="createCustomer('+stayInCart+')">حفظ / إنشاء حساب</button></div>';
 }
 
-function onSearchInput(){
-  const q=document.getElementById('search').value.trim();
-  if(q && currentTab!=='home'){
-    currentTab='home';
-    document.querySelectorAll('.navitem').forEach(n=>n.classList.remove('active'));
-    document.querySelectorAll('.navitem')[2].classList.add('active');
+// النقر على قسم رئيسي في شاشة الأقسام
+function onMainCategoryClick(index){
+  const cat=categories[index];
+  if(!cat)return;
+  const subs=subcategories[cat]||[];
+  if(subs.length>0){
+    // فتح أو إغلاق الأقسام الفرعية تحته (مثل الصورة 2)
+    expandedMainCat=(expandedMainCat===cat)?'':cat;
+    renderContent();
+  }else{
+    // إذا لم يكن له أقسام فرعية، افتح منتجاته مباشرة
+    activeMainCat=cat;
+    activeSubCat='';
+    currentTab='products';
+    updateTopbar();
+    renderContent();
   }
-  renderProducts();
 }
 
-function renderProducts(){
+// النقر على قسم فرعي لفتح منتجاته (مثل الصورة 3)
+function openSubcategory(mainCat,subIndex){
+  const subs=subcategories[mainCat]||[];
+  const sub=subs[subIndex];
+  activeMainCat=mainCat;
+  activeSubCat=sub?sub.name:'';
+  currentTab='products';
+  updateTopbar();
+  renderContent();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderBannersHtml(){
+  if(!banners.length)return '';
+  const list=banners.slice(0,4);
+  const totalSec=Math.max(4,list.length*4);
+  return '<section class="banner-carousel">'+list.map((b,i)=>
+    '<div class="banner-slide" style="animation-duration:'+totalSec+'s;animation-delay:'+(i*4)+'s">'+
+      '<img src="'+escapeAttr(b.image)+'" alt="">'+
+      (b.title?'<div class="banner-caption">'+escapeHtml(b.title)+'</div>':'')+
+    '</div>'
+  ).join('')+'</section>';
+}
+
+function renderContent(){
   const content=document.getElementById('content');
   const q=normalizeSearch(document.getElementById('search').value);
-  const bannerEl=document.getElementById('homeBanners');
-  if(bannerEl){
-    const show=(currentTab==='home'&&banners.length>0&&!q);
-    bannerEl.style.display=show?'block':'none';
-    if(show)renderHomeBanners();
+
+  // إذا كان المستخدم يبحث في شريط البحث
+  if(q){
+    const filtered=products.filter(p=>normalizeSearch((p.name||'')+' '+(p.desc||'')+' '+(p.category||'')+' '+(p.subcategory||'')).includes(q));
+    content.innerHTML='<h2 class="section-title">نتائج البحث</h2>'+
+      (filtered.length?'<div class="products">'+filtered.map(productCard).join('')+'</div>':'<div class="panel">لا توجد منتجات تطابق البحث.</div>');
+    return;
   }
+
+  // 1. شاشة الأقسام (مطابقة للصورة 1 والصورة 2)
   if(currentTab==='sections'){
-    content.innerHTML='<h2 class="section-title">الأقسام</h2><div class="category-grid">'+
-      categories.map((c,i)=>'<button type="button" class="category-tile" onclick="openCategoryIndex('+i+')">'+categoryVisual(c)+'<span>'+escapeHtml(c)+'</span></button>').join('')+
-      '</div>';
-    if(!categories.length)content.innerHTML+='<div class="panel">لا توجد أقسام مضافة حالياً.</div>';
+    if(!categories.length){
+      content.innerHTML='<div class="panel">لا توجد أقسام مضافة حالياً.</div>';
+      return;
+    }
+    let html='<div class="main-cat-grid">';
+    // تقسيم الأقسام إلى صفوف من عمودين لكي تظهر الأقسام الفرعية تحت الصف مباشرة
+    for(let i=0;i<categories.length;i+=2){
+      const rowCats=[categories[i],categories[i+1]].filter(Boolean);
+      rowCats.forEach((cat,offset)=>{
+        const realIdx=i+offset;
+        const isExpanded=(expandedMainCat===cat);
+        const img=categoryArt[cat];
+        html+='<div class="main-cat-card '+(isExpanded?'expanded':'')+'" onclick="onMainCategoryClick('+realIdx+')">'+
+          '<div class="main-cat-media">'+
+            (img?'<img src="'+escapeAttr(img)+'" alt="'+escapeAttr(cat)+'">':'<span class="main-cat-emoji">'+(categoryEmoji[cat]||'💊')+'</span>')+
+          '</div>'+
+          '<div class="main-cat-footer">'+
+            '<svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>'+
+            '<span>'+escapeHtml(cat)+'</span>'+
+          '</div>'+
+        '</div>';
+      });
+
+      // إذا كان أحد قسمي هذا الصف مفتوحاً، اعرض أقسامه الفرعية في شبكة 3 أعمدة تحته مباشرة
+      const expandedInRow=rowCats.find(c=>c===expandedMainCat);
+      if(expandedInRow){
+        const subs=subcategories[expandedInRow]||[];
+        html+='<div class="subcat-panel">'+subs.map((s,sIdx)=>
+          '<div class="subcat-card" onclick="openSubcategory('+JSON.stringify(expandedInRow).replace(/"/g,'&quot;')+','+sIdx+')">'+
+            '<div class="subcat-media">'+
+              (s.image?'<img src="'+escapeAttr(s.image)+'" alt="'+escapeAttr(s.name)+'">':'<span class="subcat-emoji">💊</span>')+
+            '</div>'+
+            '<div class="subcat-title">'+escapeHtml(s.name)+'</div>'+
+          '</div>'
+        ).join('')+'</div>';
+      }
+    }
+    html+='</div>';
+    content.innerHTML=html;
     return;
   }
-  if(currentTab==='category'){
-    const wanted=normalizeSearch(selectedCategory);
-    const selected=products.filter(p=>{
-      const productCategory=p.category||p.section||p.categoryName||p.group||'';
-      const actual=normalizeSearch(productCategory);
-      return actual===wanted || (actual && wanted && (actual.includes(wanted)||wanted.includes(actual)));
+
+  // 2. شاشة منتجات القسم الفرعي (مطابقة للصورة 3)
+  if(currentTab==='products'){
+    const subs=subcategories[activeMainCat]||[];
+    let pillsHtml='';
+    if(subs.length){
+      pillsHtml='<div class="sub-pills-bar">'+subs.map((s,sIdx)=>{
+        const isAct=(s.name===activeSubCat);
+        return '<button type="button" class="sub-pill '+(isAct?'active':'')+'" onclick="openSubcategory('+JSON.stringify(activeMainCat).replace(/"/g,'&quot;')+','+sIdx+')">'+
+          '<div class="sub-pill-circle">'+(s.image?'<img src="'+escapeAttr(s.image)+'" alt="">':'<span>💊</span>')+'</div>'+
+          '<span>'+escapeHtml(s.name)+'</span>'+
+        '</button>';
+      }).join('')+'</div>';
+    }
+
+    const wantedMain=normalizeSearch(activeMainCat);
+    const wantedSub=normalizeSearch(activeSubCat);
+    const list=products.filter(p=>{
+      const pMain=normalizeSearch(p.category||'');
+      const pSub=normalizeSearch(p.subcategory||'');
+      if(wantedSub)return pMain===wantedMain && pSub===wantedSub;
+      return pMain===wantedMain;
     });
-    content.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px"><h2 class="section-title" style="margin:0">'+escapeHtml(selectedCategory)+'</h2><button type="button" onclick="backToSections()" style="border:0;border-radius:12px;padding:10px 14px;background:#315d9d;color:#fff;font:inherit;cursor:pointer">رجوع للأقسام</button></div>'+
-      (selected.length?'<div class="products">'+selected.map(productCard).join('')+'</div>':'<div class="panel">لا توجد منتجات في هذا القسم حتى الآن.</div>');
+
+    content.innerHTML=pillsHtml+
+      (list.length?'<div class="products">'+list.map(productCard).join('')+'</div>':'<div class="panel">لا توجد منتجات في هذا القسم حتى الآن.</div>');
     return;
   }
+
+  // 3. السلة
   if(currentTab==='cart'){
     const chosen=cart.map((id,idx)=>({p:products.find(x=>x.id===id),idx})).filter(x=>x.p);
     let html='<h2 class="section-title">السلة</h2>';
     if(!chosen.length){
-      html+='<div class="panel">السلة فارغة. أضف منتجات من الرئيسية أو الأقسام.<br><button onclick="continueShopping()" style="margin-top:10px">تصفح المنتجات</button></div>';
+      html+='<div class="panel">السلة فارغة. تصفح الأقسام لإضافة منتجات.<br><button onclick="continueShopping()" style="margin-top:10px">تصفح الأقسام</button></div>';
       content.innerHTML=html;
       return;
     }
     const total=chosen.reduce((sum,x)=>sum+Number(x.p.price||0),0);
-    html+='<div class="products">'+chosen.map(({p,idx})=>'<article class="product">'+(p.image?'<img src="'+escapeAttr(p.image)+'" alt="">':'')+'<h3>'+escapeHtml(p.name)+'</h3><p><b>'+p.price+'</b></p><button style="background:#c0392b" onclick="removeFromCart('+idx+')">إزالة</button></article>').join('')+'</div>';
-    html+='<div class="panel" style="margin-top:14px;text-align:center"><b>الإجمالي: '+total+'</b></div>';
+    html+='<div class="products">'+chosen.map(({p,idx})=>'<article class="product"><div class="product-img-wrap">'+(p.image?'<img src="'+escapeAttr(p.image)+'" alt="">':'<div class="product-no-img">💊</div>')+'</div><div class="product-body"><h3 class="product-name">'+escapeHtml(p.name)+'</h3><div class="product-bottom"><span class="product-price">'+Number(p.price||0).toLocaleString()+' <small>ر.ي</small></span><button style="background:#c0392b;color:#fff;border:0;border-radius:8px;padding:6px 10px;cursor:pointer" onclick="removeFromCart('+idx+')">إزالة</button></div></div></article>').join('')+'</div>';
+    html+='<div class="panel" style="margin-top:14px;text-align:center"><b>الإجمالي: '+total.toLocaleString()+' ر.ي</b></div>';
     html+='<div class="cart-actions">'+
           '<button class="btn-buy" onclick="startCheckout()">شراء / إتمام الطلب</button>'+
           '<button class="btn-secondary" onclick="continueShopping()">+ إضافة منتجات أخرى</button>'+
@@ -325,55 +499,47 @@ function renderProducts(){
     if(showCheckoutBox){
       html+='<div id="cartCheckoutSection">';
       if(loggedCustomer && customerProfile){
-        html+='<div class="checkoutform"><h3>إتمام الشراء ('+escapeHtml(customerProfile.name)+')</h3><input id="checkoutLocation" placeholder="موقع العميل بالتفصيل (مثلاً: المكلا، شارع ...)"><label class="fieldlabel">صورة سند الدفع</label><input id="checkoutProof" type="file" accept="image/*"><button class="btn-buy" id="submitOrderBtn" onclick="submitOrder()">تأكيد وإرسال الطلب</button></div>';
+        html+='<div class="checkoutform"><h3>إتمام الشراء ('+escapeHtml(customerProfile.name)+')</h3><input id="checkoutLocation" placeholder="موقع العميل بالتفصيل (مثلاً: المكلا، شارع ...)"><label style="font-weight:bold;display:block;margin-top:8px">صورة سند الدفع</label><input id="checkoutProof" type="file" accept="image/*"><button class="btn-buy" id="submitOrderBtn" onclick="submitOrder()">تأكيد وإرسال الطلب</button></div>';
       }else{
-        html+='<div class="panel"><p style="color:#315d9d;font-weight:bold;margin:0">لإكمال الشراء، يرجى تسجيل الدخول أو إنشاء حساب جديد:</p></div>'+authFormsHtml(true);
+        html+='<div class="panel"><p style="color:var(--navy);font-weight:bold;margin:0">لإكمال الشراء، يرجى تسجيل الدخول أو إنشاء حساب جديد:</p></div>'+authFormsHtml(true);
       }
       html+='</div>';
     }
     content.innerHTML=html;
     return;
   }
+
+  // 4. العنوان والتواصل
   if(currentTab==='address'){
     const phone=String(settings.phone||'').replace(/[^0-9]/g,'');
     const whatsapp=phone?(phone.startsWith('967')?phone:'967'+phone):'';
     content.innerHTML='<h2 class="section-title">العنوان وبيانات التواصل</h2><div class="panel"><h2>'+escapeHtml(settings.brand||'صيدلية الشارقة')+'</h2><p><b>العنوان:</b> '+escapeHtml(settings.address||'لم يتم إضافة العنوان بعد')+'</p><p><b>رقم الجوال / الهاتف:</b> '+escapeHtml(settings.phone||'لم يتم إضافة رقم الهاتف بعد')+'</p>'+(settings.phone?'<a class="contact-link" href="tel:'+escapeAttr(settings.phone)+'"><button>اتصال</button></a>':'')+(settings.whatsappEnabled&&whatsapp?'<a class="contact-link" target="_blank" rel="noopener" href="https://wa.me/'+whatsapp+'"><button>تواصل عبر واتساب</button></a>':'')+'</div>';
     return;
   }
+
+  // 5. حسابي
   if(currentTab==='account'){renderAccount(content);return;}
-  const filtered=q?products.filter(p=>normalizeSearch((p.name||'')+' '+(p.category||p.section||p.categoryName||p.group||'')).includes(q)):products.filter(p=>p.featured);
-  content.innerHTML=filtered.length?'<div class="products">'+filtered.map(productCard).join('')+'</div>':'<div class="panel">'+(q?'لا توجد منتجات تطابق البحث.':'لا توجد منتجات محددة للعرض في الرئيسية بعد.')+'</div>';
-}
 
-function openCategoryIndex(index){
-  const category=categories[index];
-  if(!category)return;
-  selectedCategory=category;
-  document.getElementById('search').value='';
-  currentTab='category';
-  document.querySelectorAll('.navitem').forEach(n=>n.classList.remove('active'));
-  const sectionsNav=[...document.querySelectorAll('.navitem')].find(n=>n.textContent.includes('أقسام'));
-  if(sectionsNav)sectionsNav.classList.add('active');
-  renderProducts();
+  // 6. الرئيسية
+  const featured=products.filter(p=>p.featured);
+  content.innerHTML=renderBannersHtml()+
+    '<h2 class="section-title">الأكثر طلباً والمختارات</h2>'+
+    (featured.length?'<div class="products">'+featured.map(productCard).join('')+'</div>':'<div class="panel">تصفح الأقسام بالأسفل لاستعراض جميع الأدوية والمنتجات.</div>');
 }
-
-function backToSections(){currentTab='sections';renderProducts();}
 
 function setTab(tab,el){
   currentTab=tab;
   document.querySelectorAll('.navitem').forEach(n=>n.classList.remove('active'));
   if(el)el.classList.add('active');
+  updateTopbar();
   if(tab==='account'||tab==='sections')loadStoreFromCloud();
-  renderProducts();
+  renderContent();
 }
 
-function showSections(){
-  currentTab='sections';
-  document.querySelectorAll('.navitem').forEach(n=>n.classList.remove('active'));
-  const sectionsNav=[...document.querySelectorAll('.navitem')].find(n=>n.textContent.includes('أقسام'));
-  if(sectionsNav)sectionsNav.classList.add('active');
-  loadStoreFromCloud();
-  renderProducts();
+const stageNames=['مراجعة','تم الطلب','تم التنفيذ','تم التسليم'];
+function renderStages(stage){
+  let index=stageNames.indexOf(stage);
+  return '<div class="stages">'+stageNames.map((s,i)=>'<span class="stage '+(i<=index?'done':'')+'">'+s+'</span>').join('')+'</div>';
 }
 
 function renderAccount(content){
@@ -429,7 +595,7 @@ async function createCustomer(stayInCart=false){
     persistLocal('sharjah_customer_profile',customerProfile);
     if(stayInCart)showCheckoutBox=true;
     alert('تم إنشاء الحساب وتسجيل الدخول بنجاح');
-    renderProducts();
+    renderContent();
   }catch(e){
     alert('خطأ في الاتصال بالسيرفر');
   }
@@ -440,13 +606,13 @@ function logoutCustomer(){
   customerProfile=null;
   localStorage.removeItem('sharjah_logged_customer');
   localStorage.removeItem('sharjah_customer_profile');
-  renderProducts();
+  renderContent();
 }
 
 async function submitOrder(){
   if(!loggedCustomer||!customerProfile){
     showCheckoutBox=true;
-    renderProducts();
+    renderContent();
     return;
   }
   const location=document.getElementById('checkoutLocation').value.trim();
@@ -485,7 +651,7 @@ async function submitOrder(){
     persistLocal('sharjah_cart',cart);
     document.getElementById('cartdot').style.display='none';
     alert('تم إرسال طلبك بنجاح: قيد المراجعة');
-    renderProducts();
+    renderContent();
   }catch(e){
     alert(e.message||'حدث خطأ أثناء إرسال الطلب');
     if(btn){btn.disabled=false;btn.textContent='تأكيد وإرسال الطلب';}
