@@ -70,8 +70,8 @@ html,body{overflow-x:hidden;touch-action:pan-y}
   <h1 id="brand">صيدلية الشارقة</h1>
   <div class="searchbar">
     <button class="filterbtn" id="filterBtn" aria-label="الأقسام" onclick="showSections()"><svg viewBox="0 0 24 24"><path d="M4 6h7M15 6h5M4 12h3M11 12h9M4 18h9M17 18h3"/><path d="M13 3v6M9 9v6M15 15v6"/></svg></button>
-    <input id="search" placeholder="ابحث عن اسم المنتج أو القسم..." aria-label="بحث عن المنتجات" oninput="renderProducts()">
-    <button class="searchbtn" aria-label="بحث" onclick="renderProducts()"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></button>
+    <input id="search" placeholder="ابحث عن اسم المنتج أو القسم..." aria-label="بحث عن المنتجات" oninput="onSearchInput()">
+    <button class="searchbtn" aria-label="بحث" onclick="onSearchInput()"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></button>
   </div>
   <section id="homeBanners" class="banner-carousel" style="display:none"></section>
   <main id="content"><div class="panel">جاري تحميل بيانات المتجر...</div></main>
@@ -250,6 +250,16 @@ function authFormsHtml(stayInCart=false){
   return '<div class="accountform"><h3>تسجيل الدخول</h3><input id="loginUsername" placeholder="اسم المستخدم"><input id="loginPassword" type="password" placeholder="كلمة المرور"><button onclick="customerLogin('+stayInCart+')">دخول</button><p id="customerError" style="color:#c0392b"></p></div><div class="accountform"><h3>إنشاء حساب جديد</h3><input id="newCustomerName" placeholder="اسم العميل"><input id="newCustomerPhone" type="tel" placeholder="جواله"><input id="newCustomerUsername" placeholder="اسم المستخدم"><input id="newCustomerPassword" type="password" placeholder="كلمة المرور"><button onclick="createCustomer('+stayInCart+')">حفظ / إنشاء حساب</button></div>';
 }
 
+function onSearchInput(){
+  const q=document.getElementById('search').value.trim();
+  if(q && currentTab!=='home'){
+    currentTab='home';
+    document.querySelectorAll('.navitem').forEach(n=>n.classList.remove('active'));
+    document.querySelectorAll('.navitem')[2].classList.add('active');
+  }
+  renderProducts();
+}
+
 function renderProducts(){
   const content=document.getElementById('content');
   const q=normalizeSearch(document.getElementById('search').value);
@@ -261,18 +271,19 @@ function renderProducts(){
   }
   if(currentTab==='sections'){
     content.innerHTML='<h2 class="section-title">الأقسام</h2><div class="category-grid">'+
-      categories.map(c=>'<button class="category-tile" onclick="filterCategory('+JSON.stringify(c)+')">'+categoryVisual(c)+'<span>'+escapeHtml(c)+'</span></button>').join('')+
+      categories.map((c,i)=>'<button type="button" class="category-tile" onclick="openCategoryIndex('+i+')">'+categoryVisual(c)+'<span>'+escapeHtml(c)+'</span></button>').join('')+
       '</div>';
     if(!categories.length)content.innerHTML+='<div class="panel">لا توجد أقسام مضافة حالياً.</div>';
     return;
   }
   if(currentTab==='category'){
+    const wanted=normalizeSearch(selectedCategory);
     const selected=products.filter(p=>{
       const productCategory=p.category||p.section||p.categoryName||p.group||'';
-      const wanted=normalizeSearch(selectedCategory), actual=normalizeSearch(productCategory);
+      const actual=normalizeSearch(productCategory);
       return actual===wanted || (actual && wanted && (actual.includes(wanted)||wanted.includes(actual)));
     });
-    content.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px"><h2 class="section-title" style="margin:0">'+escapeHtml(selectedCategory)+'</h2><button onclick="backToSections()" style="border:0;border-radius:12px;padding:10px 14px;background:#315d9d;color:#fff;font:inherit;cursor:pointer">رجوع للأقسام</button></div>'+
+    content.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px"><h2 class="section-title" style="margin:0">'+escapeHtml(selectedCategory)+'</h2><button type="button" onclick="backToSections()" style="border:0;border-radius:12px;padding:10px 14px;background:#315d9d;color:#fff;font:inherit;cursor:pointer">رجوع للأقسام</button></div>'+
       (selected.length?'<div class="products">'+selected.map(productCard).join('')+'</div>':'<div class="panel">لا توجد منتجات في هذا القسم حتى الآن.</div>');
     return;
   }
@@ -316,7 +327,9 @@ function renderProducts(){
   content.innerHTML=filtered.length?'<div class="products">'+filtered.map(productCard).join('')+'</div>':'<div class="panel">'+(q?'لا توجد منتجات تطابق البحث.':'لا توجد منتجات محددة للعرض في الرئيسية بعد.')+'</div>';
 }
 
-function filterCategory(category){
+function openCategoryIndex(index){
+  const category=categories[index];
+  if(!category)return;
   selectedCategory=category;
   document.getElementById('search').value='';
   currentTab='category';
@@ -332,7 +345,7 @@ function setTab(tab,el){
   currentTab=tab;
   document.querySelectorAll('.navitem').forEach(n=>n.classList.remove('active'));
   if(el)el.classList.add('active');
-  if(tab==='account')loadStoreFromCloud();
+  if(tab==='account'||tab==='sections')loadStoreFromCloud();
   renderProducts();
 }
 
@@ -341,6 +354,7 @@ function showSections(){
   document.querySelectorAll('.navitem').forEach(n=>n.classList.remove('active'));
   const sectionsNav=[...document.querySelectorAll('.navitem')].find(n=>n.textContent.includes('أقسام'));
   if(sectionsNav)sectionsNav.classList.add('active');
+  loadStoreFromCloud();
   renderProducts();
 }
 
