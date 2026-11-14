@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>صيدلية الشارقة</title>
 <style>
-:root{--green:#e8effa;--green-dark:#315d9d;--blue:#345bb0;--white:#fff;--ink:#20212a}
+:root{--bg:#eaf1fb;--green:#e8effa;--green-dark:#315d9d;--blue:#345bb0;--white:#fff;--ink:#20212a}
 *{box-sizing:border-box}
-body{margin:0;font-family:Tahoma,Arial,sans-serif;background:linear-gradient(145deg,#eaf1fb 0%,#dce8f8 52%,#f0e9fb 100%);color:var(--ink);min-height:100dvh}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink);min-height:100dvh;transition:background .3s ease}
 .app{min-height:100dvh;padding:10px 18px 130px;display:flex;flex-direction:column;align-items:center}
-h1{position:sticky;top:0;z-index:12;width:100%;background:#eaf1fb;color:#2f4f83;font-size:clamp(34px,8vw,62px);font-weight:800;text-align:center;margin:0 0 10px;padding:8px 0;line-height:1.15;text-shadow:0 1px 1px #ffffff20;user-select:none}
+.brand-header{position:sticky;top:0;z-index:12;width:100%;background:var(--bg);padding:8px 0;margin:0 0 10px;display:flex;align-items:center;justify-content:center;gap:12px;transition:background .3s ease}
+.brand-logo{width:54px;height:54px;object-fit:contain;border-radius:14px;background:#fff;padding:4px;box-shadow:0 2px 6px #00000014}
+h1{color:#2f4f83;font-size:clamp(32px,7.5vw,58px);font-weight:800;text-align:center;margin:0;line-height:1.15;text-shadow:0 1px 1px #ffffff20;user-select:none}
 .searchbar{position:sticky;top:74px;z-index:11;width:100%;max-width:720px;background:white;border:4px solid #d7e2e0;border-radius:27px;height:100px;display:flex;align-items:center;padding:12px 14px;gap:14px;box-shadow:0 2px 5px #00000012}
 .searchbar input{border:0;outline:0;min-width:0;flex:1;font-size:22px;background:transparent;text-align:right;padding:0 10px;color:#333}
 .searchbar input::placeholder{color:#999}
@@ -19,11 +21,11 @@ h1{position:sticky;top:0;z-index:12;width:100%;background:#eaf1fb;color:#2f4f83;
 svg{width:34px;height:34px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 #content{width:100%;max-width:720px;flex:1;margin-top:22px}
 .products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.product{background:#fff;border-radius:18px;padding:12px;box-shadow:0 3px 10px #16452a18;border:1px solid #e8edf4}
-.product img{width:100%;height:132px;max-width:100%;object-fit:contain;display:block;border-radius:12px;background:#f8fafc}
-.product h3{margin:7px 0;font-size:17px}
-.product p{margin:5px 0;color:#555}
-.product button{background:var(--green-dark);color:white;border:0;border-radius:10px;padding:9px 12px;font-size:15px;cursor:pointer}
+.product{background:#fff;border-radius:18px;padding:0 0 12px;overflow:hidden;box-shadow:0 3px 10px #16452a18;border:1px solid #e8edf4}
+.product img{width:100%;height:165px;object-fit:cover;display:block;background:#f8fafc}
+.product h3{margin:9px 0 5px;padding:0 12px;font-size:17px}
+.product p{margin:4px 0;padding:0 12px;color:#555}
+.product button{margin:8px 12px 0;width:calc(100% - 24px);background:var(--green-dark);color:white;border:0;border-radius:10px;padding:9px 12px;font-size:15px;cursor:pointer}
 .bottomnav{position:fixed;z-index:5;bottom:18px;left:2.5%;width:95%;max-width:760px;background:white;border-radius:45px;min-height:174px;display:flex;align-items:center;justify-content:space-around;padding:12px 8px;box-shadow:0 6px 20px #174a2c18}
 .navitem{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;min-width:0;flex:1;color:#858585;border:0;background:transparent;font-family:inherit;cursor:pointer;font-size:17px}
 .navitem svg{width:55px;height:55px;color:#111;stroke-width:1.5}
@@ -61,13 +63,16 @@ svg{width:34px;height:34px;stroke:currentColor;fill:none;stroke-width:2.2;stroke
 .category-tile img{width:76px;height:76px;object-fit:contain;border-radius:16px;background:#f4f7fc;padding:5px}
 .category-emoji{width:76px;height:76px;display:grid;place-items:center;border-radius:18px;background:linear-gradient(135deg,#eef4ff,#f4eefe);font-size:42px}
 html,body{overflow-x:hidden;touch-action:pan-y}
-@media(max-width:480px){.app{padding:0 18px 125px}h1{font-size:clamp(32px,8vw,44px);margin-bottom:8px;padding:8px 0}.searchbar{height:88px;top:62px}.searchbtn,.filterbtn{height:58px;width:58px}.bottomnav{min-height:150px;bottom:18px}.navitem{font-size:14px}.navitem svg{width:42px;height:42px}}
+@media(max-width:480px){.app{padding:0 18px 125px}h1{font-size:clamp(28px,7.5vw,42px)}.brand-logo{width:44px;height:44px}.searchbar{height:88px;top:62px}.searchbtn,.filterbtn{height:58px;width:58px}.bottomnav{min-height:150px;bottom:18px}.navitem{font-size:14px}.navitem svg{width:42px;height:42px}}
 @media(max-width:360px){.category-grid{gap:8px}.category-tile{padding:8px}.category-tile img,.category-emoji{width:64px;height:64px}}
 </style>
 </head>
 <body>
 <div class="app">
-  <h1 id="brand">صيدلية الشارقة</h1>
+  <header class="brand-header">
+    <img id="brandLogo" class="brand-logo" src="" alt="الشعار" style="display:none">
+    <h1 id="brand">صيدلية الشارقة</h1>
+  </header>
   <div class="searchbar">
     <button class="filterbtn" id="filterBtn" aria-label="الأقسام" onclick="showSections()"><svg viewBox="0 0 24 24"><path d="M4 6h7M15 6h5M4 12h3M11 12h9M4 18h9M17 18h3"/><path d="M13 3v6M9 9v6M15 15v6"/></svg></button>
     <input id="search" placeholder="ابحث عن اسم المنتج أو القسم..." aria-label="بحث عن المنتجات" oninput="onSearchInput()">
@@ -100,7 +105,7 @@ const defaultCategories=['أدوية','العناية بطفل','العناية 
 const categoryEmoji={'أدوية':'💊','العناية بطفل':'🧸','العناية بالأم':'🤱','أدوات تجميل':'💄'};
 let categoryArt={};
 let products=[];
-let settings={brand:'صيدلية الشارقة',address:'',phone:'',whatsappEnabled:false};
+let settings={brand:'صيدلية الشارقة',logo:'',bgColor:'#eaf1fb',address:'',phone:'',whatsappEnabled:false};
 let categories=[...defaultCategories];
 let banners=[];
 let orders=[];
@@ -111,6 +116,20 @@ let currentTab='home',selectedCategory='',showCheckoutBox=false;
 const brand=document.getElementById('brand');
 
 function persistLocal(key,val){localStorage.setItem(key,JSON.stringify(val));}
+
+function applyAppearance(){
+  brand.textContent=settings.brand||'صيدلية الشارقة';
+  document.title=settings.brand||'صيدلية الشارقة';
+  const bg=settings.bgColor||'#eaf1fb';
+  document.documentElement.style.setProperty('--bg',bg);
+  const logoEl=document.getElementById('brandLogo');
+  if(settings.logo){
+    logoEl.src=settings.logo;
+    logoEl.style.display='block';
+  }else{
+    logoEl.style.display='none';
+  }
+}
 
 function compressImageFile(file,maxSide=900,quality=.75){
   return new Promise((resolve,reject)=>{
@@ -155,10 +174,9 @@ async function loadStoreFromCloud(notify=false){
     categories=data.categories||defaultCategories;
     categoryArt=data.categoryArt||{};
     banners=data.banners||[];
-    settings=data.settings||settings;
+    settings={...settings,...(data.settings||{})};
     orders=data.orders||[];
-    brand.textContent=settings.brand||'صيدلية الشارقة';
-    document.title=settings.brand||'صيدلية الشارقة';
+    applyAppearance();
     renderProducts();
     if(notify)alert('تم تحديث البيانات بنجاح');
   }catch(e){
