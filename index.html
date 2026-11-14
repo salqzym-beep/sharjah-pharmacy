@@ -40,9 +40,13 @@ svg{width:34px;height:34px;stroke:currentColor;fill:none;stroke-width:2.2;stroke
 .contact-link{display:inline-block;text-decoration:none}
 .contact-link button{background:#18865a!important;color:#fff!important}
 .panel .fieldlabel{display:block;margin-top:8px;font-weight:bold}
-.accountform,.checkoutform{background:#fff;border-radius:18px;padding:16px;margin:12px 0}
+.accountform,.checkoutform{background:#fff;border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 3px 10px #16452a12}
 .accountform input,.checkoutform input{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px;font:inherit}
-.accountform button,.checkoutform button{background:var(--green-dark);color:white;border:0;border-radius:10px;padding:11px 15px;margin:5px;font:inherit;cursor:pointer}
+.accountform button,.checkoutform button{background:var(--green-dark);color:white;border:0;border-radius:10px;padding:12px 16px;margin:5px;font:inherit;cursor:pointer;font-weight:bold}
+.cart-actions{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.cart-actions button{flex:1;min-width:140px;border:0;border-radius:14px;padding:13px 14px;font:inherit;font-weight:bold;cursor:pointer}
+.btn-buy{background:#18865a!important;color:#fff!important}
+.btn-secondary{background:#edf1fb!important;color:#315d9d!important;border:1px solid #d0dcf2!important}
 .ordercard{background:#fff;border-radius:16px;padding:14px;margin:12px 0}
 .stages{display:flex;flex-wrap:wrap;gap:5px;margin:12px 0}
 .stage{padding:7px 9px;border-radius:9px;background:#e8e8e8;color:#666;font-size:13px}
@@ -103,7 +107,7 @@ let orders=[];
 let cart=JSON.parse(localStorage.getItem('sharjah_cart')||'[]');
 let loggedCustomer=localStorage.getItem('sharjah_logged_customer')||'';
 let customerProfile=JSON.parse(localStorage.getItem('sharjah_customer_profile')||'null');
-let currentTab='home',selectedCategory='';
+let currentTab='home',selectedCategory='',showCheckoutBox=false;
 const brand=document.getElementById('brand');
 
 function persistLocal(key,val){localStorage.setItem(key,JSON.stringify(val));}
@@ -142,7 +146,7 @@ async function uploadCompressedImageToBlob(file,maxSide=900,quality=.75){
   return result.url;
 }
 
-async function loadStoreFromCloud(){
+async function loadStoreFromCloud(notify=false){
   try{
     const res=await fetch('/api/store',{cache:'no-store'});
     if(!res.ok)throw new Error('تعذر تحميل البيانات');
@@ -156,6 +160,7 @@ async function loadStoreFromCloud(){
     brand.textContent=settings.brand||'صيدلية الشارقة';
     document.title=settings.brand||'صيدلية الشارقة';
     renderProducts();
+    if(notify)alert('تم تحديث البيانات بنجاح');
   }catch(e){
     console.error(e);
     renderProducts();
@@ -214,14 +219,35 @@ function addCart(id){
   cart.push(id);
   persistLocal('sharjah_cart',cart);
   document.getElementById('cartdot').style.display='block';
-  alert('تمت إضافة المنتج للسلة');
+  showCheckoutBox=false;
+  const cartNav=document.querySelectorAll('.navitem')[3];
+  setTab('cart',cartNav);
 }
 
 function removeFromCart(index){
   cart.splice(index,1);
   persistLocal('sharjah_cart',cart);
   document.getElementById('cartdot').style.display=cart.length?'block':'none';
+  if(!cart.length)showCheckoutBox=false;
   renderProducts();
+}
+
+function startCheckout(){
+  showCheckoutBox=true;
+  renderProducts();
+  setTimeout(()=>{
+    const box=document.getElementById('cartCheckoutSection');
+    if(box)box.scrollIntoView({behavior:'smooth'});
+  },50);
+}
+
+function continueShopping(){
+  showCheckoutBox=false;
+  setTab('home',document.querySelectorAll('.navitem')[2]);
+}
+
+function authFormsHtml(stayInCart=false){
+  return '<div class="accountform"><h3>تسجيل الدخول</h3><input id="loginUsername" placeholder="اسم المستخدم"><input id="loginPassword" type="password" placeholder="كلمة المرور"><button onclick="customerLogin('+stayInCart+')">دخول</button><p id="customerError" style="color:#c0392b"></p></div><div class="accountform"><h3>إنشاء حساب جديد</h3><input id="newCustomerName" placeholder="اسم العميل"><input id="newCustomerPhone" type="tel" placeholder="جواله"><input id="newCustomerUsername" placeholder="اسم المستخدم"><input id="newCustomerPassword" type="password" placeholder="كلمة المرور"><button onclick="createCustomer('+stayInCart+')">حفظ / إنشاء حساب</button></div>';
 }
 
 function renderProducts(){
@@ -252,11 +278,31 @@ function renderProducts(){
   }
   if(currentTab==='cart'){
     const chosen=cart.map((id,idx)=>({p:products.find(x=>x.id===id),idx})).filter(x=>x.p);
-    content.innerHTML='<h2 class="section-title">السلة</h2>'+(chosen.length?'<div class="products">'+chosen.map(({p,idx})=>'<article class="product">'+(p.image?'<img src="'+escapeAttr(p.image)+'" alt="">':'')+'<h3>'+escapeHtml(p.name)+'</h3><p><b>'+p.price+'</b></p><button style="background:#c0392b" onclick="removeFromCart('+idx+')">إزالة</button></article>').join('')+'</div>':'<div class="panel">السلة فارغة. أضف منتجات من الرئيسية أو البحث.</div>');
-    if(chosen.length){
-      const total=chosen.reduce((sum,x)=>sum+Number(x.p.price||0),0);
-      content.innerHTML+='<div class="checkoutform"><h3>إتمام الشراء (الإجمالي: '+total+')</h3>'+(loggedCustomer?'':'<p style="color:#c0392b">يرجى تسجيل الدخول أو إنشاء حساب من قسم حسابي أولاً.</p>')+'<input id="checkoutLocation" placeholder="موقع العميل بالتفصيل (مثلاً: المكلا، شارع ...)"><label class="fieldlabel">صورة سند الدفع</label><input id="checkoutProof" type="file" accept="image/*"><button id="submitOrderBtn" onclick="submitOrder()">إرسال الطلب</button></div>';
+    let html='<h2 class="section-title">السلة</h2>';
+    if(!chosen.length){
+      html+='<div class="panel">السلة فارغة. أضف منتجات من الرئيسية أو الأقسام.<br><button onclick="continueShopping()" style="margin-top:10px">تصفح المنتجات</button></div>';
+      content.innerHTML=html;
+      return;
     }
+    const total=chosen.reduce((sum,x)=>sum+Number(x.p.price||0),0);
+    html+='<div class="products">'+chosen.map(({p,idx})=>'<article class="product">'+(p.image?'<img src="'+escapeAttr(p.image)+'" alt="">':'')+'<h3>'+escapeHtml(p.name)+'</h3><p><b>'+p.price+'</b></p><button style="background:#c0392b" onclick="removeFromCart('+idx+')">إزالة</button></article>').join('')+'</div>';
+    html+='<div class="panel" style="margin-top:14px;text-align:center"><b>الإجمالي: '+total+'</b></div>';
+    html+='<div class="cart-actions">'+
+          '<button class="btn-buy" onclick="startCheckout()">شراء / إتمام الطلب</button>'+
+          '<button class="btn-secondary" onclick="continueShopping()">+ إضافة منتجات أخرى</button>'+
+          '<button class="btn-secondary" onclick="loadStoreFromCloud(true)">⟳ تحديث</button>'+
+          '</div>';
+
+    if(showCheckoutBox){
+      html+='<div id="cartCheckoutSection">';
+      if(loggedCustomer && customerProfile){
+        html+='<div class="checkoutform"><h3>إتمام الشراء ('+escapeHtml(customerProfile.name)+')</h3><input id="checkoutLocation" placeholder="موقع العميل بالتفصيل (مثلاً: المكلا، شارع ...)"><label class="fieldlabel">صورة سند الدفع</label><input id="checkoutProof" type="file" accept="image/*"><button class="btn-buy" id="submitOrderBtn" onclick="submitOrder()">تأكيد وإرسال الطلب</button></div>';
+      }else{
+        html+='<div class="panel"><p style="color:#315d9d;font-weight:bold;margin:0">لإكمال الشراء، يرجى تسجيل الدخول أو إنشاء حساب جديد:</p></div>'+authFormsHtml(true);
+      }
+      html+='</div>';
+    }
+    content.innerHTML=html;
     return;
   }
   if(currentTab==='address'){
@@ -305,10 +351,10 @@ function renderAccount(content){
     content.innerHTML+=mine.length?mine.map(o=>'<div class="ordercard"><b>طلب #'+o.id+'</b><p>'+escapeHtml(o.items)+'</p><p>الحالة: '+escapeHtml(o.status)+'</p>'+renderStages(o.status)+'</div>').join(''):'<div class="panel">لا توجد طلبات مسجلة.</div>';
     return;
   }
-  content.innerHTML='<h2 class="section-title">حسابي</h2><div class="accountform"><h3>تسجيل الدخول</h3><input id="loginUsername" placeholder="اسم المستخدم"><input id="loginPassword" type="password" placeholder="كلمة المرور"><button onclick="customerLogin()">دخول</button><p id="customerError" style="color:#c0392b"></p></div><div class="accountform"><h3>إنشاء حساب جديد</h3><input id="newCustomerName" placeholder="اسم العميل"><input id="newCustomerPhone" type="tel" placeholder="جواله"><input id="newCustomerUsername" placeholder="اسم المستخدم"><input id="newCustomerPassword" type="password" placeholder="كلمة المرور"><button onclick="createCustomer()">حفظ / إنشاء حساب</button></div>';
+  content.innerHTML='<h2 class="section-title">حسابي</h2>'+authFormsHtml(false);
 }
 
-async function customerLogin(){
+async function customerLogin(stayInCart=false){
   const username=document.getElementById('loginUsername').value.trim();
   const password=document.getElementById('loginPassword').value;
   if(!username||!password){document.getElementById('customerError').textContent='أدخل اسم المستخدم وكلمة المرور';return;}
@@ -324,13 +370,14 @@ async function customerLogin(){
     customerProfile=data.customer;
     localStorage.setItem('sharjah_logged_customer',loggedCustomer);
     persistLocal('sharjah_customer_profile',customerProfile);
+    if(stayInCart)showCheckoutBox=true;
     await loadStoreFromCloud();
   }catch(e){
     document.getElementById('customerError').textContent='خطأ في الاتصال بالسيرفر';
   }
 }
 
-async function createCustomer(){
+async function createCustomer(stayInCart=false){
   const name=document.getElementById('newCustomerName').value.trim();
   const phone=document.getElementById('newCustomerPhone').value.trim();
   const username=document.getElementById('newCustomerUsername').value.trim();
@@ -348,6 +395,7 @@ async function createCustomer(){
     customerProfile=data.customer;
     localStorage.setItem('sharjah_logged_customer',loggedCustomer);
     persistLocal('sharjah_customer_profile',customerProfile);
+    if(stayInCart)showCheckoutBox=true;
     alert('تم إنشاء الحساب وتسجيل الدخول بنجاح');
     renderProducts();
   }catch(e){
@@ -365,8 +413,8 @@ function logoutCustomer(){
 
 async function submitOrder(){
   if(!loggedCustomer||!customerProfile){
-    alert('يرجى تسجيل الدخول أو إنشاء حساب من قسم حسابي أولاً');
-    setTab('account',document.querySelectorAll('.navitem')[4]);
+    showCheckoutBox=true;
+    renderProducts();
     return;
   }
   const location=document.getElementById('checkoutLocation').value.trim();
@@ -401,13 +449,14 @@ async function submitOrder(){
     if(!res.ok)throw new Error('فشل إرسال الطلب');
     orders.push(newOrder);
     cart=[];
+    showCheckoutBox=false;
     persistLocal('sharjah_cart',cart);
     document.getElementById('cartdot').style.display='none';
     alert('تم إرسال طلبك بنجاح: قيد المراجعة');
     renderProducts();
   }catch(e){
     alert(e.message||'حدث خطأ أثناء إرسال الطلب');
-    if(btn){btn.disabled=false;btn.textContent='إرسال الطلب';}
+    if(btn){btn.disabled=false;btn.textContent='تأكيد وإرسال الطلب';}
   }
 }
 
