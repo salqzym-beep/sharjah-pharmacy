@@ -1,0 +1,8 @@
+{
+  "name": "sharjah-pharmacy-vercel-blob",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@vercel/blob": "^2.0.0"
+  }
+}

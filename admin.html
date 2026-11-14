@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>لوحة تحكم صيدلية الشارقة</title>
+<style>
+:root{--green:#e8effa;--green-dark:#315d9d;--blue:#345bb0;--white:#fff;--ink:#20212a}
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:linear-gradient(145deg,#eaf1fb 0%,#dce8f8 52%,#f0e9fb 100%);color:var(--ink);min-height:100dvh}
+.app{min-height:100dvh;padding:10px 18px 130px;display:flex;flex-direction:column;align-items:center}
+h1{position:sticky;top:0;z-index:12;width:100%;background:#eaf1fb;color:#2f4f83;font-size:clamp(34px,8vw,62px);font-weight:800;text-align:center;margin:0 0 10px;padding:8px 0;line-height:1.15;text-shadow:0 1px 1px #ffffff20;user-select:none}
+.searchbar{position:sticky;top:74px;z-index:11;width:100%;max-width:720px;background:white;border:4px solid #d7e2e0;border-radius:27px;height:100px;display:flex;align-items:center;padding:12px 14px;gap:14px;box-shadow:0 2px 5px #00000012}
+.searchbar input{border:0;outline:0;min-width:0;flex:1;font-size:22px;background:transparent;text-align:right;padding:0 10px;color:#333}
+.searchbar input::placeholder{color:#999}
+.searchbtn,.filterbtn{height:66px;width:66px;border:0;border-radius:18px;display:grid;place-items:center;cursor:pointer}
+.searchbtn{background:var(--blue);color:white}
+.filterbtn{background:#f0effb;color:#303b70}
+svg{width:34px;height:34px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+#content{width:100%;max-width:720px;flex:1;margin-top:22px}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.product{background:#fff;border-radius:18px;padding:12px;box-shadow:0 3px 10px #16452a18}
+.product img{width:100%;height:130px;object-fit:contain}
+.product h3{margin:7px 0;font-size:17px}
+.product p{margin:5px 0;color:#555}
+.product button{background:var(--green-dark);color:white;border:0;border-radius:10px;padding:9px 12px;font-size:15px}
+.bottomnav{position:fixed;z-index:5;bottom:18px;left:2.5%;width:95%;max-width:760px;background:white;border-radius:45px;min-height:174px;display:flex;align-items:center;justify-content:space-around;padding:12px 8px;box-shadow:0 6px 20px #174a2c18}
+.navitem{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;min-width:0;flex:1;color:#858585;border:0;background:transparent;font-family:inherit;cursor:pointer;font-size:17px}
+.navitem svg{width:55px;height:55px;color:#111;stroke-width:1.5}
+.navitem.active{color:var(--green-dark);font-weight:bold}
+.navitem.active svg{color:var(--green-dark);fill:var(--green-dark);stroke-width:1.8}
+.cartdot{position:absolute;top:-1px;right:34%;width:24px;height:24px;background:#e84949;border-radius:50%;box-shadow:0 1px 3px #0002}
+.section-title{color:white;font-size:23px;margin:0 0 12px}
+.empty{min-height:40vh}
+.panel{background:#fff;border-radius:20px;padding:18px;margin:16px auto;max-width:720px;width:100%}
+.panel h2{margin:0 0 15px;color:var(--green-dark)}
+.panel input,.panel select,.panel textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px;font:inherit}
+.panel button{border:0;border-radius:10px;padding:11px 15px;margin:5px;background:var(--green-dark);color:#fff;font:inherit;cursor:pointer}
+.panel button.danger{background:#c0392b}.contact-link{display:inline-block;text-decoration:none}.contact-link button{background:#18865a!important;color:#fff!important}
+.adminrow{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #eee;padding:10px 0}
+#adminOverlay{display:none;position:fixed;inset:0;background:#0008;z-index:20;overflow:auto;padding:20px}
+#adminOverlay .panel{margin:30px auto}
+
+.categorychips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.categorychips button{background:#fff;color:#187b52;border:0;border-radius:14px;padding:10px 14px;font:inherit;cursor:pointer}
+.panel .fieldlabel{display:block;margin-top:8px;font-weight:bold}
+.accountform,.checkoutform{background:#fff;border-radius:18px;padding:16px;margin:12px 0}
+.accountform input,.checkoutform input{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px;font:inherit}
+.accountform button,.checkoutform button{background:var(--green-dark);color:white;border:0;border-radius:10px;padding:11px 15px;margin:5px;font:inherit}
+.ordercard{background:#fff;border-radius:16px;padding:14px;margin:12px 0}
+.stages{display:flex;flex-wrap:wrap;gap:5px;margin:12px 0}
+.stage{padding:7px 9px;border-radius:9px;background:#e8e8e8;color:#666;font-size:13px}
+.stage.done{background:#18865a;color:white}
+.ordercard img.proof{max-width:100%;max-height:180px;object-fit:contain;display:block;margin:8px 0}
+\n
+.banner-carousel{width:100%;max-width:440px;margin:16px auto 24px;position:relative;overflow:hidden;border-radius:24px;background:#fff;box-shadow:0 8px 22px #355b8b20;aspect-ratio:1/1;flex:0 0 auto}
+.banner-carousel .banner-slide{position:absolute;inset:0;opacity:0;animation:bannerFade 16s infinite}.banner-carousel .banner-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.banner-carousel .banner-caption{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,#172c50a8);color:white;padding:18px 14px 12px;font-weight:bold}
+.banner-carousel .banner-slide:nth-child(1){animation-delay:0s}.banner-carousel .banner-slide:nth-child(2){animation-delay:4s}.banner-carousel .banner-slide:nth-child(3){animation-delay:8s}.banner-carousel .banner-slide:nth-child(4){animation-delay:12s}
+@keyframes bannerFade{0%,22%{opacity:1}25%,97%{opacity:0}100%{opacity:1}}
+.banner-admin-card{display:flex;align-items:center;gap:10px;border:1px solid #e1e6ee;border-radius:16px;padding:10px;margin:10px 0}.banner-admin-card img{width:82px;height:60px;object-fit:cover;border-radius:10px}.banner-admin-card span{flex:1;font-weight:bold}
+\n/* Dashboard layout styled after the supplied admin screenshots */
+#adminOverlay{background:#eaf2f8;padding:14px}
+#adminOverlay .panel#adminPanel{max-width:760px;margin:24px auto;background:#fff;border-radius:38px;padding:28px 24px 34px;box-shadow:0 10px 30px #203c5510;color:#26354a}
+#adminPanel h2{font-size:clamp(25px,5vw,34px);color:#2d4058;text-align:right;margin:0 0 12px}
+#adminPanel h3{font-size:22px;color:#26354a;margin:28px 0 14px}
+#adminPanel label{display:block;color:#666;font-size:17px;margin:18px 0 7px}
+#adminPanel input:not([type=file]),#adminPanel select,#adminPanel textarea{width:100%;height:70px;padding:15px 18px;margin:7px 0 12px;border:2px solid #e0e4e8;border-radius:20px;background:#fff;font:inherit;font-size:19px}
+#adminPanel input[type=file]{width:100%;padding:18px;border:2px solid #e0e4e8;border-radius:20px;margin:7px 0 12px;font:inherit}
+#adminPanel button{border:0;border-radius:20px;padding:17px 22px;margin:5px;background:#edf1fb;color:#36558e;font:inherit;font-size:18px;cursor:pointer}
+#adminPanel button.danger{background:#d94b4b;color:white}
+#adminPanel button.primary{background:#315d9d;color:#fff}
+.admin-toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 22px}
+.admin-toolbar button{flex:1;min-width:115px}
+.admin-status{display:inline-block;background:#e8f4ed;color:#23744f;border-radius:25px;padding:9px 18px;margin:0 0 10px}
+.admin-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:20px 0 25px}
+.admin-tabs button{min-height:68px;margin:0!important}
+.admin-tabs button.selected{background:#315d9d!important;color:white!important}
+.admin-section{border-top:1px solid #e8e8e8;padding-top:20px;margin-top:20px}
+#adminProducts .adminrow{border:1px solid #e2e5e9;border-radius:22px;padding:16px;margin:12px 0;flex-wrap:wrap}
+#adminProducts .adminrow span{font-weight:bold;color:#2d4058}
+#adminProducts .adminrow button{padding:12px 18px}
+@media(max-width:480px){#adminOverlay{padding:8px}#adminOverlay .panel#adminPanel{padding:22px 18px 30px;border-radius:32px;margin:10px auto}#adminPanel input:not([type=file]),#adminPanel select{height:66px}.admin-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+\n@media(max-width:480px){.app{padding:0 18px 125px}h1{font-size:clamp(32px,8vw,44px);margin-bottom:8px;padding:8px 0}.searchbar{height:88px;top:62px}.searchbtn,.filterbtn{height:58px;width:58px}.bottomnav{min-height:150px;bottom:18px}.navitem{font-size:14px}.navitem svg{width:42px;height:42px}}
+
+.category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0;touch-action:pan-y;overscroll-behavior:contain}.category-tile{touch-action:pan-y}html,body{overflow-x:hidden;touch-action:pan-y}
+.category-tile{background:#fff;border:1px solid #e4eaf3;border-radius:20px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:0 5px 14px #315d9d12;cursor:pointer;color:#2f4f83;font:inherit;font-weight:700;min-height:142px}
+.category-tile img{width:76px;height:76px;object-fit:contain;border-radius:16px;background:#f4f7fc;padding:5px}
+.category-emoji{width:76px;height:76px;display:grid;place-items:center;border-radius:18px;background:linear-gradient(135deg,#eef4ff,#f4eefe);font-size:42px}
+.category-admin-preview{width:60px;height:60px;object-fit:contain;border-radius:12px;background:#f4f7fc;padding:4px}
+.product img{width:100%;height:132px;max-width:100%;object-fit:contain;display:block;border-radius:12px;background:#f8fafc}
+.product{border:1px solid #e8edf4}
+.section-title{color:#315d9d;font-weight:800}
+@media(max-width:360px){.category-grid{gap:8px}.category-tile{padding:8px}.category-tile img,.category-emoji{width:64px;height:64px}}
+ 
+/* Dedicated admin route */
+body.admin-route .app, body.admin-route .bottomnav{display:none!important}
+body.admin-route #adminOverlay{display:block!important;position:relative!important;inset:auto!important;min-height:100dvh;background:#eaf2f8!important;overflow:visible!important;padding:14px!important}
+body.admin-route #loginPanel{display:block!important}
+body.admin-route #adminPanel{display:none!important}
+</style>
+</head>
+<body class="admin-route">
+<div class="app">
+  <h1 id="brand" title="اضغط خمس مرات لفتح لوحة التحكم">صيدلية الشارقة</h1>
+  <div class="searchbar">
+    <button class="filterbtn" id="filterBtn" aria-label="الأقسام" onclick="showSections()"><svg viewBox="0 0 24 24"><path d="M4 6h7M15 6h5M4 12h3M11 12h9M4 18h9M17 18h3"/><path d="M13 3v6M9 9v6M15 15v6"/></svg></button>
+    <input id="search" placeholder="ابحث عن اسم المنتج أو القسم..." aria-label="بحث عن المنتجات" oninput="renderProducts()">
+    <button class="searchbtn" aria-label="بحث" onclick="renderProducts()"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></button>
+  </div>
+  <section id="homeBanners" class="banner-carousel" style="display:none"></section><main id="content"><div class="empty"></div></main>
+</div>
+<nav class="bottomnav" aria-label="التنقل">
+  <button class="navitem" onclick="setTab('address',this)">
+    <svg viewBox="0 0 48 48"><path d="M24 44s16-15 16-26A16 16 0 0 0 8 18c0 11 16 26 16 26Z"/><circle cx="24" cy="18" r="5"/></svg><span>العنوان</span>
+  </button>
+  <button class="navitem" onclick="setTab('sections',this)">
+    <svg viewBox="0 0 48 48"><rect x="4" y="4" width="15" height="15" rx="3"/><rect x="29" y="4" width="15" height="15" rx="3"/><rect x="4" y="29" width="15" height="15" rx="3"/><circle cx="36.5" cy="36.5" r="7.5"/></svg><span>أقسام</span>
+  </button>
+  <button class="navitem" onclick="setTab('home',this)">
+    <svg viewBox="0 0 48 48"><path d="M4 22 24 5l20 17M10 19v25h28V19M19 44V29h10v15" /></svg><span>الرئيسية</span>
+  </button>
+  <button class="navitem" onclick="setTab('cart',this)">
+    <span class="cartdot" id="cartdot"></span>
+    <svg viewBox="0 0 48 48"><path d="M4 7h5l5 25h25l5-19H12M18 18h21M15 27h23M18 39a3 3 0 1 0 0 6 3 3 0 0 0 0-6M36 39a3 3 0 1 0 0 6 3 3 0 0 0 0-6"/></svg><span>السلة</span>
+  </button>
+  <button class="navitem active" onclick="setTab('account',this)">
+    <svg viewBox="0 0 48 48"><circle cx="24" cy="13" r="9"/><path d="M15 12c4 3 9 2 13-2M8 43v-5c0-8 7-13 16-13s16 5 16 13v5M16 28l8 10 8-10M20 38l-2 5M28 38l2 5"/></svg><span>حسابي</span>
+  </button>
+</nav>
+
+<div id="adminOverlay">
+  <section class="panel" id="loginPanel">
+    <h2>دخول لوحة التحكم</h2><p><a href="./index.html">العودة إلى المتجر</a></p>
+    <input id="adminPass" type="password" placeholder="كلمة المرور">
+    <button onclick="loginAdmin()">تسجيل الدخول</button>
+    <button class="danger" onclick="closeAdmin()">إغلاق</button>
+    <p id="loginError" style="color:#c0392b"></p>
+  </section>
+  <section class="panel" id="adminPanel" style="display:none">
+    <h2>لوحة تحكم صيدلية الشارقة</h2>
+    <div class="admin-status">✓ متصل محلياً</div>
+    <div class="admin-toolbar">
+      <button onclick="closeAdmin();">عرض المتجر ↗</button>
+      <button onclick="refreshAdmin()">⟳ تحديث البيانات</button>
+      <button class="danger" onclick="closeAdmin()">خروج</button>
+    </div>
+    <div class="admin-tabs">
+      <button class="selected" onclick="adminJump('productSection',this)">المنتجات</button>
+      <button onclick="adminJump('categorySection',this)">الأقسام</button>
+      <button onclick="adminJump('bannerSection',this)">صور الإعلان</button>
+      <button onclick="adminJump('customerSection',this)">العملاء</button>
+      <button onclick="adminJump('orderSection',this)">الطلبات</button>
+      <button onclick="adminJump('passwordSection',this)">كلمة المرور</button>
+    </div>
+    <div class="admin-section" id="settingsSection">
+      <label>اسم الصيدلية</label><input id="adminBrand" value="صيدلية الشارقة">
+      <label>العنوان التفصيلي للصيدلية</label><input id="adminAddress" placeholder="مثلاً: المكلا، شارع ..."><label>رقم الجوال / الهاتف</label><input id="adminPhone" type="tel" placeholder="أدخل رقم الهاتف"><label style="display:flex;align-items:center;gap:10px"><input id="adminWhatsappEnabled" type="checkbox" style="width:22px;height:22px"> تفعيل زر واتساب</label>
+      <button class="primary" onclick="saveSettings()">حفظ الإعدادات</button>
+    </div>
+    <div class="admin-section" id="productSection">
+    <h3>إضافة / تعديل منتج</h3>
+    <input id="prodName" placeholder="اسم المنتج">
+    <input id="prodPrice" type="number" min="0" placeholder="السعر">
+    <label>القسم</label><select id="prodCategory"></select><label style="display:flex;align-items:center;gap:10px"><input id="prodFeatured" type="checkbox" style="width:22px;height:22px"> عرض المنتج في الرئيسية</label>
+    <label>صورة المنتج (يتم ضغطها تلقائيًا لتقليل الحجم)</label>
+    <input id="prodImageFile" type="file" accept="image/*">
+    <input id="prodImage" type="url" placeholder="أو رابط صورة المنتج (اختياري)">
+    <button onclick="saveProduct()">حفظ المنتج</button><button class="danger" onclick="clearProductForm()">إلغاء التعديل</button>
+    <h3>المنتجات المضافة</h3><div id="adminProducts"></div>
+    </div>
+    <div class="admin-section" id="categorySection">
+    <h3>إدارة الأقسام</h3>
+    <input id="newCategory" placeholder="اسم القسم الجديد">
+    <label>صورة القسم (اختياري — يتم ضغطها تلقائيًا)</label>
+    <input id="newCategoryImage" type="file" accept="image/*">
+    <button onclick="addCategory()">إضافة قسم</button>
+    <div id="adminCategories"></div>
+    </div>
+    <div class="admin-section" id="customerSection"><h3>حسابات العملاء</h3><div id="adminCustomers"></div></div>
+    <div class="admin-section" id="orderSection"><h3>طلبات العملاء ومراحلها</h3><div id="adminOrders"></div></div>
+    <div class="admin-section" id="bannerSection"><h3>صور الإعلان الرئيسية (حتى 4 صور)</h3><p>تظهر الصور المتحركة في الرئيسية فقط.</p><input id="bannerImageFile" type="file" accept="image/*"><input id="bannerImageTitle" placeholder="عنوان الصورة (اختياري)"><button class="primary" onclick="saveBanner()">إضافة صورة / حفظ التعديل</button><button onclick="cancelBannerEdit()">إلغاء التعديل</button><div id="adminBanners"></div></div>
+    <div class="admin-section" id="passwordSection"><h3>كلمة المرور</h3><p>كلمة المرور الحالية للوحة التحكم: cc7895236</p></div>
+    <button class="danger" onclick="closeAdmin()">إغلاق لوحة التحكم</button>
+  </section>
+</div>
+<script>
+
+
+const categoryArt=JSON.parse(localStorage.getItem('sharjah_category_art')||'{}');
+const categoryEmoji={'أدوية':'💊','العناية بطفل':'🧸','العناية بالأم':'🤱','أدوات تجميل':'💄'};
+function compressImageFile(file,maxSide=640,quality=.72){
+  return new Promise((resolve,reject)=>{
+    if(!file||!file.type.startsWith('image/')){reject(new Error('يرجى اختيار ملف صورة'));return;}
+    const reader=new FileReader();
+    reader.onerror=()=>reject(new Error('تعذر قراءة الصورة'));
+    reader.onload=()=>{
+      const img=new Image();
+      img.onerror=()=>reject(new Error('الصورة غير صالحة'));
+      img.onload=()=>{
+        const scale=Math.min(1,maxSide/Math.max(img.width,img.height));
+        const canvas=document.createElement('canvas');
+        canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));
+        const ctx=canvas.getContext('2d');ctx.drawImage(img,0,0,canvas.width,canvas.height);
+        resolve(canvas.toDataURL('image/webp',quality));
+      };
+      img.src=reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+async function uploadCompressedImageToBlob(file,maxSide=640,quality=.72){
+  const dataUrl=await compressImageFile(file,maxSide,quality);
+  const blob=await (await fetch(dataUrl)).blob();
+  const formData=new FormData();
+  formData.append('file',blob,'image.webp');
+  const response=await fetch('/api/upload',{method:'POST',body:formData});
+  let result={}; try{result=await response.json();}catch(_){}
+  if(!response.ok||!result.url)throw new Error(result.error||'فشل رفع الصورة إلى Vercel Blob');
+  return result.url;
+}
+
+function categoryVisual(name){
+  const image=categoryArt[name];
+  if(image)return '<img src="'+escapeAttr(image)+'" alt="'+escapeAttr(name)+'">';
+  return '<span class="category-emoji">'+(categoryEmoji[name]||'🧴')+'</span>';
+}
+
+function normalizeSearch(value){
+  return String(value||'').toLowerCase()
+    .normalize('NFD').replace(/[\u064B-\u065F\u0670]/g,'')
+    .replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه')
+    .replace(/\s+/g,' ').trim();
+}
+function populateProductCategories(selected){
+  const sel=document.getElementById('prodCategory');
+  if(!sel)return;
+  sel.innerHTML='';
+  if(!categories.length){
+    const opt=document.createElement('option');opt.value='';opt.textContent='أضف قسمًا أولاً';sel.append(opt);return;
+  }
+  categories.forEach(c=>{
+    const opt=document.createElement('option');opt.value=c;opt.textContent=c;sel.append(opt);
+  });
+  if(selected && categories.includes(selected))sel.value=selected;
+}
+function renderHomeBanners(){
+  const el=document.getElementById('homeBanners');if(!el)return;
+  el.innerHTML='';
+  banners.slice(0,4).forEach((b,i)=>{
+    const slide=document.createElement('div');slide.className='banner-slide';
+    slide.style.animationDelay=(i*4)+'s';
+    const img=document.createElement('img');img.src=b.image;img.alt=b.title||'إعلان';
+    slide.append(img);
+    if(b.title){const cap=document.createElement('div');cap.className='banner-caption';cap.textContent=b.title;slide.append(cap);}
+    el.append(slide);
+  });
+}
+function saveBanner(){
+  const file=document.getElementById('bannerImageFile').files[0];
+  const title=document.getElementById('bannerImageTitle').value.trim();
+  if(editingBannerIndex===null && banners.length>=4){alert('الحد الأقصى 4 صور إعلانية. عدّل أو احذف صورة أولاً.');return;}
+  if(!file && editingBannerIndex===null){alert('اختر صورة الإعلان');return;}
+  if(file){
+    if(!file.type.startsWith('image/')){alert('الملف يجب أن يكون صورة');return;}
+    uploadCompressedImageToBlob(file,1200,.75).then(imageUrl=>{
+      const item={image:imageUrl,title};
+      if(editingBannerIndex!==null)banners[editingBannerIndex]=item;else banners.push(item);
+      persist('sharjah_banners',banners);cancelBannerEdit();renderAdminBanners();renderProducts();
+    }).catch(e=>alert(e.message));
+  }else{
+    banners[editingBannerIndex].title=title;
+    persist('sharjah_banners',banners);cancelBannerEdit();renderAdminBanners();renderProducts();
+  }
+}
+function editBanner(i){
+  editingBannerIndex=i;
+  document.getElementById('bannerImageTitle').value=banners[i].title||'';
+  document.getElementById('bannerImageFile').value='';
+}
+function cancelBannerEdit(){
+  editingBannerIndex=null;
+  const file=document.getElementById('bannerImageFile');if(file)file.value='';
+  const title=document.getElementById('bannerImageTitle');if(title)title.value='';
+}
+function deleteBanner(i){
+  if(confirm('حذف صورة الإعلان؟')){
+    banners.splice(i,1);persist('sharjah_banners',banners);renderAdminBanners();renderProducts();
+  }
+}
+function renderAdminBanners(){
+  const box=document.getElementById('adminBanners');if(!box)return;
+  box.innerHTML='';
+  if(!banners.length){box.innerHTML='<p>لا توجد صور إعلانية بعد.</p>';return;}
+  banners.slice(0,4).forEach((b,i)=>{
+    const row=document.createElement('div');row.className='banner-admin-card';
+    const img=document.createElement('img');img.src=b.image;img.alt='';
+    const label=document.createElement('span');label.textContent=(i+1)+'. '+(b.title||'صورة إعلان');
+    const edit=document.createElement('button');edit.textContent='تعديل';edit.onclick=()=>editBanner(i);
+    const del=document.createElement('button');del.className='danger';del.textContent='حذف';del.onclick=()=>deleteBanner(i);
+    row.append(img,label,edit,del);box.append(row);
+  });
+}
+function adminJump(id,button){
+  const target=document.getElementById(id);
+  if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('.admin-tabs button').forEach(b=>b.classList.remove('selected'));
+  if(button)button.classList.add('selected');
+}
+function refreshAdmin(){
+  renderAdminProducts();renderAdminCategories();renderAdminCustomers();renderAdminOrders();
+  renderAdminBanners();populateProductCategories();
+  alert('تم تحديث عرض البيانات.');
+}
+
+
+const ADMIN_PASSWORD='cc7895236';
+const defaultCategories=['أدوية','العناية بطفل','العناية بالأم','أدوات تجميل'];
+let products=JSON.parse(localStorage.getItem('sharjah_products')||'[]');
+let settings=JSON.parse(localStorage.getItem('sharjah_settings')||'{"brand":"صيدلية الشارقة","phone":""}');
+let cart=JSON.parse(localStorage.getItem('sharjah_cart')||'[]');
+let customers=JSON.parse(localStorage.getItem('sharjah_customers')||'[]');
+let orders=JSON.parse(localStorage.getItem('sharjah_orders')||'[]');
+let categories=JSON.parse(localStorage.getItem('sharjah_categories')||JSON.stringify(defaultCategories));let banners=JSON.parse(localStorage.getItem('sharjah_banners')||'[]');let editingBannerIndex=null;
+let loggedCustomer=localStorage.getItem('sharjah_logged_customer')||'';
+let editId=null,taps=0,tapTimer=null,currentTab='home',selectedCategory='';
+const brand=document.getElementById('brand');brand.textContent=settings.brand;
+brand.addEventListener('click',()=>{taps++;clearTimeout(tapTimer);tapTimer=setTimeout(()=>taps=0,1300);if(taps>=5){taps=0;openAdmin();}});
+function persist(key,val){localStorage.setItem(key,JSON.stringify(val));}
+function openAdmin(){document.getElementById('adminOverlay').style.display='block';document.getElementById('loginPanel').style.display='block';document.getElementById('adminPanel').style.display='none';document.getElementById('adminPass').value='';}
+function closeAdmin(){document.getElementById('adminOverlay').style.display='none';}
+function loginAdmin(){if(document.getElementById('adminPass').value===ADMIN_PASSWORD){document.getElementById('loginPanel').style.display='none';document.getElementById('adminPanel').style.display='block';document.getElementById('adminBrand').value=settings.brand;document.getElementById('adminPhone').value=settings.phone;renderAdminProducts();renderAdminCategories();renderAdminCustomers();renderAdminOrders();renderAdminBanners();populateProductCategories();}else document.getElementById('loginError').textContent='كلمة المرور غير صحيحة';}
+function saveSettings(){settings={brand:document.getElementById('adminBrand').value.trim()||'صيدلية الشارقة',phone:document.getElementById('adminPhone').value.trim()};persist('sharjah_settings',settings);brand.textContent=settings.brand;alert('تم حفظ الإعدادات');}
+async function saveProduct(){
+  const name=document.getElementById('prodName').value.trim();
+  const price=document.getElementById('prodPrice').value;
+  const category=document.getElementById('prodCategory').value||categories[0]||'عام';
+  let image=document.getElementById('prodImage').value.trim();
+  const file=document.getElementById('prodImageFile').files[0];
+  const featured=document.getElementById('prodFeatured').checked;
+  if(!name||price===''){alert('أدخل اسم المنتج والسعر');return;}
+  if(!categories.length){alert('أضف قسمًا من لوحة التحكم أولاً');return;}
+  try{if(file)image=await uploadCompressedImageToBlob(file,640,.70);}
+  catch(e){alert(e.message||'تعذر ضغط الصورة');return;}
+  if(editId!==null)products=products.map(p=>p.id===editId?{...p,name,price:Number(price),category,image,featured}:p);
+  else products.push({id:Date.now(),name,price:Number(price),category,image,featured});
+  persist('sharjah_products',products);clearProductForm();renderAdminProducts();renderProducts();
+}function clearProductForm(){
+  editId=null;['prodName','prodPrice','prodImage'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('prodImageFile').value='';
+  document.getElementById('prodFeatured').checked=false;populateProductCategories();
+}function editProduct(id){
+  const p=products.find(x=>x.id===id);if(!p)return;
+  editId=id;document.getElementById('prodName').value=p.name;
+  document.getElementById('prodPrice').value=p.price;populateProductCategories(p.category);
+  document.getElementById('prodImage').value=p.image||'';
+  document.getElementById('prodImageFile').value='';
+  document.getElementById('prodFeatured').checked=!!p.featured;
+}function deleteProduct(id){if(confirm('حذف هذا المنتج؟')){products=products.filter(p=>p.id!==id);persist('sharjah_products',products);renderAdminProducts();renderProducts();}}
+function renderAdminProducts(){let box=document.getElementById('adminProducts');box.innerHTML=products.length?'':'<p>لا توجد منتجات مضافة.</p>';products.forEach(p=>{let row=document.createElement('div');row.className='adminrow';let info=document.createElement('span');info.textContent=p.name+' — '+p.price+' ('+p.category+')'+(p.featured?' ★ الرئيسية':'');let actions=document.createElement('div');let e=document.createElement('button');e.textContent='تعديل';e.onclick=()=>editProduct(p.id);let d=document.createElement('button');d.textContent='حذف';d.className='danger';d.onclick=()=>deleteProduct(p.id);actions.append(e,d);row.append(info,actions);box.append(row);});}async function addCategory(){
+  const name=document.getElementById('newCategory').value.trim();
+  const file=document.getElementById('newCategoryImage').files[0];
+  if(!name){alert('أدخل اسم القسم');return;}
+  if(categories.includes(name)){alert('القسم موجود بالفعل');return;}
+  try{if(file)categoryArt[name]=await uploadCompressedImageToBlob(file,400,.68);}
+  catch(e){alert(e.message||'تعذر ضغط صورة القسم');return;}
+  categories.push(name);persist('sharjah_categories',categories);persist('sharjah_category_art',categoryArt);
+  document.getElementById('newCategory').value='';document.getElementById('newCategoryImage').value='';
+  renderAdminCategories();populateProductCategories();renderProducts();
+}function deleteCategory(name){
+  if(confirm('حذف القسم؟ المنتجات الموجودة فيه ستبقى محفوظة.')){
+    categories=categories.filter(c=>c!==name);delete categoryArt[name];
+    persist('sharjah_categories',categories);persist('sharjah_category_art',categoryArt);
+    renderAdminCategories();populateProductCategories();renderProducts();
+  }
+}function renderAdminCategories(){
+  const box=document.getElementById('adminCategories');if(!box)return;box.innerHTML='';
+  categories.forEach(c=>{
+    const row=document.createElement('div');row.className='adminrow';
+    let preview;
+    if(categoryArt[c]){preview=document.createElement('img');preview.className='category-admin-preview';preview.src=categoryArt[c];preview.alt=c;}
+    else{preview=document.createElement('span');preview.className='category-emoji';preview.style.width='60px';preview.style.height='60px';preview.style.fontSize='30px';preview.textContent=categoryEmoji[c]||'🧴';}
+    const label=document.createElement('span');label.textContent=c;
+    const edit=document.createElement('button');edit.textContent='تعديل الاسم / الصورة';edit.onclick=()=>editCategory(c);
+    const btn=document.createElement('button');btn.className='danger';btn.textContent='حذف';btn.onclick=()=>deleteCategory(c);
+    row.append(preview,label,edit,btn);box.append(row);
+  });
+}
+async function editCategory(oldName){
+  const newName=prompt('اسم القسم:',oldName);if(newName===null)return;
+  const name=newName.trim();if(!name){alert('اسم القسم لا يمكن أن يكون فارغًا');return;}
+  if(name!==oldName&&categories.includes(name)){alert('يوجد قسم بهذا الاسم');return;}
+  const input=document.createElement('input');input.type='file';input.accept='image/*';
+  const chooseImage=confirm('هل تريد تغيير صورة القسم؟ اضغط موافق لاختيار صورة، أو إلغاء للاحتفاظ بالصورة الحالية.');
+  let image=categoryArt[oldName];
+  if(chooseImage){
+    const selected=await new Promise(resolve=>{input.onchange=()=>resolve(input.files[0]||null);input.click();});
+    if(selected){try{image=await uploadCompressedImageToBlob(selected,400,.68);}catch(e){alert(e.message);return;}}
+  }
+  categories=categories.map(c=>c===oldName?name:c);
+  if(image)categoryArt[name]=image;else delete categoryArt[name];
+  if(name!==oldName)delete categoryArt[oldName];
+  products=products.map(p=>p.category===oldName?{...p,category:name}:p);
+  persist('sharjah_categories',categories);persist('sharjah_category_art',categoryArt);persist('sharjah_products',products);
+  renderAdminCategories();renderAdminProducts();populateProductCategories(name);renderProducts();
+}function renderAdminCustomers(){let box=document.getElementById('adminCustomers');if(!box)return;box.innerHTML=customers.length?'':'<p>لا توجد حسابات عملاء مسجلة على هذا المتصفح.</p>';customers.forEach(c=>{let row=document.createElement('div');row.className='adminrow';let span=document.createElement('span');span.textContent=c.name+' | '+c.phone+' | '+c.username;let btn=document.createElement('button');btn.className='danger';btn.textContent='حذف الحساب';btn.onclick=()=>{if(confirm('حذف حساب العميل؟')){customers=customers.filter(x=>x.username!==c.username);persist('sharjah_customers',customers);if(loggedCustomer===c.username){loggedCustomer='';localStorage.removeItem('sharjah_logged_customer');}renderAdminCustomers();renderProducts();}};row.append(span,btn);box.append(row);});}
+const stageNames=['مراجعة','تم الطلب','تم التنفيذ','تم التسليم'];
+function renderStages(stage){let index=stageNames.indexOf(stage);return '<div class="stages">'+stageNames.map((s,i)=>'<span class="stage '+(i<=index?'done':'')+'">'+s+'</span>').join('')+'</div>';}
+function renderAdminOrders(){let box=document.getElementById('adminOrders');if(!box)return;box.innerHTML=orders.length?'':'<p>لا توجد طلبات بعد.</p>';orders.slice().reverse().forEach(o=>{let card=document.createElement('div');card.className='ordercard';card.innerHTML='<b>طلب #'+o.id+'</b><p>العميل: '+escapeHtml(o.customerName)+' — '+escapeHtml(o.phone)+'</p><p>الموقع: '+escapeHtml(o.location)+'</p><p>المنتجات: '+escapeHtml(o.items)+'</p><p>السند:</p>'+(o.proof?'<img class="proof" src="'+o.proof+'" alt="صورة السند">':'<p>لم ترفق صورة</p>')+renderStages(o.status);let buttons=document.createElement('div');stageNames.forEach((s,i)=>{let b=document.createElement('button');b.textContent=s;b.disabled=i<stageNames.indexOf(o.status);b.onclick=()=>{o.status=s;persist('sharjah_orders',orders);renderAdminOrders();renderProducts();};buttons.append(b);});let del=document.createElement('button');del.className='danger';del.textContent='حذف الطلب';del.onclick=()=>{if(confirm('حذف الطلب؟')){orders=orders.filter(x=>x.id!==o.id);persist('sharjah_orders',orders);renderAdminOrders();renderProducts();}};card.append(buttons,del);box.append(card);});}
+function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function escapeAttr(s){return escapeHtml(s);}
+function productCard(p){return '<article class="product">'+(p.image?'<img src="'+escapeAttr(p.image)+'" alt="">':'')+'<h3>'+escapeHtml(p.name)+'</h3><p>'+escapeHtml(p.category)+'</p><p><b>'+p.price+'</b></p><button onclick="addCart('+p.id+')">+ شراء / أضف للسلة</button></article>';}
+function addCart(id){cart.push(id);persist('sharjah_cart',cart);document.getElementById('cartdot').style.display='block';alert('تمت إضافة المنتج للسلة');}
+function renderProducts(){
+  const content=document.getElementById('content');
+  const q=normalizeSearch(document.getElementById('search').value);
+  const bannerEl=document.getElementById('homeBanners');
+  if(bannerEl){const show=(currentTab==='home'&&banners.length>0);bannerEl.style.display=show?'block':'none';if(show)renderHomeBanners();}
+  if(currentTab==='sections'){
+    content.innerHTML='<h2 class="section-title">الأقسام</h2><div class="category-grid">'+
+      categories.map(c=>'<button class="category-tile" onclick="filterCategory('+JSON.stringify(c)+')">'+categoryVisual(c)+'<span>'+escapeHtml(c)+'</span></button>').join('')+
+      '</div>';
+    if(!categories.length)content.innerHTML+='<div class="panel">لا توجد أقسام. أضف أقسامًا من لوحة التحكم.</div>';
+    return;
+  }
+  if(currentTab==='category'){
+    const selected=products.filter(p=>{
+      const productCategory=p.category||p.section||p.categoryName||p.group||'';
+      const wanted=normalizeSearch(selectedCategory), actual=normalizeSearch(productCategory);
+      return actual===wanted || (actual && wanted && (actual.includes(wanted)||wanted.includes(actual)));
+    });
+    content.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px"><h2 class="section-title" style="margin:0">'+escapeHtml(selectedCategory)+'</h2><button onclick="backToSections()" style="border:0;border-radius:12px;padding:10px 14px;background:#315d9d;color:#fff;font:inherit">رجوع للأقسام</button></div>'+
+      (selected.length?'<div class="products">'+selected.map(productCard).join('')+'</div>':'<div class="panel">لا توجد منتجات في هذا القسم حتى الآن.</div>');
+    return;
+  }
+  if(currentTab==='cart'){
+    const chosen=cart.map(id=>products.find(p=>p.id===id)).filter(Boolean);
+    content.innerHTML='<h2 class="section-title">السلة</h2>'+(chosen.length?'<div class="products">'+chosen.map(productCard).join('')+'</div>':'<div class="panel">السلة فارغة. أضف منتجات من الرئيسية أو البحث.</div>');
+    if(chosen.length)content.innerHTML+='<div class="checkoutform"><h3>إتمام الشراء</h3><p>سجّل دخولك أو أنشئ حسابًا من قسم حسابي لإرسال الطلب.</p><input id="checkoutLocation" placeholder="موقع العميل (مثلاً: المكلا، شارع ...)"><label class="fieldlabel">صورة سند الدفع</label><input id="checkoutProof" type="file" accept="image/*"><button onclick="submitOrder()">إرسال الطلب</button></div>';
+    return;
+  }
+  if(currentTab==='address'){
+    const phone=String(settings.phone||'').replace(/[^0-9]/g,'');const whatsapp=phone?(phone.startsWith('967')?phone:'967'+phone):'';
+    content.innerHTML='<h2 class="section-title">العنوان وبيانات التواصل</h2><div class="panel"><h2>'+escapeHtml(settings.brand||'صيدلية الشارقة')+'</h2><p><b>العنوان:</b> '+escapeHtml(settings.address||'لم يتم إضافة العنوان بعد')+'</p><p><b>رقم الجوال / الهاتف:</b> '+escapeHtml(settings.phone||'لم يتم إضافة رقم الهاتف بعد')+'</p>'+(settings.phone?'<a class="contact-link" href="tel:'+escapeAttr(settings.phone)+'"><button>اتصال</button></a>':'')+(settings.whatsappEnabled&&whatsapp?'<a class="contact-link" target="_blank" rel="noopener" href="https://wa.me/'+whatsapp+'"><button>تواصل عبر واتساب</button></a>':'')+'</div>';return;
+  }
+  if(currentTab==='account'){renderAccount(content);return;}
+  const filtered=q?products.filter(p=>normalizeSearch((p.name||'')+' '+(p.category||p.section||p.categoryName||p.group||'')).includes(q)):products.filter(p=>p.featured);
+  content.innerHTML=filtered.length?'<div class="products">'+filtered.map(productCard).join('')+'</div>':'<div class="panel">'+(q?'لا توجد منتجات تطابق البحث.':'لا توجد منتجات محددة للعرض في الرئيسية بعد.')+'</div>';
+}function filterCategory(category){
+  selectedCategory=category;
+  document.getElementById('search').value='';
+  currentTab='category';
+  document.querySelectorAll('.navitem').forEach(n=>n.classList.remove('active'));
+  const sectionsNav=[...document.querySelectorAll('.navitem')].find(n=>n.textContent.includes('أقسام'));
+  if(sectionsNav)sectionsNav.classList.add('active');
+  renderProducts();
+}
+function backToSections(){currentTab='sections';renderProducts();}
+function setTab(tab,el){
+  currentTab=tab;
+  document.querySelectorAll('.navitem').forEach(n=>n.classList.remove('active'));
+  if(el)el.classList.add('active');
+  renderProducts();
+}function showSections(){
+  currentTab='sections';
+  document.querySelectorAll('.navitem').forEach(n=>n.classList.remove('active'));
+  const sectionsNav=[...document.querySelectorAll('.navitem')].find(n=>n.textContent.includes('أقسام'));
+  if(sectionsNav)sectionsNav.classList.add('active');
+  renderProducts();
+}function renderAccount(content){let customer=customers.find(c=>c.username===loggedCustomer);if(customer){content.innerHTML='<h2 class="section-title">حسابي</h2><div class="accountform"><h3>مرحباً '+escapeHtml(customer.name)+'</h3><p>الجوال: '+escapeHtml(customer.phone)+'</p><button onclick="logoutCustomer()">تسجيل الخروج</button></div><h3 class="section-title">طلباتي</h3>';let mine=orders.filter(o=>o.username===customer.username);content.innerHTML+=mine.length?mine.map(o=>'<div class="ordercard"><b>طلب #'+o.id+'</b><p>'+escapeHtml(o.items)+'</p><p>الحالة: '+escapeHtml(o.status)+'</p>'+renderStages(o.status)+'</div>').join(''):'<div class="panel">لا توجد طلبات مسجلة.</div>';return;}
+content.innerHTML='<h2 class="section-title">حسابي</h2><div class="accountform"><h3>تسجيل الدخول</h3><input id="loginUsername" placeholder="اسم المستخدم"><input id="loginPassword" type="password" placeholder="كلمة المرور"><button onclick="customerLogin()">دخول</button><p id="customerError" style="color:#c0392b"></p></div><div class="accountform"><h3>إنشاء حساب جديد</h3><input id="newCustomerName" placeholder="اسم العميل"><input id="newCustomerPhone" type="tel" placeholder="جواله"><input id="newCustomerUsername" placeholder="اسم المستخدم"><input id="newCustomerPassword" type="password" placeholder="كلمة المرور"><button onclick="createCustomer()">حفظ / إنشاء حساب</button></div>';}
+function customerLogin(){let username=document.getElementById('loginUsername').value.trim(),password=document.getElementById('loginPassword').value;let c=customers.find(x=>x.username===username&&x.password===password);if(!c){document.getElementById('customerError').textContent='اسم المستخدم أو كلمة المرور غير صحيحة';return;}loggedCustomer=username;localStorage.setItem('sharjah_logged_customer',username);renderProducts();}
+function createCustomer(){let name=document.getElementById('newCustomerName').value.trim(),phone=document.getElementById('newCustomerPhone').value.trim(),username=document.getElementById('newCustomerUsername').value.trim(),password=document.getElementById('newCustomerPassword').value;if(!name||!phone||!username||!password){alert('أكمل جميع البيانات');return;}if(customers.some(c=>c.username===username)){alert('اسم المستخدم مستخدم مسبقاً');return;}customers.push({name,phone,username,password});persist('sharjah_customers',customers);loggedCustomer=username;localStorage.setItem('sharjah_logged_customer',username);alert('تم إنشاء الحساب وتسجيل الدخول');renderProducts();}
+function logoutCustomer(){loggedCustomer='';localStorage.removeItem('sharjah_logged_customer');renderProducts();}
+function submitOrder(){let customer=customers.find(c=>c.username===loggedCustomer);if(!customer){alert('يرجى تسجيل الدخول أو إنشاء حساب من قسم حسابي أولاً');currentTab='account';setTab('account',document.querySelectorAll('.navitem')[4]);return;}let location=document.getElementById('checkoutLocation').value.trim(),file=document.getElementById('checkoutProof').files[0];if(!location){alert('أدخل موقع العميل بالتفصيل');return;}if(!file){alert('أرفق صورة سند الدفع');return;}if(!file.type.startsWith('image/')){alert('الملف يجب أن يكون صورة');return;}let reader=new FileReader();reader.onload=()=>{let chosen=cart.map(id=>products.find(p=>p.id===id)).filter(Boolean);let items=chosen.map(p=>p.name+' ×1 ('+p.price+')').join('، ');orders.push({id:Date.now(),username:customer.username,customerName:customer.name,phone:customer.phone,location,proof:reader.result,items,status:'مراجعة',createdAt:new Date().toISOString()});persist('sharjah_orders',orders);cart=[];persist('sharjah_cart',cart);document.getElementById('cartdot').style.display='none';alert('تم إرسال طلبك: قيد المراجعة');renderProducts();};reader.readAsDataURL(file);}
+document.getElementById('cartdot').style.display=cart.length?'block':'none';
+renderProducts();
+if(document.body.classList.contains('admin-route')) openAdmin();
+</script>
+</body>
+</html>
