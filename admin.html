@@ -5,16 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>لوحة تحكم صيدلية الشارقة</title>
 <style>
-:root{--green:#e8effa;--green-dark:#315d9d;--blue:#345bb0;--white:#fff;--ink:#20212a}
+:root{--green:#e8effa;--green-dark:#1a2b7c;--blue:#1a2b7c;--white:#fff;--ink:#20212a}
 *{box-sizing:border-box}
 body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#eaf2f8;color:var(--ink);min-height:100dvh}
-svg{width:34px;height:34px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .panel{background:#fff;border-radius:20px;padding:18px;margin:16px auto;max-width:720px;width:100%}
 .panel h2{margin:0 0 15px;color:var(--green-dark)}
 .panel input,.panel select,.panel textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px;font:inherit}
 .panel button{border:0;border-radius:10px;padding:11px 15px;margin:5px;background:var(--green-dark);color:#fff;font:inherit;cursor:pointer}
 .panel button.danger{background:#c0392b}
-.adminrow{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #eee;padding:10px 0}
+.adminrow{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #eee;padding:10px 0;flex-wrap:wrap}
 .ordercard{background:#f9fbfd;border:1px solid #e1e8f0;border-radius:16px;padding:14px;margin:12px 0}
 .stages{display:flex;flex-wrap:wrap;gap:5px;margin:12px 0}
 .stage{padding:7px 9px;border-radius:9px;background:#e8e8e8;color:#666;font-size:13px}
@@ -25,39 +24,38 @@ svg{width:34px;height:34px;stroke:currentColor;fill:none;stroke-width:2.2;stroke
 .banner-admin-card span{flex:1;font-weight:bold}
 #adminOverlay{display:block;position:relative;min-height:100dvh;background:#eaf2f8;padding:14px}
 #adminOverlay .panel#adminPanel{max-width:760px;margin:24px auto;background:#fff;border-radius:38px;padding:28px 24px 34px;box-shadow:0 10px 30px #203c5510;color:#26354a}
-#adminPanel h2{font-size:clamp(25px,5vw,34px);color:#2d4058;text-align:right;margin:0 0 12px}
-#adminPanel h3{font-size:22px;color:#26354a;margin:28px 0 14px}
-#adminPanel label{display:block;color:#666;font-size:17px;margin:18px 0 7px}
-#adminPanel input:not([type=file]):not([type=color]):not([type=checkbox]),#adminPanel select,#adminPanel textarea{width:100%;height:70px;padding:15px 18px;margin:7px 0 12px;border:2px solid #e0e4e8;border-radius:20px;background:#fff;font:inherit;font-size:19px}
-#adminPanel input[type=file]{width:100%;padding:18px;border:2px solid #e0e4e8;border-radius:20px;margin:7px 0 12px;font:inherit}
-#adminPanel input[type=color]{width:100%;height:64px;padding:6px;border:2px solid #e0e4e8;border-radius:20px;background:#fff;cursor:pointer}
-#adminPanel button{border:0;border-radius:20px;padding:17px 22px;margin:5px;background:#edf1fb;color:#36558e;font:inherit;font-size:18px;cursor:pointer}
+#adminPanel h2{font-size:clamp(25px,5vw,34px);color:#1a2b7c;text-align:right;margin:0 0 12px}
+#adminPanel h3{font-size:21px;color:#1a2b7c;margin:26px 0 12px}
+#adminPanel label{display:block;color:#555;font-size:16px;margin:14px 0 6px;font-weight:bold}
+#adminPanel input:not([type=file]):not([type=color]):not([type=checkbox]),#adminPanel select,#adminPanel textarea{width:100%;height:62px;padding:12px 16px;margin:6px 0 10px;border:2px solid #e0e4e8;border-radius:18px;background:#fff;font:inherit;font-size:17px}
+#adminPanel input[type=file]{width:100%;padding:14px;border:2px solid #e0e4e8;border-radius:18px;margin:6px 0 10px;font:inherit}
+#adminPanel input[type=color]{width:100%;height:56px;padding:5px;border:2px solid #e0e4e8;border-radius:18px;background:#fff;cursor:pointer}
+#adminPanel button{border:0;border-radius:18px;padding:14px 20px;margin:5px;background:#edf1fb;color:#1a2b7c;font:inherit;font-size:16px;font-weight:bold;cursor:pointer}
 #adminPanel button.danger{background:#d94b4b;color:white}
-#adminPanel button.primary{background:#315d9d;color:#fff}
+#adminPanel button.primary{background:#1a2b7c;color:#fff}
 .admin-toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 22px}
 .admin-toolbar button{flex:1;min-width:115px}
 .admin-status{display:inline-block;background:#e8f4ed;color:#23744f;border-radius:25px;padding:9px 18px;margin:0 0 10px;font-weight:bold}
 .admin-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:20px 0 25px}
-.admin-tabs button{min-height:68px;margin:0!important}
-.admin-tabs button.selected{background:#315d9d!important;color:white!important}
+.admin-tabs button{min-height:60px;margin:0!important}
+.admin-tabs button.selected{background:#1a2b7c!important;color:white!important}
 .admin-section{border-top:1px solid #e8e8e8;padding-top:20px;margin-top:20px}
-#adminProducts .adminrow{border:1px solid #e2e5e9;border-radius:22px;padding:16px;margin:12px 0;flex-wrap:wrap}
-#adminProducts .adminrow span{font-weight:bold;color:#2d4058}
-#adminProducts .adminrow button{padding:12px 18px}
-.category-emoji{width:60px;height:60px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,#eef4ff,#f4eefe);font-size:30px}
-.category-admin-preview{width:60px;height:60px;object-fit:contain;border-radius:12px;background:#f4f7fc;padding:4px}
+#adminProducts .adminrow{border:1px solid #e2e5e9;border-radius:18px;padding:14px;margin:10px 0}
+.category-emoji{width:56px;height:56px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,#eef4ff,#f4eefe);font-size:28px}
+.category-admin-preview{width:56px;height:56px;object-fit:cover;border-radius:12px;background:#f4f7fc}
+.subcat-box{background:#f5f8ff;border:1px solid #d8e3f8;border-radius:20px;padding:16px;margin-top:18px}
 .color-presets{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 14px;align-items:center}
-.color-swatch{width:46px!important;height:46px!important;padding:0!important;border-radius:50%!important;border:3px solid #cbd5e1!important;margin:0!important}
+.color-swatch{width:44px!important;height:44px!important;padding:0!important;border-radius:50%!important;border:3px solid #cbd5e1!important;margin:0!important}
 .logo-preview-box{display:flex;align-items:center;gap:12px;margin:8px 0}
 .logo-preview-box img{width:64px;height:64px;object-fit:contain;border-radius:14px;border:1px solid #ddd;background:#f8fafc;padding:4px}
-@media(max-width:480px){#adminOverlay{padding:8px}#adminOverlay .panel#adminPanel{padding:22px 18px 30px;border-radius:32px;margin:10px auto}#adminPanel input:not([type=file]):not([type=color]):not([type=checkbox]),#adminPanel select{height:66px}.admin-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){#adminOverlay{padding:8px}#adminOverlay .panel#adminPanel{padding:20px 16px 28px;border-radius:28px;margin:10px auto}.admin-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
 <div id="adminOverlay">
   <section class="panel" id="loginPanel">
     <h2>دخول لوحة التحكم</h2>
-    <p><a href="./index.html" style="color:#315d9d;text-decoration:none;font-weight:bold">← العودة إلى المتجر</a></p>
+    <p><a href="./index.html" style="color:#1a2b7c;text-decoration:none;font-weight:bold">← العودة إلى المتجر</a></p>
     <input id="adminPass" type="password" placeholder="كلمة المرور" onkeydown="if(event.key==='Enter')loginAdmin()">
     <button onclick="loginAdmin()">تسجيل الدخول</button>
     <button class="danger" onclick="closeAdmin()">إغلاق</button>
@@ -74,7 +72,7 @@ svg{width:34px;height:34px;stroke:currentColor;fill:none;stroke-width:2.2;stroke
     </div>
     <div class="admin-tabs">
       <button class="selected" onclick="adminJump('productSection',this)">المنتجات</button>
-      <button onclick="adminJump('categorySection',this)">الأقسام</button>
+      <button onclick="adminJump('categorySection',this)">الأقسام والفرعية</button>
       <button onclick="adminJump('bannerSection',this)">صور الإعلان</button>
       <button onclick="adminJump('customerSection',this)">العملاء</button>
       <button onclick="adminJump('orderSection',this)">الطلبات</button>
@@ -94,13 +92,13 @@ svg{width:34px;height:34px;stroke:currentColor;fill:none;stroke-width:2.2;stroke
 
       <label>لون خلفية المتجر</label>
       <div class="color-presets">
-        <button type="button" class="color-swatch" style="background:#eaf1fb" title="أزرق فاتح (الافتراضي)" onclick="pickBgColor('#eaf1fb')"></button>
+        <button type="button" class="color-swatch" style="background:#f3f5f9" title="رمادي فاتح (الافتراضي)" onclick="pickBgColor('#f3f5f9')"></button>
+        <button type="button" class="color-swatch" style="background:#eaf1fb" title="أزرق فاتح" onclick="pickBgColor('#eaf1fb')"></button>
         <button type="button" class="color-swatch" style="background:#e8f6ef" title="أخضر طبي" onclick="pickBgColor('#e8f6ef')"></button>
         <button type="button" class="color-swatch" style="background:#fdf2f8" title="وردي ناعم" onclick="pickBgColor('#fdf2f8')"></button>
-        <button type="button" class="color-swatch" style="background:#f5f5f7" title="رمادي هادئ" onclick="pickBgColor('#f5f5f7')"></button>
-        <button type="button" style="padding:10px 14px;font-size:15px" onclick="pickBgColor('#eaf1fb')">إعادة الافتراضي</button>
+        <button type="button" style="padding:10px 14px;font-size:14px" onclick="pickBgColor('#f3f5f9')">إعادة الافتراضي</button>
       </div>
-      <input id="adminBgColor" type="color" value="#eaf1fb">
+      <input id="adminBgColor" type="color" value="#f3f5f9">
 
       <label>العنوان التفصيلي للصيدلية</label><input id="adminAddress" placeholder="مثلاً: المكلا، شارع ...">
       <label>رقم الجوال / الهاتف</label><input id="adminPhone" type="tel" placeholder="أدخل رقم الهاتف">
@@ -110,9 +108,13 @@ svg{width:34px;height:34px;stroke:currentColor;fill:none;stroke-width:2.2;stroke
 
     <div class="admin-section" id="productSection">
       <h3>إضافة / تعديل منتج</h3>
-      <input id="prodName" placeholder="اسم المنتج">
+      <input id="prodName" placeholder="اسم المنتج (مثلاً: اتوسيب 120 - Atocib 120)">
+      <input id="prodDesc" placeholder="وصف مختصر للمنتج (اختياري)">
       <input id="prodPrice" type="number" min="0" placeholder="السعر">
-      <label>القسم</label><select id="prodCategory"></select>
+      <label>القسم الرئيسي</label>
+      <select id="prodCategory" onchange="populateProductSubcategories()"></select>
+      <label>القسم الفرعي (اختياري — مثلاً: مسكن الألم وخافض الحرارة)</label>
+      <select id="prodSubcategory"></select>
       <label style="display:flex;align-items:center;gap:10px;cursor:pointer"><input id="prodFeatured" type="checkbox" style="width:22px;height:22px"> عرض المنتج في الرئيسية</label>
       <label>صورة المنتج (تُضغط وتُرفع تلقائياً إلى Vercel Blob)</label>
       <input id="prodImageFile" type="file" accept="image/*">
@@ -124,12 +126,23 @@ svg{width:34px;height:34px;stroke:currentColor;fill:none;stroke-width:2.2;stroke
     </div>
 
     <div class="admin-section" id="categorySection">
-      <h3>إدارة الأقسام</h3>
-      <input id="newCategory" placeholder="اسم القسم الجديد">
-      <label>صورة القسم (اختياري — تُضغط وتُرفع تلقائياً)</label>
+      <h3>1. الأقسام الرئيسية (مثل: الأدوية، عناية الطفل، الجمال)</h3>
+      <input id="newCategory" placeholder="اسم القسم الرئيسي الجديد">
+      <label>صورة القسم الرئيسي (تظهر في البطاقة الكبيرة)</label>
       <input id="newCategoryImage" type="file" accept="image/*">
-      <button class="primary" id="addCatBtn" onclick="addCategory()">إضافة قسم</button>
+      <button class="primary" id="addCatBtn" onclick="addCategory()">إضافة قسم رئيسي</button>
       <div id="adminCategories"></div>
+
+      <div class="subcat-box">
+        <h3>2. الأقسام الفرعية داخل كل قسم (مثل: مسكن الألم، قطر عيون)</h3>
+        <label>اختر القسم الرئيسي التابع له</label>
+        <select id="subcatParentSelect" onchange="renderAdminSubcategories()"></select>
+        <input id="newSubcategory" placeholder="اسم القسم الفرعي (مثلاً: مسكن الألم وخافض الحرارة)">
+        <label>صورة القسم الفرعي</label>
+        <input id="newSubcategoryImage" type="file" accept="image/*">
+        <button class="primary" id="addSubcatBtn" onclick="addSubcategory()">+ إضافة قسم فرعي</button>
+        <div id="adminSubcategories"></div>
+      </div>
     </div>
 
     <div class="admin-section" id="bannerSection">
@@ -157,11 +170,12 @@ svg{width:34px;height:34px;stroke:currentColor;fill:none;stroke-width:2.2;stroke
 </div>
 
 <script>
-const defaultCategories=['أدوية','العناية بطفل','العناية بالأم','أدوات تجميل'];
-const categoryEmoji={'أدوية':'💊','العناية بطفل':'🧸','العناية بالأم':'🤱','أدوات تجميل':'💄'};
+const defaultCategories=['الأدوية','عناية الطفل','الجمال','العروض','العناية بالمرأة','العطور'];
+const categoryEmoji={'الأدوية':'💊','عناية الطفل':'🧸','الجمال':'💄','العروض':'🏷️','العناية بالمرأة':'🤱','العطور':'🧴'};
 let categoryArt={};
+let subcategories={}; // { "الأدوية": [ { name: "مسكن الألم", image: "..." } ] }
 let products=[];
-let settings={brand:'صيدلية الشارقة',logo:'',bgColor:'#eaf1fb',address:'',phone:'',whatsappEnabled:false};
+let settings={brand:'صيدلية الشارقة',logo:'',bgColor:'#f3f5f9',address:'',phone:'',whatsappEnabled:false};
 let customers=[];
 let orders=[];
 let categories=[...defaultCategories];
@@ -178,7 +192,7 @@ function setSyncStatus(text,isError=false){
   el.style.color=isError?'#c0392b':'#23744f';
 }
 
-function compressImageFile(file,maxSide=640,quality=.72){
+function compressImageFile(file,maxSide=640,quality=.75){
   return new Promise((resolve,reject)=>{
     if(!file||!file.type.startsWith('image/')){reject(new Error('يرجى اختيار ملف صورة'));return;}
     const reader=new FileReader();
@@ -201,7 +215,7 @@ function compressImageFile(file,maxSide=640,quality=.72){
   });
 }
 
-async function uploadCompressedImageToBlob(file,maxSide=640,quality=.72){
+async function uploadCompressedImageToBlob(file,maxSide=640,quality=.75){
   setSyncStatus('⏳ جاري رفع الصورة إلى Vercel Blob...');
   const dataUrl=await compressImageFile(file,maxSide,quality);
   const blob=await (await fetch(dataUrl)).blob();
@@ -224,7 +238,7 @@ async function syncStoreToBlob(){
     body:JSON.stringify({
       action:'admin_save',
       password:adminToken,
-      payload:{products,categories,categoryArt,banners,settings,customers,orders}
+      payload:{products,categories,categoryArt,subcategories,banners,settings,customers,orders}
     })
   });
   if(!res.ok){
@@ -277,6 +291,7 @@ function applyStoreData(store){
   products=store.products||[];
   categories=store.categories||defaultCategories;
   categoryArt=store.categoryArt||{};
+  subcategories=store.subcategories||{};
   banners=store.banners||[];
   settings={...settings,...(store.settings||{})};
   customers=store.customers||[];
@@ -284,7 +299,7 @@ function applyStoreData(store){
 
   document.getElementById('adminHeaderTitle').textContent='لوحة تحكم '+(settings.brand||'صيدلية الشارقة');
   document.getElementById('adminBrand').value=settings.brand||'صيدلية الشارقة';
-  document.getElementById('adminBgColor').value=settings.bgColor||'#eaf1fb';
+  document.getElementById('adminBgColor').value=settings.bgColor||'#f3f5f9';
   document.getElementById('adminAddress').value=settings.address||'';
   document.getElementById('adminPhone').value=settings.phone||'';
   document.getElementById('adminWhatsappEnabled').checked=!!settings.whatsappEnabled;
@@ -296,15 +311,15 @@ function applyStoreData(store){
 
   renderAdminProducts();
   renderAdminCategories();
+  populateSubcatParentSelect();
+  renderAdminSubcategories();
   renderAdminCustomers();
   renderAdminOrders();
   renderAdminBanners();
   populateProductCategories();
 }
 
-function pickBgColor(hex){
-  document.getElementById('adminBgColor').value=hex;
-}
+function pickBgColor(hex){document.getElementById('adminBgColor').value=hex;}
 
 async function removeLogo(){
   if(!confirm('حذف شعار الصيدلية؟'))return;
@@ -333,7 +348,7 @@ async function saveSettings(){
     settings={
       brand:document.getElementById('adminBrand').value.trim()||'صيدلية الشارقة',
       logo:logoUrl,
-      bgColor:document.getElementById('adminBgColor').value||'#eaf1fb',
+      bgColor:document.getElementById('adminBgColor').value||'#f3f5f9',
       address:document.getElementById('adminAddress').value.trim(),
       phone:document.getElementById('adminPhone').value.trim(),
       whatsappEnabled:document.getElementById('adminWhatsappEnabled').checked
@@ -346,14 +361,11 @@ async function saveSettings(){
       document.getElementById('logoPreviewBox').style.display='flex';
     }
     alert('تم حفظ الإعدادات والمظهر في السحابة');
-  }catch(e){
-    alert(e.message);
-  }finally{
-    if(btn)btn.disabled=false;
-  }
+  }catch(e){alert(e.message);}
+  finally{if(btn)btn.disabled=false;}
 }
 
-function populateProductCategories(selected){
+function populateProductCategories(selectedCat,selectedSub){
   const sel=document.getElementById('prodCategory');
   if(!sel)return;
   sel.innerHTML='';
@@ -363,13 +375,30 @@ function populateProductCategories(selected){
   categories.forEach(c=>{
     const opt=document.createElement('option');opt.value=c;opt.textContent=c;sel.append(opt);
   });
-  if(selected && categories.includes(selected))sel.value=selected;
+  if(selectedCat && categories.includes(selectedCat))sel.value=selectedCat;
+  populateProductSubcategories(selectedSub);
+}
+
+function populateProductSubcategories(selectedSub){
+  const cat=document.getElementById('prodCategory').value;
+  const subSel=document.getElementById('prodSubcategory');
+  if(!subSel)return;
+  subSel.innerHTML='<option value="">-- بدون قسم فرعي (عرض مباشر في القسم الرئيسي) --</option>';
+  const list=subcategories[cat]||[];
+  list.forEach(s=>{
+    const opt=document.createElement('option');
+    opt.value=s.name;opt.textContent=s.name;
+    subSel.append(opt);
+  });
+  if(selectedSub)subSel.value=selectedSub;
 }
 
 async function saveProduct(){
   const name=document.getElementById('prodName').value.trim();
+  const desc=document.getElementById('prodDesc').value.trim();
   const price=document.getElementById('prodPrice').value;
   const category=document.getElementById('prodCategory').value||categories[0]||'عام';
+  const subcategory=document.getElementById('prodSubcategory').value||'';
   let image=document.getElementById('prodImage').value.trim();
   const file=document.getElementById('prodImageFile').files[0];
   const featured=document.getElementById('prodFeatured').checked;
@@ -378,22 +407,19 @@ async function saveProduct(){
   const btn=document.getElementById('saveProdBtn');
   if(btn)btn.disabled=true;
   try{
-    if(file)image=await uploadCompressedImageToBlob(file,640,.72);
-    if(editId!==null)products=products.map(p=>p.id===editId?{...p,name,price:Number(price),category,image,featured}:p);
-    else products.push({id:Date.now(),name,price:Number(price),category,image,featured});
+    if(file)image=await uploadCompressedImageToBlob(file,640,.75);
+    if(editId!==null)products=products.map(p=>p.id===editId?{...p,name,desc,price:Number(price),category,subcategory,image,featured}:p);
+    else products.push({id:Date.now(),name,desc,price:Number(price),category,subcategory,image,featured});
     await syncStoreToBlob();
     clearProductForm();
     renderAdminProducts();
-  }catch(e){
-    alert(e.message||'تعذر حفظ المنتج');
-  }finally{
-    if(btn)btn.disabled=false;
-  }
+  }catch(e){alert(e.message||'تعذر حفظ المنتج');}
+  finally{if(btn)btn.disabled=false;}
 }
 
 function clearProductForm(){
   editId=null;
-  ['prodName','prodPrice','prodImage'].forEach(id=>document.getElementById(id).value='');
+  ['prodName','prodDesc','prodPrice','prodImage'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('prodImageFile').value='';
   document.getElementById('prodFeatured').checked=false;
   populateProductCategories();
@@ -403,8 +429,9 @@ function editProduct(id){
   const p=products.find(x=>x.id===id);if(!p)return;
   editId=id;
   document.getElementById('prodName').value=p.name;
+  document.getElementById('prodDesc').value=p.desc||'';
   document.getElementById('prodPrice').value=p.price;
-  populateProductCategories(p.category);
+  populateProductCategories(p.category,p.subcategory||'');
   document.getElementById('prodImage').value=p.image||'';
   document.getElementById('prodImageFile').value='';
   document.getElementById('prodFeatured').checked=!!p.featured;
@@ -423,7 +450,8 @@ function renderAdminProducts(){
   products.forEach(p=>{
     let row=document.createElement('div');row.className='adminrow';
     let info=document.createElement('span');
-    info.textContent=p.name+' — '+p.price+' ('+p.category+')'+(p.featured?' ★ الرئيسية':'');
+    const path=p.category+(p.subcategory?' ← '+p.subcategory:'');
+    info.textContent=p.name+' — '+p.price+' ('+path+')'+(p.featured?' ★ الرئيسية':'');
     let actions=document.createElement('div');
     let e=document.createElement('button');e.textContent='تعديل';e.onclick=()=>editProduct(p.id);
     let d=document.createElement('button');d.textContent='حذف';d.className='danger';d.onclick=()=>deleteProduct(p.id);
@@ -439,27 +467,28 @@ async function addCategory(){
   const btn=document.getElementById('addCatBtn');
   if(btn)btn.disabled=true;
   try{
-    if(file)categoryArt[name]=await uploadCompressedImageToBlob(file,400,.70);
+    if(file)categoryArt[name]=await uploadCompressedImageToBlob(file,500,.75);
     categories.push(name);
     await syncStoreToBlob();
     document.getElementById('newCategory').value='';
     document.getElementById('newCategoryImage').value='';
     renderAdminCategories();
+    populateSubcatParentSelect(name);
     populateProductCategories();
-  }catch(e){
-    alert(e.message||'تعذر إضافة القسم');
-  }finally{
-    if(btn)btn.disabled=false;
-  }
+  }catch(e){alert(e.message||'تعذر إضافة القسم');}
+  finally{if(btn)btn.disabled=false;}
 }
 
 async function deleteCategory(name){
-  if(!confirm('حذف القسم؟ المنتجات الموجودة فيه ستبقى محفوظة.'))return;
+  if(!confirm('حذف القسم الرئيسي وأقسامه الفرعية؟'))return;
   categories=categories.filter(c=>c!==name);
   delete categoryArt[name];
+  delete subcategories[name];
   try{
     await syncStoreToBlob();
     renderAdminCategories();
+    populateSubcatParentSelect();
+    renderAdminSubcategories();
     populateProductCategories();
   }catch(e){alert(e.message);}
 }
@@ -471,15 +500,16 @@ function renderAdminCategories(){
     let preview;
     if(categoryArt[c]){preview=document.createElement('img');preview.className='category-admin-preview';preview.src=categoryArt[c];preview.alt=c;}
     else{preview=document.createElement('span');preview.className='category-emoji';preview.textContent=categoryEmoji[c]||'🧴';}
-    const label=document.createElement('span');label.textContent=c;
-    const edit=document.createElement('button');edit.textContent='تعديل الاسم / الصورة';edit.onclick=()=>editCategory(c);
+    const subCount=(subcategories[c]||[]).length;
+    const label=document.createElement('span');label.textContent=c+' ('+subCount+' أقسام فرعية)';
+    const edit=document.createElement('button');edit.textContent='تعديل';edit.onclick=()=>editCategory(c);
     const btn=document.createElement('button');btn.className='danger';btn.textContent='حذف';btn.onclick=()=>deleteCategory(c);
     row.append(preview,label,edit,btn);box.append(row);
   });
 }
 
 async function editCategory(oldName){
-  const newName=prompt('اسم القسم:',oldName);if(newName===null)return;
+  const newName=prompt('اسم القسم الرئيسي:',oldName);if(newName===null)return;
   const name=newName.trim();if(!name){alert('اسم القسم لا يمكن أن يكون فارغًا');return;}
   if(name!==oldName&&categories.includes(name)){alert('يوجد قسم بهذا الاسم');return;}
   const input=document.createElement('input');input.type='file';input.accept='image/*';
@@ -487,17 +517,111 @@ async function editCategory(oldName){
   let image=categoryArt[oldName];
   if(chooseImage){
     const selected=await new Promise(resolve=>{input.onchange=()=>resolve(input.files[0]||null);input.click();});
-    if(selected){try{image=await uploadCompressedImageToBlob(selected,400,.70);}catch(e){alert(e.message);return;}}
+    if(selected){try{image=await uploadCompressedImageToBlob(selected,500,.75);}catch(e){alert(e.message);return;}}
   }
   categories=categories.map(c=>c===oldName?name:c);
   if(image)categoryArt[name]=image;else delete categoryArt[name];
-  if(name!==oldName)delete categoryArt[oldName];
+  if(name!==oldName){
+    delete categoryArt[oldName];
+    if(subcategories[oldName]){subcategories[name]=subcategories[oldName];delete subcategories[oldName];}
+  }
   products=products.map(p=>p.category===oldName?{...p,category:name}:p);
   try{
     await syncStoreToBlob();
     renderAdminCategories();
+    populateSubcatParentSelect(name);
     renderAdminProducts();
     populateProductCategories(name);
+  }catch(e){alert(e.message);}
+}
+
+// إدارة الأقسام الفرعية
+function populateSubcatParentSelect(selected){
+  const sel=document.getElementById('subcatParentSelect');
+  if(!sel)return;
+  const prev=selected||sel.value;
+  sel.innerHTML='';
+  categories.forEach(c=>{
+    const opt=document.createElement('option');opt.value=c;opt.textContent=c;sel.append(opt);
+  });
+  if(prev && categories.includes(prev))sel.value=prev;
+}
+
+async function addSubcategory(){
+  const parent=document.getElementById('subcatParentSelect').value;
+  const name=document.getElementById('newSubcategory').value.trim();
+  const file=document.getElementById('newSubcategoryImage').files[0];
+  if(!parent){alert('اختر القسم الرئيسي أولاً');return;}
+  if(!name){alert('أدخل اسم القسم الفرعي');return;}
+  if(!subcategories[parent])subcategories[parent]=[];
+  if(subcategories[parent].some(s=>s.name===name)){alert('هذا القسم الفرعي موجود بالفعل');return;}
+  const btn=document.getElementById('addSubcatBtn');
+  if(btn)btn.disabled=true;
+  try{
+    let image='';
+    if(file)image=await uploadCompressedImageToBlob(file,400,.75);
+    subcategories[parent].push({name,image});
+    await syncStoreToBlob();
+    document.getElementById('newSubcategory').value='';
+    document.getElementById('newSubcategoryImage').value='';
+    renderAdminSubcategories();
+    renderAdminCategories();
+    populateProductCategories();
+  }catch(e){alert(e.message);}
+  finally{if(btn)btn.disabled=false;}
+}
+
+function renderAdminSubcategories(){
+  const parent=document.getElementById('subcatParentSelect').value;
+  const box=document.getElementById('adminSubcategories');
+  if(!box)return;
+  box.innerHTML='';
+  const list=subcategories[parent]||[];
+  if(!list.length){box.innerHTML='<p style="color:#666">لا توجد أقسام فرعية داخل "'+parent+'" بعد.</p>';return;}
+  list.forEach((s,idx)=>{
+    const row=document.createElement('div');row.className='adminrow';
+    let preview;
+    if(s.image){preview=document.createElement('img');preview.className='category-admin-preview';preview.src=s.image;}
+    else{preview=document.createElement('span');preview.className='category-emoji';preview.textContent='💊';}
+    const label=document.createElement('span');label.textContent=s.name;
+    const edit=document.createElement('button');edit.textContent='تعديل';edit.onclick=()=>editSubcategory(parent,idx);
+    const del=document.createElement('button');del.className='danger';del.textContent='حذف';del.onclick=()=>deleteSubcategory(parent,idx);
+    row.append(preview,label,edit,del);box.append(row);
+  });
+}
+
+async function editSubcategory(parent,idx){
+  const item=subcategories[parent][idx];
+  const newName=prompt('اسم القسم الفرعي:',item.name);
+  if(newName===null)return;
+  const name=newName.trim();
+  if(!name){alert('الاسم لا يمكن أن يكون فارغاً');return;}
+  const chooseImg=confirm('هل تريد تغيير صورة القسم الفرعي؟');
+  let image=item.image;
+  if(chooseImg){
+    const input=document.createElement('input');input.type='file';input.accept='image/*';
+    const selected=await new Promise(resolve=>{input.onchange=()=>resolve(input.files[0]||null);input.click();});
+    if(selected){try{image=await uploadCompressedImageToBlob(selected,400,.75);}catch(e){alert(e.message);return;}}
+  }
+  const oldSubName=item.name;
+  subcategories[parent][idx]={name,image};
+  products=products.map(p=>(p.category===parent&&p.subcategory===oldSubName)?{...p,subcategory:name}:p);
+  try{
+    await syncStoreToBlob();
+    renderAdminSubcategories();
+    renderAdminProducts();
+    populateProductCategories();
+  }catch(e){alert(e.message);}
+}
+
+async function deleteSubcategory(parent,idx){
+  if(!confirm('حذف هذا القسم الفرعي؟'))return;
+  subcategories[parent].splice(idx,1);
+  try{
+    await syncStoreToBlob();
+    renderAdminSubcategories();
+    renderAdminCategories();
+    populateProductCategories();
   }catch(e){alert(e.message);}
 }
 
@@ -519,11 +643,8 @@ async function saveBanner(){
     await syncStoreToBlob();
     cancelBannerEdit();
     renderAdminBanners();
-  }catch(e){
-    alert(e.message);
-  }finally{
-    if(btn)btn.disabled=false;
-  }
+  }catch(e){alert(e.message);}
+  finally{if(btn)btn.disabled=false;}
 }
 
 function editBanner(i){
