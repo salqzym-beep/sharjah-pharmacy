@@ -13,7 +13,7 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#eaf2f8;color:var(-
 .panel input,.panel select,.panel textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px;font:inherit}
 .panel button{border:0;border-radius:10px;padding:11px 15px;margin:5px;background:var(--green-dark);color:#fff;font:inherit;cursor:pointer}
 .panel button.danger{background:#c0392b}
-.adminrow{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #eee;padding:10px 0;flex-wrap:wrap}
+.adminrow{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid #e4e9f2;border-radius:16px;padding:12px 14px;margin:10px 0;flex-wrap:wrap;background:#fafcff}
 .ordercard{background:#f9fbfd;border:1px solid #e1e8f0;border-radius:16px;padding:14px;margin:12px 0}
 .stages{display:flex;flex-wrap:wrap;gap:5px;margin:12px 0}
 .stage{padding:7px 9px;border-radius:9px;background:#e8e8e8;color:#666;font-size:13px}
@@ -23,29 +23,31 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#eaf2f8;color:var(-
 .banner-admin-card img{width:82px;height:60px;object-fit:cover;border-radius:10px}
 .banner-admin-card span{flex:1;font-weight:bold}
 #adminOverlay{display:block;position:relative;min-height:100dvh;background:#eaf2f8;padding:14px}
-#adminOverlay .panel#adminPanel{max-width:760px;margin:24px auto;background:#fff;border-radius:38px;padding:28px 24px 34px;box-shadow:0 10px 30px #203c5510;color:#26354a}
-#adminPanel h2{font-size:clamp(25px,5vw,34px);color:#1a2b7c;text-align:right;margin:0 0 12px}
-#adminPanel h3{font-size:21px;color:#1a2b7c;margin:26px 0 12px}
-#adminPanel label{display:block;color:#555;font-size:16px;margin:14px 0 6px;font-weight:bold}
-#adminPanel input:not([type=file]):not([type=color]):not([type=checkbox]),#adminPanel select,#adminPanel textarea{width:100%;height:62px;padding:12px 16px;margin:6px 0 10px;border:2px solid #e0e4e8;border-radius:18px;background:#fff;font:inherit;font-size:17px}
-#adminPanel input[type=file]{width:100%;padding:14px;border:2px solid #e0e4e8;border-radius:18px;margin:6px 0 10px;font:inherit}
-#adminPanel input[type=color]{width:100%;height:56px;padding:5px;border:2px solid #e0e4e8;border-radius:18px;background:#fff;cursor:pointer}
-#adminPanel button{border:0;border-radius:18px;padding:14px 20px;margin:5px;background:#edf1fb;color:#1a2b7c;font:inherit;font-size:16px;font-weight:bold;cursor:pointer}
+#adminOverlay .panel#adminPanel{max-width:760px;margin:20px auto;background:#fff;border-radius:34px;padding:26px 22px 32px;box-shadow:0 10px 30px #203c5510;color:#26354a}
+#adminPanel h2{font-size:clamp(24px,5vw,32px);color:#1a2b7c;text-align:right;margin:0 0 12px}
+#adminPanel h3{font-size:20px;color:#1a2b7c;margin:10px 0 14px}
+#adminPanel label{display:block;color:#555;font-size:15px;margin:14px 0 6px;font-weight:bold}
+#adminPanel input:not([type=file]):not([type=color]):not([type=checkbox]),#adminPanel select,#adminPanel textarea{width:100%;height:58px;padding:12px 16px;margin:6px 0 10px;border:2px solid #e0e4e8;border-radius:16px;background:#fff;font:inherit;font-size:16px}
+#adminPanel input[type=file]{width:100%;padding:14px;border:2px solid #e0e4e8;border-radius:16px;margin:6px 0 10px;font:inherit}
+#adminPanel input[type=color]{width:100%;height:54px;padding:5px;border:2px solid #e0e4e8;border-radius:16px;background:#fff;cursor:pointer}
+#adminPanel button{border:0;border-radius:16px;padding:13px 18px;margin:4px;background:#edf1fb;color:#1a2b7c;font:inherit;font-size:15px;font-weight:bold;cursor:pointer}
 #adminPanel button.danger{background:#d94b4b;color:white}
 #adminPanel button.primary{background:#1a2b7c;color:#fff}
-.admin-toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 22px}
-.admin-toolbar button{flex:1;min-width:115px}
-.admin-status{display:inline-block;background:#e8f4ed;color:#23744f;border-radius:25px;padding:9px 18px;margin:0 0 10px;font-weight:bold}
-.admin-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:20px 0 25px}
-.admin-tabs button{min-height:60px;margin:0!important}
-.admin-tabs button.selected{background:#1a2b7c!important;color:white!important}
-.admin-section{border-top:1px solid #e8e8e8;padding-top:20px;margin-top:20px}
-#adminProducts .adminrow{border:1px solid #e2e5e9;border-radius:18px;padding:14px;margin:10px 0}
+.admin-toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 18px}
+.admin-toolbar button{flex:1;min-width:110px}
+.admin-status{display:inline-block;background:#e8f4ed;color:#23744f;border-radius:25px;padding:8px 16px;margin:0 0 8px;font-weight:bold;font-size:14px}
+.admin-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:16px 0 22px}
+.admin-tabs button{min-height:54px;margin:0!important;font-size:14px!important}
+.admin-tabs button.selected{background:#1a2b7c!important;color:white!important;box-shadow:0 4px 12px #1a2b7c33}
+.admin-section{display:none;border-top:2px solid #eef2f8;padding-top:18px;margin-top:10px;animation:fadeTab .18s ease}
+.admin-section.active{display:block}
+@keyframes fadeTab{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .category-emoji{width:56px;height:56px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,#eef4ff,#f4eefe);font-size:28px}
 .category-admin-preview{width:56px;height:56px;object-fit:cover;border-radius:12px;background:#f4f7fc}
-.subcat-box{background:#f5f8ff;border:1px solid #d8e3f8;border-radius:20px;padding:16px;margin-top:18px}
+.subcat-box{background:#f5f8ff;border:1px solid #d8e3f8;border-radius:20px;padding:16px;margin-top:22px}
+.edit-card{background:#fff8eb;border:2px solid #f59f00;border-radius:18px;padding:14px;margin:12px 0}
 .color-presets{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 14px;align-items:center}
-.color-swatch{width:44px!important;height:44px!important;padding:0!important;border-radius:50%!important;border:3px solid #cbd5e1!important;margin:0!important}
+.color-swatch{width:42px!important;height:42px!important;padding:0!important;border-radius:50%!important;border:3px solid #cbd5e1!important;margin:0!important}
 .logo-preview-box{display:flex;align-items:center;gap:12px;margin:8px 0}
 .logo-preview-box img{width:64px;height:64px;object-fit:contain;border-radius:14px;border:1px solid #ddd;background:#f8fafc;padding:4px}
 @media(max-width:480px){#adminOverlay{padding:8px}#adminOverlay .panel#adminPanel{padding:20px 16px 28px;border-radius:28px;margin:10px auto}.admin-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -67,56 +69,33 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#eaf2f8;color:var(-
     <div class="admin-status" id="syncStatus">✓ متصل بـ Vercel Blob</div>
     <div class="admin-toolbar">
       <button onclick="closeAdmin()">عرض المتجر ↗</button>
-      <button onclick="refreshAdmin()">⟳ تحديث البيانات</button>
-      <button class="danger" onclick="logoutAdmin()">تسجيل خروج</button>
+      <button onclick="refreshAdmin()">⟳ تحديث</button>
+      <button class="danger" onclick="logoutAdmin()">خروج</button>
     </div>
+
+    <!-- أزرار التنقل المستقلة (يظهر قسم واحد فقط عند الضغط) -->
     <div class="admin-tabs">
-      <button class="selected" onclick="adminJump('productSection',this)">المنتجات</button>
-      <button onclick="adminJump('categorySection',this)">الأقسام والفرعية</button>
-      <button onclick="adminJump('bannerSection',this)">صور الإعلان</button>
-      <button onclick="adminJump('customerSection',this)">العملاء</button>
-      <button onclick="adminJump('orderSection',this)">الطلبات</button>
-      <button onclick="adminJump('settingsSection',this)">الإعدادات والمظهر</button>
+      <button class="selected" onclick="showAdminTab('productSection',this)">المنتجات</button>
+      <button onclick="showAdminTab('categorySection',this)">الأقسام والفرعية</button>
+      <button onclick="showAdminTab('bannerSection',this)">صور الإعلان</button>
+      <button onclick="showAdminTab('bankSection',this)">الحسابات البنكية</button>
+      <button onclick="showAdminTab('orderSection',this)">الطلبات</button>
+      <button onclick="showAdminTab('customerSection',this)">العملاء</button>
+      <button onclick="showAdminTab('settingsSection',this)">الإعدادات والمظهر</button>
     </div>
 
-    <div class="admin-section" id="settingsSection">
-      <h3>إعدادات الصيدلية والشعار والألوان</h3>
-      <label>اسم الصيدلية</label><input id="adminBrand" value="صيدلية الشارقة">
-      
-      <label>شعار الصيدلية (يظهر بجانب الاسم في الأعلى)</label>
-      <div class="logo-preview-box" id="logoPreviewBox" style="display:none">
-        <img id="logoPreviewImg" src="" alt="الشعار">
-        <button type="button" class="danger" style="padding:10px 14px;font-size:15px" onclick="removeLogo()">حذف الشعار</button>
-      </div>
-      <input id="adminLogoFile" type="file" accept="image/*">
-
-      <label>لون خلفية المتجر</label>
-      <div class="color-presets">
-        <button type="button" class="color-swatch" style="background:#f3f5f9" title="رمادي فاتح (الافتراضي)" onclick="pickBgColor('#f3f5f9')"></button>
-        <button type="button" class="color-swatch" style="background:#eaf1fb" title="أزرق فاتح" onclick="pickBgColor('#eaf1fb')"></button>
-        <button type="button" class="color-swatch" style="background:#e8f6ef" title="أخضر طبي" onclick="pickBgColor('#e8f6ef')"></button>
-        <button type="button" class="color-swatch" style="background:#fdf2f8" title="وردي ناعم" onclick="pickBgColor('#fdf2f8')"></button>
-        <button type="button" style="padding:10px 14px;font-size:14px" onclick="pickBgColor('#f3f5f9')">إعادة الافتراضي</button>
-      </div>
-      <input id="adminBgColor" type="color" value="#f3f5f9">
-
-      <label>العنوان التفصيلي للصيدلية</label><input id="adminAddress" placeholder="مثلاً: المكلا، شارع ...">
-      <label>رقم الجوال / الهاتف</label><input id="adminPhone" type="tel" placeholder="أدخل رقم الهاتف">
-      <label style="display:flex;align-items:center;gap:10px;cursor:pointer"><input id="adminWhatsappEnabled" type="checkbox" style="width:22px;height:22px"> تفعيل زر واتساب</label>
-      <button class="primary" id="saveSettingsBtn" onclick="saveSettings()">حفظ الإعدادات والمظهر</button>
-    </div>
-
-    <div class="admin-section" id="productSection">
+    <!-- 1. قسم المنتجات -->
+    <div class="admin-section active" id="productSection">
       <h3>إضافة / تعديل منتج</h3>
       <input id="prodName" placeholder="اسم المنتج (مثلاً: اتوسيب 120 - Atocib 120)">
       <input id="prodDesc" placeholder="وصف مختصر للمنتج (اختياري)">
       <input id="prodPrice" type="number" min="0" placeholder="السعر">
       <label>القسم الرئيسي</label>
       <select id="prodCategory" onchange="populateProductSubcategories()"></select>
-      <label>القسم الفرعي (اختياري — مثلاً: مسكن الألم وخافض الحرارة)</label>
+      <label>القسم الفرعي (اختياري)</label>
       <select id="prodSubcategory"></select>
       <label style="display:flex;align-items:center;gap:10px;cursor:pointer"><input id="prodFeatured" type="checkbox" style="width:22px;height:22px"> عرض المنتج في الرئيسية</label>
-      <label>صورة المنتج (تُضغط وتُرفع تلقائياً إلى Vercel Blob)</label>
+      <label>صورة المنتج</label>
       <input id="prodImageFile" type="file" accept="image/*">
       <input id="prodImage" type="url" placeholder="أو رابط صورة المنتج (اختياري)">
       <button class="primary" id="saveProdBtn" onclick="saveProduct()">حفظ المنتج</button>
@@ -125,16 +104,28 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#eaf2f8;color:var(-
       <div id="adminProducts"></div>
     </div>
 
+    <!-- 2. قسم الأقسام الرئيسية والفرعية -->
     <div class="admin-section" id="categorySection">
-      <h3>1. الأقسام الرئيسية (مثل: الأدوية، عناية الطفل، الجمال)</h3>
+      <h3>1. الأقسام الرئيسية</h3>
       <input id="newCategory" placeholder="اسم القسم الرئيسي الجديد">
-      <label>صورة القسم الرئيسي (تظهر في البطاقة الكبيرة)</label>
+      <label>صورة القسم الرئيسي</label>
       <input id="newCategoryImage" type="file" accept="image/*">
-      <button class="primary" id="addCatBtn" onclick="addCategory()">إضافة قسم رئيسي</button>
+      <button class="primary" id="addCatBtn" onclick="addCategory()">+ إضافة قسم رئيسي</button>
+
+      <!-- نموذج تعديل قسم رئيسي (اسم + صورة) -->
+      <div id="editMainCatBox" class="edit-card" style="display:none">
+        <h4 style="margin:0 0 10px;color:#b45309">تعديل القسم الرئيسي</h4>
+        <input id="editMainCatName" placeholder="اسم القسم الجديد">
+        <label>تغيير صورة القسم (اتركه فارغاً للاحتفاظ بالصورة الحالية)</label>
+        <input id="editMainCatImage" type="file" accept="image/*">
+        <button class="primary" id="saveEditMainCatBtn" onclick="saveEditedMainCategory()">حفظ التعديل</button>
+        <button onclick="cancelEditMainCategory()">إلغاء</button>
+      </div>
+
       <div id="adminCategories"></div>
 
       <div class="subcat-box">
-        <h3>2. الأقسام الفرعية داخل كل قسم (مثل: مسكن الألم، قطر عيون)</h3>
+        <h3>2. الأقسام الفرعية داخل كل قسم</h3>
         <label>اختر القسم الرئيسي التابع له</label>
         <select id="subcatParentSelect" onchange="renderAdminSubcategories()"></select>
         <input id="newSubcategory" placeholder="اسم القسم الفرعي (مثلاً: مسكن الألم وخافض الحرارة)">
@@ -145,6 +136,7 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#eaf2f8;color:var(-
       </div>
     </div>
 
+    <!-- 3. قسم صور الإعلان -->
     <div class="admin-section" id="bannerSection">
       <h3>صور الإعلان الرئيسية (حتى 4 صور)</h3>
       <p>تظهر الصور المتحركة في الرئيسية فقط.</p>
@@ -155,17 +147,60 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#eaf2f8;color:var(-
       <div id="adminBanners"></div>
     </div>
 
-    <div class="admin-section" id="customerSection">
-      <h3>حسابات العملاء المسجلين</h3>
-      <div id="adminCustomers"></div>
+    <!-- 4. قسم الحسابات البنكية -->
+    <div class="admin-section" id="bankSection">
+      <h3>الحسابات البنكية (تظهر في الرئيسية تحت الإعلان)</h3>
+      <input id="bankName" placeholder="اسم البنك / المحفظة (مثلاً: بنك الكريمي، جوالي، كاش...)">
+      <input id="bankAccountName" placeholder="اسم صاحب الحساب (مثلاً: صيدلية الشارقة)">
+      <input id="bankAccountNumber" placeholder="رقم الحساب / الرقم">
+      <button class="primary" id="addBankBtn" onclick="addBankAccount()">+ إضافة حساب بنكي</button>
+      <h3>الحسابات المضافة</h3>
+      <div id="adminBanks"></div>
     </div>
 
+    <!-- 5. قسم الطلبات -->
     <div class="admin-section" id="orderSection">
       <h3>طلبات العملاء ومراحلها</h3>
       <div id="adminOrders"></div>
     </div>
 
-    <button class="danger" onclick="closeAdmin()">العودة للمتجر</button>
+    <!-- 6. قسم العملاء -->
+    <div class="admin-section" id="customerSection">
+      <h3>حسابات العملاء المسجلين</h3>
+      <div id="adminCustomers"></div>
+    </div>
+
+    <!-- 7. قسم الإعدادات والمظهر -->
+    <div class="admin-section" id="settingsSection">
+      <h3>إعدادات الصيدلية والشعار والألوان</h3>
+      <label>اسم الصيدلية</label><input id="adminBrand" value="صيدلية الشارقة">
+      
+      <label>شعار الصيدلية (يظهر بجانب الاسم في الأعلى)</label>
+      <div class="logo-preview-box" id="logoPreviewBox" style="display:none">
+        <img id="logoPreviewImg" src="" alt="الشعار">
+        <button type="button" class="danger" style="padding:10px 14px;font-size:14px" onclick="removeLogo()">حذف الشعار</button>
+      </div>
+      <input id="adminLogoFile" type="file" accept="image/*">
+
+      <label>لون خلفية المتجر</label>
+      <div class="color-presets">
+        <button type="button" class="color-swatch" style="background:#f3f5f9" title="رمادي فاتح (الافتراضي)" onclick="pickBgColor('#f3f5f9')"></button>
+        <button type="button" class="color-swatch" style="background:#eaf1fb" title="أزرق فاتح" onclick="pickBgColor('#eaf1fb')"></button>
+        <button type="button" class="color-swatch" style="background:#e8f6ef" title="أخضر طبي" onclick="pickBgColor('#e8f6ef')"></button>
+        <button type="button" class="color-swatch" style="background:#fdf2f8" title="وردي ناعم" onclick="pickBgColor('#fdf2f8')"></button>
+        <button type="button" style="padding:9px 12px;font-size:13px" onclick="pickBgColor('#f3f5f9')">إعادة الافتراضي</button>
+      </div>
+      <input id="adminBgColor" type="color" value="#f3f5f9">
+
+      <label>العنوان التفصيلي للصيدلية</label><input id="adminAddress" placeholder="مثلاً: المكلا، شارع ...">
+      <label>رقم الجوال / الهاتف</label><input id="adminPhone" type="tel" placeholder="أدخل رقم الهاتف">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer"><input id="adminWhatsappEnabled" type="checkbox" style="width:22px;height:22px"> تفعيل زر واتساب</label>
+      <button class="primary" id="saveSettingsBtn" onclick="saveSettings()">حفظ الإعدادات والمظهر</button>
+    </div>
+
+    <div style="margin-top:24px;text-align:center">
+      <button class="danger" onclick="closeAdmin()">العودة للمتجر</button>
+    </div>
   </section>
 </div>
 
@@ -173,7 +208,8 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#eaf2f8;color:var(-
 const defaultCategories=['الأدوية','عناية الطفل','الجمال','العروض','العناية بالمرأة','العطور'];
 const categoryEmoji={'الأدوية':'💊','عناية الطفل':'🧸','الجمال':'💄','العروض':'🏷️','العناية بالمرأة':'🤱','العطور':'🧴'};
 let categoryArt={};
-let subcategories={}; // { "الأدوية": [ { name: "مسكن الألم", image: "..." } ] }
+let subcategories={};
+let bankAccounts=[];
 let products=[];
 let settings={brand:'صيدلية الشارقة',logo:'',bgColor:'#f3f5f9',address:'',phone:'',whatsappEnabled:false};
 let customers=[];
@@ -181,8 +217,17 @@ let orders=[];
 let categories=[...defaultCategories];
 let banners=[];
 let editingBannerIndex=null;
+let editingMainCatOldName=null;
 let editId=null;
 let adminToken=sessionStorage.getItem('sharjah_admin_pass')||'';
+
+function showAdminTab(id,button){
+  document.querySelectorAll('.admin-section').forEach(sec=>sec.classList.remove('active'));
+  const target=document.getElementById(id);
+  if(target)target.classList.add('active');
+  document.querySelectorAll('.admin-tabs button').forEach(b=>b.classList.remove('selected'));
+  if(button)button.classList.add('selected');
+}
 
 function setSyncStatus(text,isError=false){
   const el=document.getElementById('syncStatus');
@@ -238,7 +283,7 @@ async function syncStoreToBlob(){
     body:JSON.stringify({
       action:'admin_save',
       password:adminToken,
-      payload:{products,categories,categoryArt,subcategories,banners,settings,customers,orders}
+      payload:{products,categories,categoryArt,subcategories,bankAccounts,banners,settings,customers,orders}
     })
   });
   if(!res.ok){
@@ -292,6 +337,7 @@ function applyStoreData(store){
   categories=store.categories||defaultCategories;
   categoryArt=store.categoryArt||{};
   subcategories=store.subcategories||{};
+  bankAccounts=store.bankAccounts||[];
   banners=store.banners||[];
   settings={...settings,...(store.settings||{})};
   customers=store.customers||[];
@@ -313,6 +359,7 @@ function applyStoreData(store){
   renderAdminCategories();
   populateSubcatParentSelect();
   renderAdminSubcategories();
+  renderAdminBanks();
   renderAdminCustomers();
   renderAdminOrders();
   renderAdminBanners();
@@ -342,9 +389,7 @@ async function saveSettings(){
   try{
     let logoUrl=settings.logo||'';
     const logoFile=document.getElementById('adminLogoFile').files[0];
-    if(logoFile){
-      logoUrl=await uploadCompressedImageToBlob(logoFile,256,.85);
-    }
+    if(logoFile)logoUrl=await uploadCompressedImageToBlob(logoFile,256,.85);
     settings={
       brand:document.getElementById('adminBrand').value.trim()||'صيدلية الشارقة',
       logo:logoUrl,
@@ -365,6 +410,44 @@ async function saveSettings(){
   finally{if(btn)btn.disabled=false;}
 }
 
+// الحسابات البنكية
+async function addBankAccount(){
+  const bank=document.getElementById('bankName').value.trim();
+  const holder=document.getElementById('bankAccountName').value.trim();
+  const number=document.getElementById('bankAccountNumber').value.trim();
+  if(!bank||!holder||!number){alert('أكمل اسم البنك واسم صاحب الحساب ورقم الحساب');return;}
+  const btn=document.getElementById('addBankBtn');
+  if(btn)btn.disabled=true;
+  try{
+    bankAccounts.push({id:Date.now(),bank,holder,number});
+    await syncStoreToBlob();
+    document.getElementById('bankName').value='';
+    document.getElementById('bankAccountName').value='';
+    document.getElementById('bankAccountNumber').value='';
+    renderAdminBanks();
+  }catch(e){alert(e.message);}
+  finally{if(btn)btn.disabled=false;}
+}
+
+async function deleteBankAccount(id){
+  if(!confirm('حذف هذا الحساب البنكي؟'))return;
+  bankAccounts=bankAccounts.filter(b=>b.id!==id);
+  try{await syncStoreToBlob();renderAdminBanks();}catch(e){alert(e.message);}
+}
+
+function renderAdminBanks(){
+  const box=document.getElementById('adminBanks');if(!box)return;
+  box.innerHTML=bankAccounts.length?'':'<p style="color:#666">لا توجد حسابات بنكية مضافة بعد.</p>';
+  bankAccounts.forEach(b=>{
+    const row=document.createElement('div');row.className='adminrow';
+    const info=document.createElement('span');
+    info.innerHTML='<b>'+escapeHtml(b.bank)+'</b> — '+escapeHtml(b.holder)+' — <span dir="ltr">'+escapeHtml(b.number)+'</span>';
+    const del=document.createElement('button');del.className='danger';del.textContent='حذف';
+    del.onclick=()=>deleteBankAccount(b.id);
+    row.append(info,del);box.append(row);
+  });
+}
+
 function populateProductCategories(selectedCat,selectedSub){
   const sel=document.getElementById('prodCategory');
   if(!sel)return;
@@ -383,7 +466,7 @@ function populateProductSubcategories(selectedSub){
   const cat=document.getElementById('prodCategory').value;
   const subSel=document.getElementById('prodSubcategory');
   if(!subSel)return;
-  subSel.innerHTML='<option value="">-- بدون قسم فرعي (عرض مباشر في القسم الرئيسي) --</option>';
+  subSel.innerHTML='<option value="">-- بدون قسم فرعي --</option>';
   const list=subcategories[cat]||[];
   list.forEach(s=>{
     const opt=document.createElement('option');
@@ -501,38 +584,60 @@ function renderAdminCategories(){
     if(categoryArt[c]){preview=document.createElement('img');preview.className='category-admin-preview';preview.src=categoryArt[c];preview.alt=c;}
     else{preview=document.createElement('span');preview.className='category-emoji';preview.textContent=categoryEmoji[c]||'🧴';}
     const subCount=(subcategories[c]||[]).length;
-    const label=document.createElement('span');label.textContent=c+' ('+subCount+' أقسام فرعية)';
-    const edit=document.createElement('button');edit.textContent='تعديل';edit.onclick=()=>editCategory(c);
+    const label=document.createElement('span');label.textContent=c+' ('+subCount+' فرعي)';
+    const actions=document.createElement('div');
+    const edit=document.createElement('button');edit.textContent='تعديل الاسم / الصورة';edit.onclick=()=>openEditMainCategory(c);
     const btn=document.createElement('button');btn.className='danger';btn.textContent='حذف';btn.onclick=()=>deleteCategory(c);
-    row.append(preview,label,edit,btn);box.append(row);
+    actions.append(edit,btn);
+    row.append(preview,label,actions);box.append(row);
   });
 }
 
-async function editCategory(oldName){
-  const newName=prompt('اسم القسم الرئيسي:',oldName);if(newName===null)return;
-  const name=newName.trim();if(!name){alert('اسم القسم لا يمكن أن يكون فارغًا');return;}
-  if(name!==oldName&&categories.includes(name)){alert('يوجد قسم بهذا الاسم');return;}
-  const input=document.createElement('input');input.type='file';input.accept='image/*';
-  const chooseImage=confirm('هل تريد تغيير صورة القسم؟ اضغط موافق لاختيار صورة، أو إلغاء للاحتفاظ بالصورة الحالية.');
-  let image=categoryArt[oldName];
-  if(chooseImage){
-    const selected=await new Promise(resolve=>{input.onchange=()=>resolve(input.files[0]||null);input.click();});
-    if(selected){try{image=await uploadCompressedImageToBlob(selected,500,.75);}catch(e){alert(e.message);return;}}
-  }
-  categories=categories.map(c=>c===oldName?name:c);
-  if(image)categoryArt[name]=image;else delete categoryArt[name];
-  if(name!==oldName){
-    delete categoryArt[oldName];
-    if(subcategories[oldName]){subcategories[name]=subcategories[oldName];delete subcategories[oldName];}
-  }
-  products=products.map(p=>p.category===oldName?{...p,category:name}:p);
+// تعديل القسم الرئيسي (الاسم والصورة) عبر بطاقة واضحة
+function openEditMainCategory(oldName){
+  editingMainCatOldName=oldName;
+  document.getElementById('editMainCatName').value=oldName;
+  document.getElementById('editMainCatImage').value='';
+  const box=document.getElementById('editMainCatBox');
+  box.style.display='block';
+  box.scrollIntoView({behavior:'smooth'});
+}
+
+function cancelEditMainCategory(){
+  editingMainCatOldName=null;
+  document.getElementById('editMainCatBox').style.display='none';
+  document.getElementById('editMainCatImage').value='';
+}
+
+async function saveEditedMainCategory(){
+  const oldName=editingMainCatOldName;
+  if(!oldName)return;
+  const newName=document.getElementById('editMainCatName').value.trim();
+  const file=document.getElementById('editMainCatImage').files[0];
+  if(!newName){alert('اسم القسم لا يمكن أن يكون فارغًا');return;}
+  if(newName!==oldName && categories.includes(newName)){alert('يوجد قسم بهذا الاسم');return;}
+
+  const btn=document.getElementById('saveEditMainCatBtn');
+  if(btn)btn.disabled=true;
   try{
+    let image=categoryArt[oldName];
+    if(file)image=await uploadCompressedImageToBlob(file,500,.75);
+    categories=categories.map(c=>c===oldName?newName:c);
+    if(image)categoryArt[newName]=image;else delete categoryArt[newName];
+    if(newName!==oldName){
+      delete categoryArt[oldName];
+      if(subcategories[oldName]){subcategories[newName]=subcategories[oldName];delete subcategories[oldName];}
+    }
+    products=products.map(p=>p.category===oldName?{...p,category:newName}:p);
     await syncStoreToBlob();
+    cancelEditMainCategory();
     renderAdminCategories();
-    populateSubcatParentSelect(name);
+    populateSubcatParentSelect(newName);
     renderAdminProducts();
-    populateProductCategories(name);
+    populateProductCategories(newName);
+    alert('تم تحديث القسم الرئيسي بنجاح');
   }catch(e){alert(e.message);}
+  finally{if(btn)btn.disabled=false;}
 }
 
 // إدارة الأقسام الفرعية
@@ -584,9 +689,11 @@ function renderAdminSubcategories(){
     if(s.image){preview=document.createElement('img');preview.className='category-admin-preview';preview.src=s.image;}
     else{preview=document.createElement('span');preview.className='category-emoji';preview.textContent='💊';}
     const label=document.createElement('span');label.textContent=s.name;
+    const actions=document.createElement('div');
     const edit=document.createElement('button');edit.textContent='تعديل';edit.onclick=()=>editSubcategory(parent,idx);
     const del=document.createElement('button');del.className='danger';del.textContent='حذف';del.onclick=()=>deleteSubcategory(parent,idx);
-    row.append(preview,label,edit,del);box.append(row);
+    actions.append(edit,del);
+    row.append(preview,label,actions);box.append(row);
   });
 }
 
@@ -707,7 +814,8 @@ function renderAdminOrders(){
   box.innerHTML=orders.length?'':'<p>لا توجد طلبات بعد.</p>';
   orders.slice().reverse().forEach(o=>{
     let card=document.createElement('div');card.className='ordercard';
-    card.innerHTML='<b>طلب #'+o.id+'</b><p>العميل: '+escapeHtml(o.customerName)+' — '+escapeHtml(o.phone)+'</p><p>الموقع: '+escapeHtml(o.location)+'</p><p>المنتجات: '+escapeHtml(o.items)+'</p><p>السند:</p>'+(o.proof?'<a href="'+escapeHtml(o.proof)+'" target="_blank"><img class="proof" src="'+escapeHtml(o.proof)+'" alt="صورة السند"></a>':'<p>لم ترفق صورة</p>')+renderStages(o.status);
+    card.innerHTML='<b>طلب #'+o.id+'</b>'+(o.total?' <span style="background:#e8f4ed;color:#18865a;padding:3px 10px;border-radius:10px;font-weight:bold">الإجمالي: '+Number(o.total).toLocaleString()+' ر.ي</span>':'')+
+      '<p>العميل: '+escapeHtml(o.customerName)+' — '+escapeHtml(o.phone)+'</p><p>الموقع: '+escapeHtml(o.location)+'</p><p>المنتجات: '+escapeHtml(o.items)+'</p><p>السند:</p>'+(o.proof?'<a href="'+escapeHtml(o.proof)+'" target="_blank"><img class="proof" src="'+escapeHtml(o.proof)+'" alt="صورة السند"></a>':'<p>لم ترفق صورة</p>')+renderStages(o.status);
     let buttons=document.createElement('div');
     stageNames.forEach((s,i)=>{
       let b=document.createElement('button');b.textContent=s;
@@ -726,13 +834,6 @@ function renderAdminOrders(){
     };
     card.append(buttons,del);box.append(card);
   });
-}
-
-function adminJump(id,button){
-  const target=document.getElementById(id);
-  if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
-  document.querySelectorAll('.admin-tabs button').forEach(b=>b.classList.remove('selected'));
-  if(button)button.classList.add('selected');
 }
 
 if(adminToken)loginAdmin(adminToken);
