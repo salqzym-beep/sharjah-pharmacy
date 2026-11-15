@@ -10,7 +10,7 @@
 body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink);min-height:100dvh;overflow-x:hidden}
 .app{min-height:100dvh;padding:0 0 135px;display:flex;flex-direction:column;align-items:center}
 
-/* الهيدر العلوي المطابق للتصميم */
+/* الهيدر العلوي */
 .topbar{position:sticky;top:0;z-index:15;width:100%;background:var(--navy);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 2px 10px #00000018}
 .topbar-center{display:flex;align-items:center;justify-content:center;gap:10px;flex:1;min-width:0}
 .brand-logo{width:38px;height:38px;object-fit:contain;border-radius:10px;background:#fff;padding:3px;flex-shrink:0}
@@ -18,7 +18,7 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var
 .top-icon-btn{width:42px;height:42px;border:0;border-radius:12px;background:#ffffff1c;color:#fff;display:grid;place-items:center;cursor:pointer;flex-shrink:0}
 .top-icon-btn svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 
-/* شريط البحث المنسدل */
+/* شريط البحث */
 .search-drawer{width:100%;max-width:720px;padding:10px 16px 0}
 .searchbar{width:100%;background:#fff;border:2px solid #dfe5f0;border-radius:18px;height:56px;display:flex;align-items:center;padding:6px 12px;gap:10px;box-shadow:0 3px 10px #00000008}
 .searchbar input{border:0;outline:0;min-width:0;flex:1;font-size:16px;background:transparent;text-align:right;color:#222}
@@ -56,13 +56,13 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var
 .sub-pill span{font-size:12px;color:#444;line-height:1.25;font-weight:600}
 .sub-pill.active span{color:var(--navy);font-weight:800}
 
-/* بطاقات المنتجات المطابقة للصورة الثالثة */
+/* بطاقات المنتجات */
 .products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .product{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 3px 12px #18274b0d;border:1px solid #ebeff5;display:flex;flex-direction:column}
-.product-img-wrap{position:relative;width:100%;height:175px;background:#f8fafc}
+.product-img-wrap{position:relative;width:100%;height:175px;background:#f8fafc;cursor:zoom-in}
 .product-img-wrap img{width:100%;height:100%;object-fit:cover;display:block}
 .product-no-img{width:100%;height:100%;display:grid;place-items:center;font-size:48px;background:#eef2fb}
-.add-circle-btn{position:absolute;bottom:10px;left:10px;width:42px;height:42px;border-radius:50%;border:0;background:var(--navy);color:#fff;font-size:26px;line-height:1;display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 10px #1a2b7c44}
+.add-circle-btn{position:absolute;bottom:10px;left:10px;width:42px;height:42px;border-radius:50%;border:0;background:var(--navy);color:#fff;font-size:26px;line-height:1;display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 10px #1a2b7c44;z-index:2}
 .add-circle-btn:active{transform:scale(.92)}
 .product-body{padding:10px 12px 12px;display:flex;flex-direction:column;flex:1;justify-content:space-between}
 .product-name{margin:0 0 8px;font-size:14px;font-weight:700;color:#1e2230;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -74,6 +74,28 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var
 .fav-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2}
 .fav-btn.liked svg{fill:#e03131}
 
+/* نافذة تكبير صورة المنتج */
+.img-modal{display:none;position:fixed;inset:0;z-index:50;background:#000000cc;padding:20px;align-items:center;justify-content:center}
+.img-modal.open{display:flex}
+.img-modal-card{background:#fff;border-radius:24px;max-width:460px;width:100%;overflow:hidden;box-shadow:0 16px 40px #00000055;animation:fadeIn .2s ease}
+.img-modal-card img{width:100%;max-height:62dvh;object-fit:contain;background:#f8fafc;display:block}
+.img-modal-info{padding:16px 18px;text-align:center}
+.img-modal-info h3{margin:0 0 6px;font-size:18px;color:#1e2230}
+.img-modal-info p{margin:0 0 14px;font-size:18px;font-weight:800;color:var(--navy)}
+.img-modal-actions{display:flex;gap:10px}
+.img-modal-actions button{flex:1;border:0;border-radius:14px;padding:13px;font:inherit;font-weight:bold;cursor:pointer}
+
+/* الحسابات البنكية في الرئيسية */
+.bank-section{margin:16px 0 22px}
+.bank-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.bank-card{background:#fff;border:1px solid #dce4f2;border-right:5px solid var(--navy);border-radius:16px;padding:13px 15px;box-shadow:0 3px 10px #18274b08;display:flex;flex-direction:column;gap:5px}
+.bank-card-header{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.bank-title{font-weight:800;font-size:15px;color:var(--navy)}
+.bank-holder{font-size:13px;color:#555}
+.bank-num-row{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#f4f7fc;padding:7px 10px;border-radius:10px;margin-top:4px}
+.bank-num{font-weight:800;font-size:15px;color:#1e2230;letter-spacing:.5px}
+.copy-btn{border:0;background:var(--navy);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;font-weight:bold;cursor:pointer}
+
 /* شريط التنقل السفلي */
 .bottomnav{position:fixed;z-index:14;bottom:14px;left:2.5%;width:95%;max-width:740px;background:#fff;border:2px solid #dfe5f2;border-radius:36px;height:78px;display:flex;align-items:center;justify-content:space-around;padding:6px 8px;box-shadow:0 8px 24px #18274b1a}
 .navitem{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0;flex:1;color:#7c8496;border:0;background:transparent;font-family:inherit;cursor:pointer;font-size:12px;font-weight:600}
@@ -81,8 +103,8 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var
 .navitem.active{color:var(--navy);font-weight:800}
 .cartdot{position:absolute;top:0;right:32%;width:12px;height:12px;background:#e84949;border-radius:50%;border:2px solid #fff}
 
-/* عناصر عامة للسلة والحساب والعنوان */
-.section-title{color:var(--navy);font-weight:800;font-size:20px;margin:0 0 12px}
+/* عناصر السلة والحساب والعنوان */
+.section-title{color:var(--navy);font-weight:800;font-size:19px;margin:0 0 12px}
 .panel{background:#fff;border-radius:20px;padding:18px;margin:12px auto;width:100%;box-shadow:0 3px 10px #00000008}
 .panel h2{margin:0 0 12px;color:var(--navy)}
 .panel button{border:0;border-radius:12px;padding:11px 16px;margin:4px;background:var(--navy);color:#fff;font:inherit;font-weight:bold;cursor:pointer}
@@ -91,6 +113,7 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var
 .accountform,.checkoutform{background:#fff;border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 3px 10px #0000000a}
 .accountform input,.checkoutform input{width:100%;padding:12px;margin:6px 0;border:1px solid #d8dee9;border-radius:12px;font:inherit}
 .accountform button,.checkoutform button{background:var(--navy);color:#fff;border:0;border-radius:12px;padding:12px 16px;margin:5px;font:inherit;font-weight:bold;cursor:pointer}
+.total-summary-box{background:#eef4ff;border:2px solid #c5d6f5;border-radius:18px;padding:14px 18px;margin:14px 0;display:flex;align-items:center;justify-content:space-between;font-size:18px;font-weight:800;color:var(--navy)}
 .cart-actions{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
 .cart-actions button{flex:1;min-width:130px;border:0;border-radius:14px;padding:13px 12px;font:inherit;font-weight:bold;cursor:pointer}
 .btn-buy{background:#18865a!important;color:#fff!important}
@@ -131,6 +154,21 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var
   <main id="content"><div class="panel">جاري تحميل بيانات المتجر...</div></main>
 </div>
 
+<!-- نافذة تكبير صورة المنتج -->
+<div class="img-modal" id="imgModal" onclick="if(event.target===this)closeImageModal()">
+  <div class="img-modal-card">
+    <img id="modalProductImg" src="" alt="">
+    <div class="img-modal-info">
+      <h3 id="modalProductName"></h3>
+      <p id="modalProductPrice"></p>
+      <div class="img-modal-actions">
+        <button class="btn-buy" id="modalAddCartBtn">+ شراء / أضف للسلة</button>
+        <button class="btn-secondary" onclick="closeImageModal()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <nav class="bottomnav" aria-label="التنقل">
   <button class="navitem" onclick="setTab('address',this)">
     <svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>العنوان</span>
@@ -155,6 +193,7 @@ const defaultCategories=['الأدوية','عناية الطفل','الجمال'
 const categoryEmoji={'الأدوية':'💊','عناية الطفل':'🧸','الجمال':'💄','العروض':'🏷️','العناية بالمرأة':'🤱','العطور':'🧴'};
 let categoryArt={};
 let subcategories={};
+let bankAccounts=[];
 let products=[];
 let settings={brand:'صيدلية الشارقة',logo:'',bgColor:'#f3f5f9',address:'',phone:'',whatsappEnabled:false};
 let categories=[...defaultCategories];
@@ -166,9 +205,9 @@ let loggedCustomer=localStorage.getItem('sharjah_logged_customer')||'';
 let customerProfile=JSON.parse(localStorage.getItem('sharjah_customer_profile')||'null');
 
 let currentTab='home';
-let expandedMainCat='';      // القسم الرئيسي المفتوح لعرض أقسامه الفرعية
-let activeMainCat='';        // القسم الرئيسي الحالي في صفحة المنتجات
-let activeSubCat='';         // القسم الفرعي الحالي في صفحة المنتجات
+let expandedMainCat='';
+let activeMainCat='';
+let activeSubCat='';
 let showCheckoutBox=false;
 
 function persistLocal(key,val){localStorage.setItem(key,JSON.stringify(val));}
@@ -222,8 +261,29 @@ function clearSearch(){
   renderContent();
 }
 
-function onSearchInput(){
-  renderContent();
+function onSearchInput(){renderContent();}
+
+// نافذة تكبير صورة المنتج
+function openImageModal(id){
+  const p=products.find(x=>x.id===id);
+  if(!p||!p.image)return;
+  document.getElementById('modalProductImg').src=p.image;
+  document.getElementById('modalProductName').textContent=p.name+(p.desc?' - '+p.desc:'');
+  document.getElementById('modalProductPrice').textContent=Number(p.price||0).toLocaleString()+' ر.ي';
+  document.getElementById('modalAddCartBtn').onclick=()=>{closeImageModal();addCart(p.id);};
+  document.getElementById('imgModal').classList.add('open');
+}
+
+function closeImageModal(){
+  document.getElementById('imgModal').classList.remove('open');
+}
+
+function copyAccountNumber(num,btn){
+  navigator.clipboard.writeText(num).then(()=>{
+    const old=btn.textContent;
+    btn.textContent='تم النسخ ✓';
+    setTimeout(()=>btn.textContent=old,1500);
+  }).catch(()=>alert('رقم الحساب: '+num));
 }
 
 function compressImageFile(file,maxSide=900,quality=.75){
@@ -269,6 +329,7 @@ async function loadStoreFromCloud(notify=false){
     categories=data.categories||defaultCategories;
     categoryArt=data.categoryArt||{};
     subcategories=data.subcategories||{};
+    bankAccounts=data.bankAccounts||[];
     banners=data.banners||[];
     settings={...settings,...(data.settings||{})};
     orders=data.orders||[];
@@ -302,9 +363,9 @@ function productCard(p){
   const isFav=favorites.includes(p.id);
   const label=p.desc?(p.name+' - '+p.desc):p.name;
   return '<article class="product">'+
-    '<div class="product-img-wrap">'+
+    '<div class="product-img-wrap" onclick="openImageModal('+p.id+')">'+
       (p.image?'<img src="'+escapeAttr(p.image)+'" alt="">':'<div class="product-no-img">💊</div>')+
-      '<button type="button" class="add-circle-btn" aria-label="إضافة للسلة" onclick="addCart('+p.id+')">+</button>'+
+      '<button type="button" class="add-circle-btn" aria-label="إضافة للسلة" onclick="event.stopPropagation();addCart('+p.id+')">+</button>'+
     '</div>'+
     '<div class="product-body">'+
       '<h3 class="product-name">'+escapeHtml(label)+'</h3>'+
@@ -351,17 +412,14 @@ function authFormsHtml(stayInCart=false){
   return '<div class="accountform"><h3>تسجيل الدخول</h3><input id="loginUsername" placeholder="اسم المستخدم"><input id="loginPassword" type="password" placeholder="كلمة المرور"><button onclick="customerLogin('+stayInCart+')">دخول</button><p id="customerError" style="color:#c0392b"></p></div><div class="accountform"><h3>إنشاء حساب جديد</h3><input id="newCustomerName" placeholder="اسم العميل"><input id="newCustomerPhone" type="tel" placeholder="جواله"><input id="newCustomerUsername" placeholder="اسم المستخدم"><input id="newCustomerPassword" type="password" placeholder="كلمة المرور"><button onclick="createCustomer('+stayInCart+')">حفظ / إنشاء حساب</button></div>';
 }
 
-// النقر على قسم رئيسي في شاشة الأقسام
 function onMainCategoryClick(index){
   const cat=categories[index];
   if(!cat)return;
   const subs=subcategories[cat]||[];
   if(subs.length>0){
-    // فتح أو إغلاق الأقسام الفرعية تحته (مثل الصورة 2)
     expandedMainCat=(expandedMainCat===cat)?'':cat;
     renderContent();
   }else{
-    // إذا لم يكن له أقسام فرعية، افتح منتجاته مباشرة
     activeMainCat=cat;
     activeSubCat='';
     currentTab='products';
@@ -370,7 +428,6 @@ function onMainCategoryClick(index){
   }
 }
 
-// النقر على قسم فرعي لفتح منتجاته (مثل الصورة 3)
 function openSubcategory(mainCat,subIndex){
   const subs=subcategories[mainCat]||[];
   const sub=subs[subIndex];
@@ -394,11 +451,27 @@ function renderBannersHtml(){
   ).join('')+'</section>';
 }
 
+function renderBanksHtml(){
+  if(!bankAccounts.length)return '';
+  return '<section class="bank-section">'+
+    '<h2 class="section-title">حساباتنا البنكية</h2>'+
+    '<div class="bank-grid">'+bankAccounts.map(b=>
+      '<div class="bank-card">'+
+        '<div class="bank-card-header"><span class="bank-title">🏦 '+escapeHtml(b.bank)+'</span></div>'+
+        '<div class="bank-holder">الاسم: <b>'+escapeHtml(b.holder)+'</b></div>'+
+        '<div class="bank-num-row">'+
+          '<span class="bank-num" dir="ltr">'+escapeHtml(b.number)+'</span>'+
+          '<button type="button" class="copy-btn" onclick="copyAccountNumber('+JSON.stringify(b.number).replace(/"/g,'&quot;')+',this)">نسخ</button>'+
+        '</div>'+
+      '</div>'
+    ).join('')+'</div>'+
+  '</section>';
+}
+
 function renderContent(){
   const content=document.getElementById('content');
   const q=normalizeSearch(document.getElementById('search').value);
 
-  // إذا كان المستخدم يبحث في شريط البحث
   if(q){
     const filtered=products.filter(p=>normalizeSearch((p.name||'')+' '+(p.desc||'')+' '+(p.category||'')+' '+(p.subcategory||'')).includes(q));
     content.innerHTML='<h2 class="section-title">نتائج البحث</h2>'+
@@ -406,14 +479,13 @@ function renderContent(){
     return;
   }
 
-  // 1. شاشة الأقسام (مطابقة للصورة 1 والصورة 2)
+  // 1. الأقسام
   if(currentTab==='sections'){
     if(!categories.length){
       content.innerHTML='<div class="panel">لا توجد أقسام مضافة حالياً.</div>';
       return;
     }
     let html='<div class="main-cat-grid">';
-    // تقسيم الأقسام إلى صفوف من عمودين لكي تظهر الأقسام الفرعية تحت الصف مباشرة
     for(let i=0;i<categories.length;i+=2){
       const rowCats=[categories[i],categories[i+1]].filter(Boolean);
       rowCats.forEach((cat,offset)=>{
@@ -431,7 +503,6 @@ function renderContent(){
         '</div>';
       });
 
-      // إذا كان أحد قسمي هذا الصف مفتوحاً، اعرض أقسامه الفرعية في شبكة 3 أعمدة تحته مباشرة
       const expandedInRow=rowCats.find(c=>c===expandedMainCat);
       if(expandedInRow){
         const subs=subcategories[expandedInRow]||[];
@@ -450,7 +521,7 @@ function renderContent(){
     return;
   }
 
-  // 2. شاشة منتجات القسم الفرعي (مطابقة للصورة 3)
+  // 2. المنتجات داخل القسم
   if(currentTab==='products'){
     const subs=subcategories[activeMainCat]||[];
     let pillsHtml='';
@@ -481,15 +552,15 @@ function renderContent(){
   // 3. السلة
   if(currentTab==='cart'){
     const chosen=cart.map((id,idx)=>({p:products.find(x=>x.id===id),idx})).filter(x=>x.p);
-    let html='<h2 class="section-title">السلة</h2>';
+    let html='<h2 class="section-title">السلة ('+chosen.length+' منتجات)</h2>';
     if(!chosen.length){
       html+='<div class="panel">السلة فارغة. تصفح الأقسام لإضافة منتجات.<br><button onclick="continueShopping()" style="margin-top:10px">تصفح الأقسام</button></div>';
       content.innerHTML=html;
       return;
     }
     const total=chosen.reduce((sum,x)=>sum+Number(x.p.price||0),0);
-    html+='<div class="products">'+chosen.map(({p,idx})=>'<article class="product"><div class="product-img-wrap">'+(p.image?'<img src="'+escapeAttr(p.image)+'" alt="">':'<div class="product-no-img">💊</div>')+'</div><div class="product-body"><h3 class="product-name">'+escapeHtml(p.name)+'</h3><div class="product-bottom"><span class="product-price">'+Number(p.price||0).toLocaleString()+' <small>ر.ي</small></span><button style="background:#c0392b;color:#fff;border:0;border-radius:8px;padding:6px 10px;cursor:pointer" onclick="removeFromCart('+idx+')">إزالة</button></div></div></article>').join('')+'</div>';
-    html+='<div class="panel" style="margin-top:14px;text-align:center"><b>الإجمالي: '+total.toLocaleString()+' ر.ي</b></div>';
+    html+='<div class="products">'+chosen.map(({p,idx})=>'<article class="product"><div class="product-img-wrap" onclick="openImageModal('+p.id+')">'+(p.image?'<img src="'+escapeAttr(p.image)+'" alt="">':'<div class="product-no-img">💊</div>')+'</div><div class="product-body"><h3 class="product-name">'+escapeHtml(p.name)+'</h3><div class="product-bottom"><span class="product-price">'+Number(p.price||0).toLocaleString()+' <small>ر.ي</small></span><button style="background:#c0392b;color:#fff;border:0;border-radius:8px;padding:6px 10px;cursor:pointer" onclick="removeFromCart('+idx+')">إزالة</button></div></div></article>').join('')+'</div>';
+    html+='<div class="total-summary-box"><span>إجمالي المشتريات:</span><span>'+total.toLocaleString()+' ر.ي</span></div>';
     html+='<div class="cart-actions">'+
           '<button class="btn-buy" onclick="startCheckout()">شراء / إتمام الطلب</button>'+
           '<button class="btn-secondary" onclick="continueShopping()">+ إضافة منتجات أخرى</button>'+
@@ -499,7 +570,12 @@ function renderContent(){
     if(showCheckoutBox){
       html+='<div id="cartCheckoutSection">';
       if(loggedCustomer && customerProfile){
-        html+='<div class="checkoutform"><h3>إتمام الشراء ('+escapeHtml(customerProfile.name)+')</h3><input id="checkoutLocation" placeholder="موقع العميل بالتفصيل (مثلاً: المكلا، شارع ...)"><label style="font-weight:bold;display:block;margin-top:8px">صورة سند الدفع</label><input id="checkoutProof" type="file" accept="image/*"><button class="btn-buy" id="submitOrderBtn" onclick="submitOrder()">تأكيد وإرسال الطلب</button></div>';
+        html+='<div class="checkoutform"><h3>إتمام الشراء ('+escapeHtml(customerProfile.name)+')</h3>'+
+          '<div style="background:#f4f7fc;padding:10px 14px;border-radius:12px;margin-bottom:10px;font-weight:bold;color:var(--navy)">المبلغ المطلوب تحويله: '+total.toLocaleString()+' ر.ي</div>'+
+          '<input id="checkoutLocation" placeholder="موقع العميل بالتفصيل (مثلاً: المكلا، شارع ...)">'+
+          '<label style="font-weight:bold;display:block;margin-top:8px">صورة سند الدفع</label>'+
+          '<input id="checkoutProof" type="file" accept="image/*">'+
+          '<button class="btn-buy" id="submitOrderBtn" onclick="submitOrder()">تأكيد وإرسال الطلب ('+total.toLocaleString()+' ر.ي)</button></div>';
       }else{
         html+='<div class="panel"><p style="color:var(--navy);font-weight:bold;margin:0">لإكمال الشراء، يرجى تسجيل الدخول أو إنشاء حساب جديد:</p></div>'+authFormsHtml(true);
       }
@@ -520,9 +596,10 @@ function renderContent(){
   // 5. حسابي
   if(currentTab==='account'){renderAccount(content);return;}
 
-  // 6. الرئيسية
+  // 6. الرئيسية (الإعلانات + الحسابات البنكية + المختارات)
   const featured=products.filter(p=>p.featured);
   content.innerHTML=renderBannersHtml()+
+    renderBanksHtml()+
     '<h2 class="section-title">الأكثر طلباً والمختارات</h2>'+
     (featured.length?'<div class="products">'+featured.map(productCard).join('')+'</div>':'<div class="panel">تصفح الأقسام بالأسفل لاستعراض جميع الأدوية والمنتجات.</div>');
 }
@@ -546,7 +623,7 @@ function renderAccount(content){
   if(loggedCustomer && customerProfile){
     content.innerHTML='<h2 class="section-title">حسابي</h2><div class="accountform"><h3>مرحباً '+escapeHtml(customerProfile.name)+'</h3><p>الجوال: '+escapeHtml(customerProfile.phone)+'</p><button onclick="logoutCustomer()">تسجيل الخروج</button></div><h3 class="section-title">طلباتي</h3>';
     let mine=orders.filter(o=>o.username===loggedCustomer).slice().reverse();
-    content.innerHTML+=mine.length?mine.map(o=>'<div class="ordercard"><b>طلب #'+o.id+'</b><p>'+escapeHtml(o.items)+'</p><p>الحالة: '+escapeHtml(o.status)+'</p>'+renderStages(o.status)+'</div>').join(''):'<div class="panel">لا توجد طلبات مسجلة.</div>';
+    content.innerHTML+=mine.length?mine.map(o=>'<div class="ordercard"><b>طلب #'+o.id+'</b>'+(o.total?' — <b>الإجمالي: '+Number(o.total).toLocaleString()+' ر.ي</b>':'')+'<p>'+escapeHtml(o.items)+'</p><p>الحالة: '+escapeHtml(o.status)+'</p>'+renderStages(o.status)+'</div>').join(''):'<div class="panel">لا توجد طلبات مسجلة.</div>';
     return;
   }
   content.innerHTML='<h2 class="section-title">حسابي</h2>'+authFormsHtml(false);
@@ -627,6 +704,7 @@ async function submitOrder(){
   try{
     const proofUrl=await uploadCompressedImageToBlob(file,900,.75);
     const chosen=cart.map(id=>products.find(p=>p.id===id)).filter(Boolean);
+    const total=chosen.reduce((sum,p)=>sum+Number(p.price||0),0);
     const items=chosen.map(p=>p.name+' ×1 ('+p.price+')').join('، ');
     const newOrder={
       id:Date.now(),
@@ -636,6 +714,7 @@ async function submitOrder(){
       location,
       proof:proofUrl,
       items,
+      total,
       status:'مراجعة',
       createdAt:new Date().toISOString()
     };
@@ -650,7 +729,7 @@ async function submitOrder(){
     showCheckoutBox=false;
     persistLocal('sharjah_cart',cart);
     document.getElementById('cartdot').style.display='none';
-    alert('تم إرسال طلبك بنجاح: قيد المراجعة');
+    alert('تم إرسال طلبك بنجاح (الإجمالي: '+total.toLocaleString()+' ر.ي) — قيد المراجعة');
     renderContent();
   }catch(e){
     alert(e.message||'حدث خطأ أثناء إرسال الطلب');
