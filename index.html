@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>صيدلية الشارقة</title>
+<title>صيدلية الحيدري</title>
 <style>
 :root{--bg:#f3f5f9;--navy:#1a2b7c;--navy-light:#eef2fb;--white:#fff;--ink:#1e2230}
 *{box-sizing:border-box}
@@ -137,7 +137,7 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var
     </button>
     <div class="topbar-center">
       <img id="brandLogo" class="brand-logo" src="" alt="الشعار" style="display:none">
-      <h1 id="topbarTitle">صيدلية الشارقة</h1>
+      <h1 id="topbarTitle">صيدلية الحيدري</h1>
     </div>
     <button class="top-icon-btn" aria-label="بحث" onclick="toggleSearchBox()">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4.5 4.5"/></svg>
@@ -195,14 +195,14 @@ let categoryArt={};
 let subcategories={};
 let bankAccounts=[];
 let products=[];
-let settings={brand:'صيدلية الشارقة',logo:'',bgColor:'#f3f5f9',address:'',phone:'',whatsappEnabled:false};
+let settings={brand:'صيدلية الحيدري',logo:'',bgColor:'#f3f5f9',address:'',phone:'',whatsappEnabled:false};
 let categories=[...defaultCategories];
 let banners=[];
 let orders=[];
-let cart=JSON.parse(localStorage.getItem('sharjah_cart')||'[]');
-let favorites=JSON.parse(localStorage.getItem('sharjah_favs')||'[]');
-let loggedCustomer=localStorage.getItem('sharjah_logged_customer')||'';
-let customerProfile=JSON.parse(localStorage.getItem('sharjah_customer_profile')||'null');
+let cart=JSON.parse(localStorage.getItem('haidari_cart')||'[]');
+let favorites=JSON.parse(localStorage.getItem('haidari_favs')||'[]');
+let loggedCustomer=localStorage.getItem('haidari_logged_customer')||'';
+let customerProfile=JSON.parse(localStorage.getItem('haidari_customer_profile')||'null');
 
 let currentTab='home';
 let expandedMainCat='';
@@ -215,7 +215,7 @@ function persistLocal(key,val){localStorage.setItem(key,JSON.stringify(val));}
 function applyAppearance(){
   const bg=settings.bgColor||'#f3f5f9';
   document.documentElement.style.setProperty('--bg',bg);
-  document.title=settings.brand||'صيدلية الشارقة';
+  document.title=settings.brand||'صيدلية الحيدري';
   updateTopbar();
 }
 
@@ -233,7 +233,7 @@ function updateTopbar(){
     logoEl.style.display='none';
     backBtn.style.visibility='hidden';
   }else{
-    titleEl.textContent=settings.brand||'صيدلية الشارقة';
+    titleEl.textContent=settings.brand||'صيدلية الحيدري';
     backBtn.style.visibility='hidden';
     if(settings.logo){logoEl.src=settings.logo;logoEl.style.display='block';}
     else{logoEl.style.display='none';}
@@ -321,7 +321,7 @@ async function uploadCompressedImageToBlob(file,maxSide=900,quality=.75){
 
 async function loadStoreFromCloud(notify=false){
   try{
-    const res=await fetch('/api/store',{cache:'no-store'});
+    const res=await fetch('/api/store?t='+Date.now(),{cache:'no-store'});
     if(!res.ok)throw new Error('تعذر تحميل البيانات');
     const data=await res.json();
     products=data.products||[];
@@ -330,7 +330,9 @@ async function loadStoreFromCloud(notify=false){
     subcategories=data.subcategories||{};
     bankAccounts=data.bankAccounts||[];
     banners=data.banners||[];
-    settings={...settings,...(data.settings||{})};
+    const cloudSettings=data.settings||{};
+    if(!cloudSettings.brand||cloudSettings.brand==='صيدلية الشارقة')cloudSettings.brand='صيدلية الحيدري';
+    settings={...settings,...cloudSettings};
     orders=data.orders||[];
     applyAppearance();
     renderContent();
@@ -354,7 +356,7 @@ function escapeAttr(s){return escapeHtml(s);}
 function toggleFav(id){
   if(favorites.includes(id))favorites=favorites.filter(x=>x!==id);
   else favorites.push(id);
-  persistLocal('sharjah_favs',favorites);
+  persistLocal('haidari_favs',favorites);
   renderContent();
 }
 
@@ -378,7 +380,7 @@ function productCard(p){
 
 function addCart(id){
   cart.push(id);
-  persistLocal('sharjah_cart',cart);
+  persistLocal('haidari_cart',cart);
   document.getElementById('cartdot').style.display='block';
   showCheckoutBox=false;
   const cartNav=document.querySelectorAll('.navitem')[3];
@@ -387,7 +389,7 @@ function addCart(id){
 
 function removeFromCart(index){
   cart.splice(index,1);
-  persistLocal('sharjah_cart',cart);
+  persistLocal('haidari_cart',cart);
   document.getElementById('cartdot').style.display=cart.length?'block':'none';
   if(!cart.length)showCheckoutBox=false;
   renderContent();
@@ -589,7 +591,7 @@ function renderContent(){
     const phone=String(settings.phone||'').replace(/[^0-9]/g,'');
     const whatsapp=phone?(phone.startsWith('967')?phone:'967'+phone):'';
     content.innerHTML='<h2 class="section-title">العنوان وبيانات التواصل</h2>'+
-      '<div class="panel"><h2>'+escapeHtml(settings.brand||'صيدلية الشارقة')+'</h2>'+
+      '<div class="panel"><h2>'+escapeHtml(settings.brand||'صيدلية الحيدري')+'</h2>'+
       '<p><b>العنوان:</b> '+escapeHtml(settings.address||'لم يتم إضافة العنوان بعد')+'</p>'+
       '<p><b>رقم الجوال / الهاتف:</b> '+escapeHtml(settings.phone||'لم يتم إضافة رقم الهاتف بعد')+'</p>'+
       (settings.phone?'<a class="contact-link" href="tel:'+escapeAttr(settings.phone)+'"><button>اتصال</button></a>':'')+
@@ -648,8 +650,8 @@ async function customerLogin(stayInCart=false){
     if(!res.ok){document.getElementById('customerError').textContent=data.error||'بيانات الدخول غير صحيحة';return;}
     loggedCustomer=data.customer.username;
     customerProfile=data.customer;
-    localStorage.setItem('sharjah_logged_customer',loggedCustomer);
-    persistLocal('sharjah_customer_profile',customerProfile);
+    localStorage.setItem('haidari_logged_customer',loggedCustomer);
+    persistLocal('haidari_customer_profile',customerProfile);
     if(stayInCart)showCheckoutBox=true;
     await loadStoreFromCloud();
   }catch(e){
@@ -673,8 +675,8 @@ async function createCustomer(stayInCart=false){
     if(!res.ok){alert(data.error||'تعذر إنشاء الحساب');return;}
     loggedCustomer=data.customer.username;
     customerProfile=data.customer;
-    localStorage.setItem('sharjah_logged_customer',loggedCustomer);
-    persistLocal('sharjah_customer_profile',customerProfile);
+    localStorage.setItem('haidari_logged_customer',loggedCustomer);
+    persistLocal('haidari_customer_profile',customerProfile);
     if(stayInCart)showCheckoutBox=true;
     alert('تم إنشاء الحساب وتسجيل الدخول بنجاح');
     renderContent();
@@ -686,8 +688,8 @@ async function createCustomer(stayInCart=false){
 function logoutCustomer(){
   loggedCustomer='';
   customerProfile=null;
-  localStorage.removeItem('sharjah_logged_customer');
-  localStorage.removeItem('sharjah_customer_profile');
+  localStorage.removeItem('haidari_logged_customer');
+  localStorage.removeItem('haidari_customer_profile');
   renderContent();
 }
 
@@ -732,7 +734,7 @@ async function submitOrder(){
     orders.push(newOrder);
     cart=[];
     showCheckoutBox=false;
-    persistLocal('sharjah_cart',cart);
+    persistLocal('haidari_cart',cart);
     document.getElementById('cartdot').style.display='none';
     alert('تم إرسال طلبك بنجاح (الإجمالي: '+total.toLocaleString()+' ر.ي) — قيد المراجعة');
     renderContent();
