@@ -85,8 +85,8 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var
 .img-modal-actions{display:flex;gap:10px}
 .img-modal-actions button{flex:1;border:0;border-radius:14px;padding:13px;font:inherit;font-weight:bold;cursor:pointer}
 
-/* الحسابات البنكية في الرئيسية */
-.bank-section{margin:16px 0 22px}
+/* الحسابات البنكية في تبويب العنوان */
+.bank-section{margin:18px 0 22px}
 .bank-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
 .bank-card{background:#fff;border:1px solid #dce4f2;border-right:5px solid var(--navy);border-radius:16px;padding:13px 15px;box-shadow:0 3px 10px #18274b08;display:flex;flex-direction:column;gap:5px}
 .bank-card-header{display:flex;align-items:center;justify-content:space-between;gap:8px}
@@ -263,7 +263,6 @@ function clearSearch(){
 
 function onSearchInput(){renderContent();}
 
-// نافذة تكبير صورة المنتج
 function openImageModal(id){
   const p=products.find(x=>x.id===id);
   if(!p||!p.image)return;
@@ -585,21 +584,27 @@ function renderContent(){
     return;
   }
 
-  // 4. العنوان والتواصل
+  // 4. العنوان والتواصل + الحسابات البنكية
   if(currentTab==='address'){
     const phone=String(settings.phone||'').replace(/[^0-9]/g,'');
     const whatsapp=phone?(phone.startsWith('967')?phone:'967'+phone):'';
-    content.innerHTML='<h2 class="section-title">العنوان وبيانات التواصل</h2><div class="panel"><h2>'+escapeHtml(settings.brand||'صيدلية الشارقة')+'</h2><p><b>العنوان:</b> '+escapeHtml(settings.address||'لم يتم إضافة العنوان بعد')+'</p><p><b>رقم الجوال / الهاتف:</b> '+escapeHtml(settings.phone||'لم يتم إضافة رقم الهاتف بعد')+'</p>'+(settings.phone?'<a class="contact-link" href="tel:'+escapeAttr(settings.phone)+'"><button>اتصال</button></a>':'')+(settings.whatsappEnabled&&whatsapp?'<a class="contact-link" target="_blank" rel="noopener" href="https://wa.me/'+whatsapp+'"><button>تواصل عبر واتساب</button></a>':'')+'</div>';
+    content.innerHTML='<h2 class="section-title">العنوان وبيانات التواصل</h2>'+
+      '<div class="panel"><h2>'+escapeHtml(settings.brand||'صيدلية الشارقة')+'</h2>'+
+      '<p><b>العنوان:</b> '+escapeHtml(settings.address||'لم يتم إضافة العنوان بعد')+'</p>'+
+      '<p><b>رقم الجوال / الهاتف:</b> '+escapeHtml(settings.phone||'لم يتم إضافة رقم الهاتف بعد')+'</p>'+
+      (settings.phone?'<a class="contact-link" href="tel:'+escapeAttr(settings.phone)+'"><button>اتصال</button></a>':'')+
+      (settings.whatsappEnabled&&whatsapp?'<a class="contact-link" target="_blank" rel="noopener" href="https://wa.me/'+whatsapp+'"><button>تواصل عبر واتساب</button></a>':'')+
+      '</div>'+
+      renderBanksHtml();
     return;
   }
 
   // 5. حسابي
   if(currentTab==='account'){renderAccount(content);return;}
 
-  // 6. الرئيسية (الإعلانات + الحسابات البنكية + المختارات)
+  // 6. الرئيسية (الإعلانات + المختارات)
   const featured=products.filter(p=>p.featured);
   content.innerHTML=renderBannersHtml()+
-    renderBanksHtml()+
     '<h2 class="section-title">الأكثر طلباً والمختارات</h2>'+
     (featured.length?'<div class="products">'+featured.map(productCard).join('')+'</div>':'<div class="panel">تصفح الأقسام بالأسفل لاستعراض جميع الأدوية والمنتجات.</div>');
 }
@@ -609,7 +614,7 @@ function setTab(tab,el){
   document.querySelectorAll('.navitem').forEach(n=>n.classList.remove('active'));
   if(el)el.classList.add('active');
   updateTopbar();
-  if(tab==='account'||tab==='sections')loadStoreFromCloud();
+  if(tab==='account'||tab==='sections'||tab==='address')loadStoreFromCloud();
   renderContent();
 }
 
