@@ -45,6 +45,7 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#eaf2f8;color:var(-
 .category-emoji{width:56px;height:56px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,#eef4ff,#f4eefe);font-size:28px}
 .category-admin-preview{width:56px;height:56px;object-fit:cover;border-radius:12px;background:#f4f7fc}
 .subcat-box{background:#f5f8ff;border:1px solid #d8e3f8;border-radius:20px;padding:16px;margin-top:22px}
+.pass-box{background:#fff8f8;border:1px solid #f5c2c7;border-radius:20px;padding:16px;margin-top:24px}
 .edit-card{background:#fff8eb;border:2px solid #f59f00;border-radius:18px;padding:14px;margin:12px 0}
 .color-presets{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 14px;align-items:center}
 .color-swatch{width:42px!important;height:42px!important;padding:0!important;border-radius:50%!important;border:3px solid #cbd5e1!important;margin:0!important}
@@ -73,7 +74,6 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#eaf2f8;color:var(-
       <button class="danger" onclick="logoutAdmin()">خروج</button>
     </div>
 
-    <!-- أزرار التنقل المستقلة (يظهر قسم واحد فقط عند الضغط) -->
     <div class="admin-tabs">
       <button class="selected" onclick="showAdminTab('productSection',this)">المنتجات</button>
       <button onclick="showAdminTab('categorySection',this)">الأقسام والفرعية</button>
@@ -112,7 +112,6 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#eaf2f8;color:var(-
       <input id="newCategoryImage" type="file" accept="image/*">
       <button class="primary" id="addCatBtn" onclick="addCategory()">+ إضافة قسم رئيسي</button>
 
-      <!-- نموذج تعديل قسم رئيسي (اسم + صورة) -->
       <div id="editMainCatBox" class="edit-card" style="display:none">
         <h4 style="margin:0 0 10px;color:#b45309">تعديل القسم الرئيسي</h4>
         <input id="editMainCatName" placeholder="اسم القسم الجديد">
@@ -149,7 +148,7 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#eaf2f8;color:var(-
 
     <!-- 4. قسم الحسابات البنكية -->
     <div class="admin-section" id="bankSection">
-      <h3>الحسابات البنكية (تظهر في الرئيسية تحت الإعلان)</h3>
+      <h3>الحسابات البنكية (تظهر في تبويب العنوان)</h3>
       <input id="bankName" placeholder="اسم البنك / المحفظة (مثلاً: بنك الكريمي، جوالي، كاش...)">
       <input id="bankAccountName" placeholder="اسم صاحب الحساب (مثلاً: صيدلية الشارقة)">
       <input id="bankAccountNumber" placeholder="رقم الحساب / الرقم">
@@ -170,7 +169,7 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#eaf2f8;color:var(-
       <div id="adminCustomers"></div>
     </div>
 
-    <!-- 7. قسم الإعدادات والمظهر -->
+    <!-- 7. قسم الإعدادات والمظهر + تغيير كلمة المرور -->
     <div class="admin-section" id="settingsSection">
       <h3>إعدادات الصيدلية والشعار والألوان</h3>
       <label>اسم الصيدلية</label><input id="adminBrand" value="صيدلية الشارقة">
@@ -196,6 +195,15 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#eaf2f8;color:var(-
       <label>رقم الجوال / الهاتف</label><input id="adminPhone" type="tel" placeholder="أدخل رقم الهاتف">
       <label style="display:flex;align-items:center;gap:10px;cursor:pointer"><input id="adminWhatsappEnabled" type="checkbox" style="width:22px;height:22px"> تفعيل زر واتساب</label>
       <button class="primary" id="saveSettingsBtn" onclick="saveSettings()">حفظ الإعدادات والمظهر</button>
+
+      <!-- تغيير كلمة مرور لوحة التحكم -->
+      <div class="pass-box">
+        <h3 style="color:#b02a37;margin-top:0">تغيير كلمة مرور لوحة التحكم</h3>
+        <input id="currentAdminPass" type="password" placeholder="كلمة المرور الحالية">
+        <input id="newAdminPass" type="password" placeholder="كلمة المرور الجديدة (4 خانات على الأقل)">
+        <input id="confirmAdminPass" type="password" placeholder="تأكيد كلمة المرور الجديدة">
+        <button class="danger" id="changePassBtn" onclick="changeAdminPassword()">تحديث كلمة المرور</button>
+      </div>
     </div>
 
     <div style="margin-top:24px;text-align:center">
@@ -292,6 +300,50 @@ async function syncStoreToBlob(){
     throw new Error(err.error||'فشل حفظ التعديلات في Vercel Blob');
   }
   setSyncStatus('✓ محفوظ ومتزامن مع Vercel Blob');
+}
+
+async function changeAdminPassword(){
+  const currentPass=document.getElementById('currentAdminPass').value.trim();
+  const newPass=document.getElementById('newAdminPass').value.trim();
+  const confirmPass=document.getElementById('confirmAdminPass').value.trim();
+
+  if(!currentPass||!newPass||!confirmPass){alert('أكمل جميع حقول كلمة المرور');return;}
+  if(newPass.length<4){alert('كلمة المرور الجديدة يجب أن تكون 4 خانات على الأقل');return;}
+  if(newPass!==confirmPass){alert('كلمة المرور الجديدة وتأكيدها غير متطابقتين');return;}
+
+  const btn=document.getElementById('changePassBtn');
+  if(btn)btn.disabled=true;
+  setSyncStatus('⏳ جاري تحديث كلمة المرور...');
+
+  try{
+    const res=await fetch('/api/store',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        action:'admin_change_password',
+        password:currentPass,
+        payload:{newPassword:newPass}
+      })
+    });
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok){
+      setSyncStatus('✕ فشل تغيير كلمة المرور',true);
+      alert(data.error||'كلمة المرور الحالية غير صحيحة');
+      return;
+    }
+    adminToken=newPass;
+    sessionStorage.setItem('sharjah_admin_pass',newPass);
+    document.getElementById('currentAdminPass').value='';
+    document.getElementById('newAdminPass').value='';
+    document.getElementById('confirmAdminPass').value='';
+    setSyncStatus('✓ تم تغيير كلمة المرور وحفظها سحابياً');
+    alert('تم تغيير كلمة مرور لوحة التحكم بنجاح');
+  }catch(e){
+    setSyncStatus('✕ خطأ في الاتصال',true);
+    alert('تعذر الاتصال بالسيرفر');
+  }finally{
+    if(btn)btn.disabled=false;
+  }
 }
 
 function closeAdmin(){window.location.href='./index.html';}
@@ -410,7 +462,6 @@ async function saveSettings(){
   finally{if(btn)btn.disabled=false;}
 }
 
-// الحسابات البنكية
 async function addBankAccount(){
   const bank=document.getElementById('bankName').value.trim();
   const holder=document.getElementById('bankAccountName').value.trim();
@@ -593,7 +644,6 @@ function renderAdminCategories(){
   });
 }
 
-// تعديل القسم الرئيسي (الاسم والصورة) عبر بطاقة واضحة
 function openEditMainCategory(oldName){
   editingMainCatOldName=oldName;
   document.getElementById('editMainCatName').value=oldName;
@@ -640,7 +690,6 @@ async function saveEditedMainCategory(){
   finally{if(btn)btn.disabled=false;}
 }
 
-// إدارة الأقسام الفرعية
 function populateSubcatParentSelect(selected){
   const sel=document.getElementById('subcatParentSelect');
   if(!sel)return;
