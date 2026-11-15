@@ -1,4 +1,4 @@
-import { put, list } from '@vercel/blob';
+import { put, list, del } from '@vercel/blob';
 
 const DATA_FILE = 'sharjah/store-data.json';
 const FALLBACK_ADMIN_PASS = process.env.ADMIN_PASSWORD || 'cc7895236';
@@ -44,13 +44,27 @@ function getActiveAdminPass(store) {
   return (store.adminPassword && store.adminPassword.trim()) ? store.adminPassword.trim() : FALLBACK_ADMIN_PASS;
 }
 
+function getUsedImageUrls(store) {
+  const used = new Set();
+  if (store.settings?.logo) used.add(store.settings.logo);
+
+  (store.products || []).forEach(p => { if (p.image) used.add(p.image); });
+  Object.values(store.categoryArt || {}).forEach(url => { if (url) used.add(url); });
+  Object.values(store.subcategories || {}).forEach(list => {
+    (list || []).forEach(s => { if (s.image) used.add(s.image); });
+  });
+  (store.banners || []).forEach(b => { if (b.image) used.add(b.image); });
+  (store.orders || []).forEach(o => { if (o.proof) used.add(o.proof); });
+
+  return used;
+}
+
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store, max-age=0');
 
   try {
     if (req.method === 'GET') {
       const store = await readStore();
-      // إخفاء كلمة مرور الأدمن وكلمات مرور العملاء عن الواجهة العامة
       const { adminPassword, ...publicStore } = store;
       const safeCustomers = (store.customers || []).map(({ password, ...rest }) => rest);
       return res.status(200).json({ ...publicStore, customers: safeCustomers });
@@ -74,7 +88,6 @@ export default async function handler(req, res) {
     if (action === 'admin_save') {
       if (password !== activePass) return res.status(401).json({ error: 'غير مصرح' });
       const updated = { ...store, ...payload };
-      // الاحتفاظ بكلمة المرور الحالية ما لم يتم إرسال كلمة مرور جديدة
       updated.adminPassword = store.adminPassword || '';
       await writeStore(updated);
       return res.status(200).json({ ok: true });
@@ -87,6 +100,21 @@ export default async function handler(req, res) {
       store.adminPassword = newPass;
       await writeStore(store);
       return res.status(200).json({ ok: true });
+    }
+
+    if (action === 'cleanup_blobs') {
+      if (password !== activePass) return res.status(401).json({ error: 'غير مصرح' });
+      const usedUrls = getUsedImageUrls(store);
+      const { blobs } = await list({ prefix: 'sharjah/' });
+
+      const unusedUrls = blobs
+        .filter(b => b.pathname !== DATA_FILE && !usedUrls.has(b.url))
+        .map(b => b.url);
+
+      if (unusedUrls.length > 0) {
+        await del(unusedUrls);
+      }
+      return res.status(200).json({ ok: true, deletedCount: unusedUrls.length });
     }
 
     if (action === 'customer_register') {
