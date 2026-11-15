@@ -71,6 +71,7 @@ body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#eaf2f8;color:var(-
     <div class="admin-toolbar">
       <button onclick="closeAdmin()">عرض المتجر ↗</button>
       <button onclick="refreshAdmin()">⟳ تحديث</button>
+      <button onclick="cleanupUnusedBlobs()" style="background:#fff3cd;color:#856404">🧹 تنظيف الصور</button>
       <button class="danger" onclick="logoutAdmin()">خروج</button>
     </div>
 
@@ -300,6 +301,27 @@ async function syncStoreToBlob(){
     throw new Error(err.error||'فشل حفظ التعديلات في Vercel Blob');
   }
   setSyncStatus('✓ محفوظ ومتزامن مع Vercel Blob');
+}
+
+async function cleanupUnusedBlobs(){
+  if(!confirm('سيتم فحص Vercel Blob وحذف أي صورة غير مستخدمة حالياً في المنتجات أو الأقسام أو الإعلانات أو الطلبات. هل تريد المتابعة؟'))return;
+  setSyncStatus('⏳ جاري فحص وحذف الصور غير المستخدمة...');
+  try{
+    const res=await fetch('/api/store',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'cleanup_blobs',password:adminToken})
+    });
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error||'فشل تنظيف الصور');
+    setSyncStatus('✓ اكتمل التنظيف (تم حذف '+data.deletedCount+' صورة)');
+    alert(data.deletedCount>0
+      ? 'تم حذف '+data.deletedCount+' صورة غير مستخدمة من Vercel Blob بنجاح!'
+      : 'مخزن الصور نظيف تماماً، لا توجد صور زائدة.');
+  }catch(e){
+    setSyncStatus('✕ فشل التنظيف',true);
+    alert(e.message);
+  }
 }
 
 async function changeAdminPassword(){
